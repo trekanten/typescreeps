@@ -1,0 +1,28 @@
+{
+  "name": "screeps-typescript",
+  "version": "1.0.0",
+  "description": "A simple Screeps starter in Typescript",
+  "scripts": {
+    "build": "tsc",
+    "predeploy": "npm run build",
+    "deploy": "grunt screeps",
+    "lint": "tslint -p .",
+    "lint:fix": "tslint --fix -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trekanten/screeps-typescript"
+  },
+  "author": "trekanten",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^10.5.5",
+    "@types/screeps": "^2.5.4",
+    "dotenv": "^8.0.0",
+    "grunt": "^1.0.4",
+    "grunt-screeps": "^1.4.0",
+    "tslint": "^5.15.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.5.2"
+  }
+}

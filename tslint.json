@@ -1,0 +1,11 @@
+{
+  "defaultSeverity": "warning",
+  "extends": [
+      "tslint-config-airbnb"
+  ],
+  "linterOptions": {
+      "exclude": [
+          "node_modules/**"
+      ]
+  }
+}
