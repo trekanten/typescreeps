@@ -2,19 +2,12 @@ require('dotenv').config()
 
 module.exports = function (grunt) {
 
-  grunt.loadNpmTasks("grunt-ts");
   grunt.loadNpmTasks('grunt-screeps');
   grunt.loadNpmTasks('grunt-contrib-clean')
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-string-replace');
 
   grunt.initConfig({
-
-    ts: {
-      default: {
-        tsconfig: './tsconfig.json'
-      }
-    },
 
     copy: {
       screeps: {
@@ -47,6 +40,10 @@ module.exports = function (grunt) {
               replacement: ''
             },
             {
+              pattern: /@\//g,
+              replacement: ''
+            },
+            {
               pattern: /\//g,
               replacement: '_'
             }
@@ -59,7 +56,7 @@ module.exports = function (grunt) {
       options: {
         email: process.env.EMAIL,
         password: process.env.PASSWORD,
-        branch: 'default2',
+        branch: process.env.BRANCH,
         ptr: false
       },
       dist: {
@@ -68,16 +65,16 @@ module.exports = function (grunt) {
     },
 
     clean: {
-      pre: ['dist'],
-      post: ['temp']
+      dist: ['dist'],
+      temp: ['temp']
     },
 
   })
 
-  grunt.registerTask('convert-files', ['copy:screeps', 'clean:pre', 'string-replace', 'clean:post']);
+  grunt.registerTask('clean-dist', ['clean:dist']);
 
-  grunt.registerTask('build', ['clean:pre', 'ts', 'convert-files']);
+  grunt.registerTask('screepify-files', ['copy:screeps', 'clean:dist', 'string-replace', 'clean:temp']);
 
-  grunt.registerTask('default', ['build', 'screeps']);
+  grunt.registerTask('deploy', ['screeps']);
 
 }

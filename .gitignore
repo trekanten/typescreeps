@@ -2,3 +2,7 @@ node_modules/
 dist/
 .env
 .tscache
+.vscode
+
+temp.*
+temp/
