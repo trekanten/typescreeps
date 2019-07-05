@@ -1,12 +1,14 @@
-# Screeps Typescript Starter
+![](./typescreeps.png)
 
-A simple Screeps starter in Typescript
+# TypeScreeps
+
+This project is a simple [Screeps](https://screeps.com/) starter in [Typescript](https://www.typescriptlang.org/). Clone or fork this project, and start writing Screeps AI right away. To get started, see the [Screeps docs](https://docs.screeps.com/)
 
 ## Gettings Started
 
 ### Prerequisites
 
-In order to use this starter
+In order to use this starter you will need to:
 
 * Install [Node](https://nodejs.org/en/download/) to get the node package manager (NPM)
 
@@ -58,15 +60,7 @@ This command will first run the [build step](##build), and the push the code to 
 
 ## Development
 
-When creating Screeps code, deve
-
-### src folder
-
-// TODO
-
-### Main.ts 
-
-// TODO
+All you have to care about is what is happening in the `src/` folder. The files that are already in this folder, is just for demonstration purposes, and can be deleted. However, the file `main.ts` is the main module, and is neccessary for screeps to excecute your code, see [the docs](https://docs.screeps.com/game-loop.html) for mor details.
 
 ### Imports
 
