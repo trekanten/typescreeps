@@ -12,14 +12,6 @@ In order to use this starter you will need to:
 
 * Install [Node](https://nodejs.org/en/download/) to get the node package manager (NPM)
 
-* Install global NPM packages:
-    ```console
-      npm install -g grunt
-    ```
-    ```console
-      npm install -g typescript
-    ```
-
 ### Install dependencies
 
 To install the project dependencies, run the following command in the root of the project
@@ -61,19 +53,3 @@ This command will first run the [build step](##build), and the push the code to 
 ## Development
 
 All you have to care about is what is happening in the `src/` folder. The files that are already in this folder, is just for demonstration purposes, and can be deleted. However, the file `main.ts` is the main module, and is neccessary for screeps to excecute your code, see [the docs](https://docs.screeps.com/game-loop.html) for mor details.
-
-### Imports
-
-For this project to compile properly, all imports should be done with `@/`, which refers to the root of the src folder `./src`.
-
-Eg:
-
-```js
-  import { myFunction } from './'                   // ❌ Dont do this
-  import { myFunction } from '@/myFolder/myScript'  // ✔️ Do this
-
-  import { rootFunction } from '../../rootScript'   // ❌ Dont do this
-  import { rootFunction } from '@/rootScript'       // ✔️ Do this
-```
-
-The reason for this is that Screeps don't allow folder structures, and the `@/` is used during the compilation to flatten the folder structure and rename all imports.

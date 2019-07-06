@@ -3,6 +3,8 @@ dist/
 .env
 .tscache
 .vscode
+.rpt2_cache
+.cache
 
 temp.*
 temp/
