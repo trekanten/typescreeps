@@ -1,0 +1,4 @@
+
+interface Memory {
+    tasks: any[];
+}

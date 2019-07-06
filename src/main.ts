@@ -1,9 +1,8 @@
-import { throwEvery10Ticks } from '@/otherModule';
-import { functionInFileInFolder } from '@/folder/fileInFolder';
+
+import { taskRunner } from '@/task/taskRunner';
 
 export const loop = () => {
-  console.log(`Current game tick is ${Game.time}`);
-
-  functionInFileInFolder();
-  throwEvery10Ticks(Game.time);
+  taskRunner();
 };
+
+export * from './commands';
