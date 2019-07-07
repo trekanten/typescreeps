@@ -15,13 +15,13 @@ module.exports = function (grunt) {
         ptr: false
       },
       dist: {
-        src: ['dist/*.js', 'dist/*.js.map']
+        src: ['packages/typescreeps/dist/*.js', 'packages/typescreeps/dist/*.js.map']
       }
     },
 
     clean: {
-      dist: ['dist'],
-      temp: ['temp']
+      dist: ['packages/typescreeps/dist'],
+      temp: ['packages/typescreeps/temp']
     },
 
   })

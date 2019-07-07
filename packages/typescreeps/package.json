@@ -1,0 +1,16 @@
+{
+  "name": "@typescreeps/typescreeps",
+  "version": "1.0.0",
+  "description": "A simple Screeps starter in Typescript",
+  "scripts": {
+    "build": "grunt clean-dist && rollup -c",
+    "deploy": "npm run build && grunt deploy",
+    "lint": "tslint --fix -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trekanten/typescreeps"
+  },
+  "author": "trekanten",
+  "license": "ISC"
+}

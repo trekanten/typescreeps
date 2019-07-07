@@ -2,7 +2,7 @@
 
 # TypeScreeps
 
-This project is a simple [Screeps](https://screeps.com/) starter in [Typescript](https://www.typescriptlang.org/). Clone or fork this project, and start writing Screeps AI right away. To get started, see the [Screeps docs](https://docs.screeps.com/)
+This project is a [Screeps](https://screeps.com/) starter in [Typescript](https://www.typescriptlang.org/). Clone this project, and start writing Screeps AI right away. To get started, see the [Screeps docs](https://docs.screeps.com/)
 
 ## Gettings Started
 
@@ -12,12 +12,18 @@ In order to use this starter you will need to:
 
 * Install [Node](https://nodejs.org/en/download/) to get the node package manager (NPM)
 
+* Install [lerna](https://lerna.js.org/)
+
+```console
+npm install --global lerna
+```
+
 ### Install dependencies
 
 To install the project dependencies, run the following command in the root of the project
 
 ```console
-  npm install
+  lerna bootstrap
 ```
 
 ### Add environment variables
@@ -52,4 +58,4 @@ This command will first run the [build step](##build), and the push the code to 
 
 ## Development
 
-All you have to care about is what is happening in the `src/` folder. The files that are already in this folder, is just for demonstration purposes, and can be deleted. However, the file `main.ts` is the main module, and is neccessary for screeps to excecute your code, see [the docs](https://docs.screeps.com/game-loop.html) for mor details.
+All you have to care about is what is happening in the `package/typescreeps/src/` folder. The files that are already in this folder, is just for demonstration purposes, and can be deleted. However, the file `main.ts` is the main module, and is neccessary for screeps to excecute your code, see [the docs](https://docs.screeps.com/game-loop.html) for mor details.

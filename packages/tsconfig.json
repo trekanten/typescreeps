@@ -1,0 +1,14 @@
+{
+    "files": [],
+    "references": [
+        {
+            "path": "detect"
+        },
+        {
+            "path": "entry"
+        },
+        {
+            "path": "environment"
+        },
+    ]
+}
