@@ -1,7 +1,6 @@
 // @ts-ignore
 import { ScreepsAPI } from 'screeps-api';
 import { unzip } from './utils/unzipper';
-const fs = require('fs');
 
 export function getScreepsApi() {
   const api = new ScreepsAPI({
@@ -17,7 +16,6 @@ export function getScreepsApi() {
 export async function getMemory(api: any, path: string) {
   return await api.memory.get(path, 'shard3')
     .then((memory: any) => {
-      fs.writeFileSync('memory.json', JSON.stringify(memory));
       const zippedData = (memory.data as string).slice(3);
       const data = unzip(zippedData);
       return data;

@@ -9,6 +9,7 @@
         ]
     },
     "rules": {
-        "object-literal-shorthand": false
+        "object-literal-shorthand": false,
+        "import-name": false
     }
 }
