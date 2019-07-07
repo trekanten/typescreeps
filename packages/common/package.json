@@ -1,0 +1,21 @@
+{
+    "name": "@typescreeps/common",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./dist/index.js",
+    "scripts": {
+        "build": "tsc",
+        "lint": "tslint --fix -p ."
+      },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/trekanten/typescreeps"
+    },
+    "author": "trekanten",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/trekanten/typescreeps/issues"
+    },
+    "homepage": "https://github.com/trekanten/typescreeps#readme"
+  }
+  

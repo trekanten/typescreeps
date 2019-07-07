@@ -7,6 +7,9 @@
     "deploy": "npm run build && grunt deploy",
     "lint": "tslint --fix -p ."
   },
+  "dependencies": {
+    "@typescreeps/common": "^1.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trekanten/typescreeps"

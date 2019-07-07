@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "workspaces": [
+    "packages/common",
     "packages/backend",
     "packages/frontend",
     "packages/typescreeps"
@@ -9,7 +10,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna exec --parallel -- npm run build",
-    "deploy": "lerna exec --parallel -- npm run deploy",
+    "deploy": "lerna run --scope @typescreeps/typescreeps deploy",
     "serve": "lerna exec --parallel --ignore @typescreeps/typescreeps -- npm run serve"
   },
   "devDependencies": {

@@ -1,0 +1,33 @@
+{
+    "extends": "../tsconfig.settings.json",
+    "compilerOptions": {
+      "target": "es5",
+      "module": "commonjs",
+      "lib": [
+        "es2015",
+        "dom"
+      ],
+      "declaration": true,
+      "sourceMap": true,
+      "outDir": "./dist",
+      "rootDir": "./src",
+      "strict": true,
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "noImplicitThis": true,
+      "alwaysStrict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+    },
+    "exclude": [
+      "node_modules",
+      "dist"
+    ],
+    "include": [
+      "src"
+    ]
+  }
