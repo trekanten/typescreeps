@@ -1,11 +1,13 @@
 {
-  "name": "@typescreeps/typescreeps",
+  "name": "@typescreeps/backend",
   "version": "1.0.0",
-  "description": "A simple Screeps starter in Typescript",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "build": "grunt clean-dist && rollup -c",
-    "deploy": "npm run build && grunt deploy",
-    "lint": "tslint --fix -p ."
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "tslint --fix -p .",
+    "serve": "nodemon lib/server.ts"
   },
   "repository": {
     "type": "git",

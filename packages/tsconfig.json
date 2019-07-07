@@ -2,13 +2,10 @@
     "files": [],
     "references": [
         {
-            "path": "detect"
+            "path": "backend"
         },
         {
-            "path": "entry"
-        },
-        {
-            "path": "environment"
+            "path": "typescreeps"
         },
     ]
 }
