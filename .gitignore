@@ -9,6 +9,8 @@ dist/
 temp.*
 temp/
 
+tsconfig.tsbuildinfo
+
 
 # Logs
 logs

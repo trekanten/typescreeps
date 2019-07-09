@@ -19,7 +19,7 @@ api.socket.on('console', (event: any) => {
 });
 
 app.get('/', (_: Request, res: Response) => {
-  res.send('An alligator approaches!');
+  res.send('Welcome to Typescreeps backend!');
 });
 
 app.get('/memory', async (_: Request, res: Response) => {

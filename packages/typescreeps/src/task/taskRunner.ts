@@ -1,14 +1,6 @@
+import { TaskType, Task } from '@typescreeps/common';
 import { mining, MiningTask } from './tasks/mining';
 import { getId } from '@/utils/id';
-
-export enum TaskType {
-  MINE = 'mine',
-}
-
-export interface Task {
-  id: string;
-  type: TaskType;
-}
 
 export function taskRunner() {
 

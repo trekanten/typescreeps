@@ -1,4 +1,4 @@
-import { TaskType, Task } from '../taskRunner';
+import { TaskType, Task } from '@typescreeps/common';
 import { getCreepByName, spawnCreep, mine, deposit, getSpawn } from '@/creep';
 import { getId } from '@/utils/id';
 import { TaskBase } from './taskBase';

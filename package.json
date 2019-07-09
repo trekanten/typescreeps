@@ -9,9 +9,9 @@
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "lerna exec --parallel -- npm run build",
+    "build": "lerna exec --parallel --ignore @typescreeps/common -- npm run build",
     "deploy": "lerna run --scope @typescreeps/typescreeps deploy",
-    "serve": "lerna exec --parallel --ignore @typescreeps/typescreeps -- npm run serve"
+    "serve": "lerna exec --parallel --scope @typescreeps/frontend --scope @typescreeps/backend -- npm run serve"
   },
   "devDependencies": {
     "lerna": "^3.15.0",
