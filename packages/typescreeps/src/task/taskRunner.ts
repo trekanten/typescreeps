@@ -1,15 +1,15 @@
 import { TaskType, Task } from '@typescreeps/common';
 import { mining, MiningTask } from './tasks/mining';
-import { getId } from '@/utils/id';
+import { getId } from '../utils/id';
+
+const taskSegment = 5;
 
 export function taskRunner() {
 
-  if (!Memory.tasks) {
-    Memory.tasks = [];
+  const tasks = getTasks();
+  if (!tasks) {
     return;
   }
-
-  const tasks = Memory.tasks as Task[];
 
   for (const task of tasks) {
     switch (task.type) {
@@ -32,5 +32,25 @@ export function makeTask(type: TaskType, sourceId: string): Task | null {
     default: {
       return null;
     }
+  }
+}
+
+function getTasks(): Task[] | any {
+  try {
+    const rawTasks = RawMemory.segments[taskSegment];
+    console.log(rawTasks);
+    if (rawTasks === undefined) {
+      RawMemory.setActiveSegments([taskSegment]);
+      throw Error(`Task segment is undefined. Setting segment ${taskSegment} to active.`);
+    }
+    if (rawTasks === '') {
+      RawMemory.segments[taskSegment] = JSON.stringify([]);
+      // tslint:disable-next-line:max-line-length
+      throw Error(`Task segment is empty string. Initializing segment ${taskSegment} to empty array.`);
+    }
+    return JSON.parse(rawTasks);
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 }

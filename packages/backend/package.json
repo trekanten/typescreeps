@@ -8,6 +8,9 @@
     "lint": "tslint --fix -p .",
     "serve": "nodemon lib/server.ts"
   },
+  "dependencies": {
+    "@typescreeps/common": "^1.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trekanten/typescreeps"

@@ -2,19 +2,19 @@
 import { ScreepsAPI } from 'screeps-api';
 import { unzip } from './utils/unzipper';
 
-export function getScreepsApi() {
-  const api = new ScreepsAPI({
-    token: '929fcf11-d045-4057-9a05-2b2cef51988c',
-    protocol: 'https',
-    hostname: 'screeps.com',
-    port: 443,
-    path: '/',
-  });
-  return api;
-}
+const apiToken = process.env.API_TOKEN;
+const shard = process.env.SHARD;
 
-export async function getMemory(api: any, path: string) {
-  return await api.memory.get(path, 'shard3')
+const api = new ScreepsAPI({
+  token: apiToken,
+  protocol: 'https',
+  hostname: 'screeps.com',
+  port: 443,
+  path: '/',
+});
+
+export async function getMemory(path: string) {
+  return await api.memory.get(path, shard)
     .then((memory: any) => {
       const zippedData = (memory.data as string).slice(3);
       const data = unzip(zippedData);
@@ -22,7 +22,17 @@ export async function getMemory(api: any, path: string) {
     });
 }
 
-export async function getMe(api: any) {
+export async function getSegment(segmentNr: string) {
+  return await api.segment.get(segmentNr, shard)
+      .then((response: any) => JSON.parse(response.data));
+}
+
+export async function setSegment(segmentNr: string, data: object) {
+  return await api.segment.set(segmentNr, JSON.stringify(data), shard)
+    .then((response: any) => JSON.stringify(response.data));
+}
+
+export async function getMe() {
   return await api.me()
     .then((user: any) => {
       return user;
