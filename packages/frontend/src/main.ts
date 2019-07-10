@@ -6,7 +6,10 @@ import router from './router';
 import store from './store';
 
 import Vuetify from 'vuetify';
+import VeeValidate from 'vee-validate';
+
 Vue.use(Vuetify);
+Vue.use(VeeValidate);
 
 Vue.config.productionTip = false;
 
