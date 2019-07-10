@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-container fluid px-0>
         <router-view />
-      </v-container>
     </v-app>
   </div>
 </template>

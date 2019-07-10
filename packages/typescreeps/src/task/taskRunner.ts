@@ -1,8 +1,8 @@
-import { TaskType, Task } from '@typescreeps/common';
-import { mining, MiningTask } from './tasks/mining';
+import { TaskType, Task, MiningTask } from '@typescreeps/common';
+import { mining } from './tasks/mining';
 import { getId } from '../utils/id';
 
-const taskSegment = 5;
+const TASK_SEGMENT = 5;
 
 export function taskRunner() {
 
@@ -37,16 +37,16 @@ export function makeTask(type: TaskType, sourceId: string): Task | null {
 
 function getTasks(): Task[] | any {
   try {
-    const rawTasks = RawMemory.segments[taskSegment];
+    const rawTasks = RawMemory.segments[TASK_SEGMENT];
     console.log(rawTasks);
     if (rawTasks === undefined) {
-      RawMemory.setActiveSegments([taskSegment]);
-      throw Error(`Task segment is undefined. Setting segment ${taskSegment} to active.`);
+      RawMemory.setActiveSegments([TASK_SEGMENT]);
+      throw Error(`Task segment is undefined. Setting segment ${TASK_SEGMENT} to active.`);
     }
     if (rawTasks === '') {
-      RawMemory.segments[taskSegment] = JSON.stringify([]);
+      RawMemory.segments[TASK_SEGMENT] = JSON.stringify([]);
       // tslint:disable-next-line:max-line-length
-      throw Error(`Task segment is empty string. Initializing segment ${taskSegment} to empty array.`);
+      throw Error(`Task segment is empty string. Initializing segment ${TASK_SEGMENT} to empty array.`);
     }
     return JSON.parse(rawTasks);
   } catch (error) {

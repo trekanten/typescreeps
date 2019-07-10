@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { getMe, getSegment, setSegment } from './screepsApi';
 import { Task } from '@typescreeps/common';
 
-const taskSegment = '5';
+const TASK_SEGMENT = '5';
 
 const router: Router = Router();
 
@@ -11,29 +11,29 @@ router.get('/', async (_: Request, res: Response) => {
 });
 
 router.get('/tasks', async (_: Request, res: Response) => {
-  const tasks = await getSegment(taskSegment);
+  const tasks = await getSegment(TASK_SEGMENT);
   res.send(tasks);
 });
 
 router.post('/tasks', async (req: Request, res: Response) => {
   const data = req.body;
-  await setSegment(taskSegment, data);
+  await setSegment(TASK_SEGMENT, data);
   res.sendStatus(200);
 });
 
 router.post('/tasks/add', async (req: Request, res: Response) => {
   const body = req.body as Task;
-  const tasks = await getSegment(taskSegment) as Task[];
+  const tasks = await getSegment(TASK_SEGMENT) as Task[];
   tasks.push(body);
-  await setSegment(taskSegment, tasks);
+  await setSegment(TASK_SEGMENT, tasks);
   res.sendStatus(200);
 });
 
-router.post('/tasks/remove', async (req: Request, res: Response) => {
-  const taskId = req.body as string;
-  const tasks = await getSegment(taskSegment) as Task[];
+router.delete('/tasks/delete/:taskId', async (req: Request, res: Response) => {
+  const taskId = req.params.taskId;
+  const tasks = await getSegment(TASK_SEGMENT) as Task[];
   const updatedTasks = tasks.filter(task => task.id !== taskId);
-  await setSegment(taskSegment, updatedTasks);
+  await setSegment(TASK_SEGMENT, updatedTasks);
   res.sendStatus(200);
 });
 
