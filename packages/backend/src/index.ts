@@ -1,39 +1,30 @@
-import express, { Request, Response } from 'express';
-import { getScreepsApi, getMemory, getMe } from './screepsApi';
+require('dotenv').config();
 
-let conLog: any = undefined;
+import express, { Request, Response } from 'express';
+import bodyParser from 'body-parser';
+import { screepsController } from './screepsController';
 
 const app = express();
 
-const api = getScreepsApi();
-api.socket.connect();
-api.socket.subscribe('console');
-
-api.socket.subscribe('room:shard3/W34N2', (event: any) => {
-  return event;
+app.use((_, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
 });
 
-api.socket.on('console', (event: any) => {
-  // console.log(event.data);
-  conLog = event.data;
-});
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw({
+  inflate: true,
+  limit: '100kb',
+  type: 'application/octet-stream',
+}));
+
+app.use('/screeps', screepsController);
 
 app.get('/', (_: Request, res: Response) => {
   res.send('Welcome to Typescreeps backend!');
-});
-
-app.get('/memory', async (_: Request, res: Response) => {
-  const memory = await getMemory(api, 'tasks');
-  res.send(memory);
-});
-
-app.get('/me', async (_: Request, res: Response) => {
-  const me = await getMe(api);
-  res.send(me);
-});
-
-app.get('/console', async (_: Request, res: Response) => {
-  res.send(conLog);
 });
 
 app.listen(3000, () => console.log('Typescreeps Server listening on port 3000!'));
