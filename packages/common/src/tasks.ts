@@ -25,3 +25,14 @@ export const validateMiningTaskParams = (u: unknown) => validate(MiningTaskParam
 
 export type MiningTask = Task & MiningTaskParams;
 export const validateMiningTask = (u: unknown) => validateMore([TaskCodec, MiningTaskParamsCodec], u);
+
+const TransportTaskParamsCodec = t.type({
+  creepName: t.string,
+  from: t.string,
+  to: t.string,
+});
+export type TransportTaskParams = t.TypeOf<typeof TransportTaskParamsCodec>;
+export const validateTransportTaskParams = (u: unknown) => validate(TransportTaskParamsCodec, u);
+
+export type TransportTask = Task & TransportTaskParams;
+export const validateTransportTask = (u: unknown) => validateMore([TaskCodec, TransportTaskParamsCodec], u);

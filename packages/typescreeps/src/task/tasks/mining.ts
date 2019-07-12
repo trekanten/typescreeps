@@ -1,6 +1,5 @@
-import { TaskType, MiningTask, MiningTaskParams } from '@typescreeps/common';
+import { TaskType, MiningTask, MiningTaskParams } from '@typescreeps/common/dist';
 import { getCreepByName, spawnCreep, mine, deposit, getSpawn } from '../../creep';
-import { getId } from '../../utils/id';
 import { TaskBase } from './taskBase';
 
 class Mining implements TaskBase<MiningTask, MiningTaskParams> {
@@ -25,10 +24,10 @@ class Mining implements TaskBase<MiningTask, MiningTaskParams> {
 
   }
 
-  public createTask(params: MiningTaskParams) {
+  public createTask(params: MiningTask) {
     return {
-      id: getId(), // TODO should this be part of params?
-      type: TaskType.MINE, // TODO should this be part of params?
+      id: params.id,
+      type: TaskType.MINE,
       sourceId: params.sourceId,
       creepName: params.creepName,
     };
