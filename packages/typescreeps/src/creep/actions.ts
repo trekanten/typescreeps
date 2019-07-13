@@ -21,3 +21,9 @@ export function mine(creep: Creep, source: Source) {
     creep.moveTo(source);
   }
 }
+
+export function upgradeController(creep: Creep, controller: StructureController) {
+  if (creep.upgradeController(controller) === ERR_NOT_IN_RANGE) {
+    creep.moveTo(controller);
+  }
+}

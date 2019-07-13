@@ -1,11 +1,15 @@
 import { TaskBase } from './taskBase';
 import { UpgradeTask } from '@typescreeps/common/dist';
-import { getSpawnFromRoomObject } from '@/creep';
+import { getSpawnFromRoomObject, withdraw, upgradeController } from '@/creep';
 
 export class Upgrade extends TaskBase<UpgradeTask> {
 
   runTask() {
-
+    if (this.creep.carry.energy <= 1) {
+      withdraw(this.creep, this.getSource());
+    } else {
+      upgradeController(this.creep, this.getController());
+    }
   }
 
   getSpawn() {
