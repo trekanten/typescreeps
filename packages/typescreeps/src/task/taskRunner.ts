@@ -1,5 +1,5 @@
 import { TaskType, Task, MiningTask, CarryTask } from '@typescreeps/common/dist';
-import { mining, carry } from './tasks';
+import { Mining, Carry } from './tasks';
 
 const TASK_SEGMENT = 5;
 
@@ -11,18 +11,24 @@ export function taskRunner() {
   }
 
   for (const task of tasks) {
-    switch (task.type) {
-      case TaskType.MINE: {
-        mining.runTask(task as MiningTask);
-        break;
+    try {
+
+      switch (task.type) {
+        case TaskType.MINE: {
+          new Mining(task).runTask();
+          break;
+        }
+        case TaskType.CARRY: {
+          new Carry(task).runTask();
+          break;
+        }
+        default: {
+          throw Error(`Found invalid task of type ${task.type}`);
+        }
       }
-      case TaskType.CARRY: {
-        carry.runTask(task as CarryTask);
-        break;
-      }
-      default: {
-        throw Error(`Found invalid task of type ${task.type}`);
-      }
+
+    } catch (error) {
+      console.log(error);
     }
   }
 }

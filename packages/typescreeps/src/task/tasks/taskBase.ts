@@ -1,3 +1,10 @@
 export abstract class TaskBase<Type> {
-  public abstract runTask(task: Type): void;
+
+  protected task: Type;
+
+  constructor(task: Type) {
+    this.task = task;
+  }
+
+  public abstract runTask(): void;
 }

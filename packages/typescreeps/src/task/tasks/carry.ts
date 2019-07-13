@@ -2,23 +2,23 @@ import { CarryTask } from '@typescreeps/common/dist';
 import { getCreepByName, spawnCreep, deposit, withdraw } from '../../creep';
 import { TaskBase } from './taskBase';
 
-class Carry implements TaskBase<CarryTask> {
+export class Carry extends TaskBase<CarryTask> {
 
-  public runTask(task: CarryTask) {
+  public runTask() {
 
-    const from = Game.getObjectById(task.from) as Structure;
+    const from = Game.getObjectById(this.task.from) as Structure;
     if (!from) {
-      throw Error(`Task ${task.id}: Invalid 'from' ${task.from}`);
+      throw Error(`Task ${this.task.id}: Invalid 'from' ${this.task.from}`);
     }
 
-    const to = Game.getObjectById(task.from) as Structure;
+    const to = Game.getObjectById(this.task.from) as Structure;
     if (!to) {
-      throw Error(`Task ${task.id}: Invalid 'to' ${task.to}`);
+      throw Error(`Task ${this.task.id}: Invalid 'to' ${this.task.to}`);
     }
 
-    const creep = getCreepByName(task.creepName);
+    const creep = getCreepByName(this.task.creepName);
     if (!creep) {
-      spawnCreep(task.creepName, from);
+      spawnCreep(this.task.creepName, from);
       return;
     }
 
@@ -29,7 +29,3 @@ class Carry implements TaskBase<CarryTask> {
     }
   }
 }
-
-const carry = new Carry();
-
-export { carry };
