@@ -1,5 +1,7 @@
-import { TaskType, Task, MiningTask, CarryTask } from '@typescreeps/common/dist';
+import { TaskType, Task } from '@typescreeps/common/dist';
 import { Mining, Carry } from './tasks';
+import { Upgrade } from './tasks/upgrade';
+import { Build } from './tasks/build';
 
 const TASK_SEGMENT = 5;
 
@@ -14,12 +16,20 @@ export function taskRunner() {
     try {
 
       switch (task.type) {
-        case TaskType.MINE: {
-          new Mining(task).runTask();
+        case TaskType.BUILD: {
+          new Build(task).runTask();
           break;
         }
         case TaskType.CARRY: {
           new Carry(task).runTask();
+          break;
+        }
+        case TaskType.MINE: {
+          new Mining(task).runTask();
+          break;
+        }
+        case TaskType.UPGRADE: {
+          new Upgrade(task).runTask();
           break;
         }
         default: {

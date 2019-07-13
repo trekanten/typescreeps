@@ -14,18 +14,21 @@ export function spawnCreep(creepName: string, spawn: StructureSpawn) {
   }
 }
 
+export function getSpawnFromRoom(room: Room): StructureSpawn {
+  for (const key in Game.spawns) {
+    const spawn = Game.spawns[key];
+    if (spawn.room.name === room.name) {
+      return spawn;
+    }
+  }
+  throw Error(`No spawn in room with name ${room.name}`);
+}
+
 export function getSpawnFromRoomObject(targetObject: RoomObject): StructureSpawn {
   const targetRoom = targetObject.room;
   if (!targetRoom) {
     throw Error(`Room not found for object ${JSON.stringify(targetObject)}`);
   }
 
-  for (const key in Game.spawns) {
-    const spawn = Game.spawns[key];
-    if (spawn.room.name === targetRoom.name) {
-      return spawn;
-    }
-  }
-
-  throw Error(`No spawn in room with name ${targetRoom.name}`);
+  return getSpawnFromRoom(targetRoom);
 }

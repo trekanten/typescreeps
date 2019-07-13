@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="headline grey lighten-2" primary-title>New Mining Task</v-card-title>
+    <v-card-title class="headline grey lighten-2" primary-title>New Build Task</v-card-title>
 
     <v-flex xs10 offset-xs1>
       <form>
@@ -14,23 +14,22 @@
           required
         ></v-text-field>
         <v-text-field
-          label="Source ID"
-          v-model="sourceId"
-          v-validate="'required|min:24|max:24'"
-          :counter="24"
-          :error-messages="errors.collect('sourceId')"
-          data-vv-name="sourceId"
+          label="Room"
+          v-model="room"
+          v-validate="'required|min:4|max:6'"
+          :counter="6"
+          :error-messages="errors.collect('room')"
+          data-vv-name="room"
           required
         ></v-text-field>
         <v-text-field
-          label="Deposit ID"
-          v-model="depositId"
+          label="Source ID"
+          v-model="sourceId"
           v-validate="'min:24|max:24'"
           :counter="24"
-          :error-messages="errors.collect('depositId')"
-          data-vv-name="depositId"
+          :error-messages="errors.collect('sourceId')"
+          data-vv-name="sourceId"
         ></v-text-field>
-
         <v-btn @click="clear">reset</v-btn>
         <v-btn color="success" @click="submit">Add Task</v-btn>
       </form>
@@ -40,14 +39,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { MiningTask, TaskType } from '@typescreeps/common';
+import { BuildTask, TaskType } from '@typescreeps/common';
 
 @Component
-export default class MineTaskForm extends Vue {
+export default class BuildTaskForm extends Vue {
 
   name = '';
-  sourceId = '';
-  depositId = undefined;
+  room = '';
+  sourceId = undefined;
+  priority = undefined;
 
   dictionary = {
     custom: {
@@ -63,17 +63,18 @@ export default class MineTaskForm extends Vue {
     try {
       const valid = await this.$validator.validateAll();
       if (!valid) {
-        throw Error('Mining taks not valid');
+        throw Error('Build task not valid');
       }
 
-      const miningTask: MiningTask = {
+      const buildTask: BuildTask = {
         name: this.name,
-        type: TaskType.MINE,
+        type: TaskType.BUILD,
+        room: this.room,
         sourceId: this.sourceId,
-        depositId: this.depositId,
+        priority: this.priority,
       }
 
-      this.$emit('newTask', miningTask);
+      this.$emit('newTask', buildTask);
     } catch (error) {
       console.error(error);
     }
@@ -81,8 +82,9 @@ export default class MineTaskForm extends Vue {
   };
   clear() {
     this.name = ''
-    this.sourceId = ''
-    this.depositId = undefined
+    this.room = ''
+    this.sourceId = undefined
+    this.priority = undefined
     this.$validator.reset()
   };
 }

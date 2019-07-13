@@ -34,10 +34,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Task, TaskType, MiningTask } from '@typescreeps/common';
 
 import TaskListTile from '../components/TaskListTile.vue'
-import MineTaskForm from '../components/taskFroms/MineTaskForm.vue'
-import CarryTaskForm from '../components/taskFroms/CarryTaskForm.vue'
 
-@Component({ components: { TaskListTile, MineTaskForm, CarryTaskForm } })
+import BuildTaskForm from '../components/taskFroms/BuildTaskForm.vue'
+import CarryTaskForm from '../components/taskFroms/CarryTaskForm.vue'
+import MineTaskForm from '../components/taskFroms/MineTaskForm.vue'
+import UpgradeTaskForm from '../components/taskFroms/UpgradeTaskForm.vue'
+
+@Component({ components: { TaskListTile, BuildTaskForm, CarryTaskForm, MineTaskForm, UpgradeTaskForm } })
 export default class Home extends Vue {
 
 
@@ -59,12 +62,20 @@ export default class Home extends Vue {
       return null;
     }
     switch (this.selectedTask) {
-      case TaskType.MINE: {
-        return 'MineTaskForm';
+      case TaskType.BUILD: {
+        return 'BuildTaskForm';
         break;
       }
       case TaskType.CARRY: {
         return 'CarryTaskForm';
+        break;
+      }
+      case TaskType.MINE: {
+        return 'MineTaskForm';
+        break;
+      }
+      case TaskType.UPGRADE: {
+        return 'UpgradeTaskForm';
         break;
       }
       default: {
