@@ -31,9 +31,9 @@ import { Task, TaskType, MiningTask, validateTask, validateMiningTask } from '@t
 
 import TaskListTile from '../components/TaskListTile.vue'
 import MineTaskForm from '../components/taskFroms/MineTaskForm.vue'
-import TransportTaskForm from '../components/taskFroms/TransportTaskForm.vue'
+import CarryTaskForm from '../components/taskFroms/CarryTaskForm.vue'
 
-@Component({ components: { TaskListTile, MineTaskForm, TransportTaskForm } })
+@Component({ components: { TaskListTile, MineTaskForm, CarryTaskForm } })
 export default class Home extends Vue {
 
 
@@ -59,8 +59,8 @@ export default class Home extends Vue {
         return 'MineTaskForm';
         break;
       }
-      case TaskType.TRANSPORT: {
-        return 'TransportTaskForm';
+      case TaskType.CARRY: {
+        return 'CarryTaskForm';
         break;
       }
       default: {

@@ -1,10 +1,10 @@
-import { TaskType, TransportTask, TransportTaskParams } from '@typescreeps/common/dist';
+import { TaskType, CarryTask, CarryTaskParams } from '@typescreeps/common/dist';
 import { getCreepByName, spawnCreep, deposit, withdraw } from '../../creep';
 import { TaskBase } from './taskBase';
 
-class Transport implements TaskBase<TransportTask, TransportTaskParams> {
+class Carry implements TaskBase<CarryTask, CarryTaskParams> {
 
-  public runTask(task: TransportTask) {
+  public runTask(task: CarryTask) {
 
     const from = Game.getObjectById(task.from) as Structure;
     if (!from) {
@@ -29,10 +29,10 @@ class Transport implements TaskBase<TransportTask, TransportTaskParams> {
     }
   }
 
-  public createTask(params: TransportTask) {
+  public createTask(params: CarryTask) {
     return {
       id: params.id,
-      type: TaskType.TRANSPORT,
+      type: TaskType.CARRY,
       to: params.to,
       from: params.from,
       creepName: params.creepName,
@@ -40,6 +40,6 @@ class Transport implements TaskBase<TransportTask, TransportTaskParams> {
   }
 }
 
-const transport = new Transport();
+const carry = new Carry();
 
-export { transport };
+export { carry };

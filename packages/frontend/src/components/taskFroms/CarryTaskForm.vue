@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="headline grey lighten-2" primary-title>New Transport Task</v-card-title>
+    <v-card-title class="headline grey lighten-2" primary-title>New Carry Task</v-card-title>
 
     <v-flex xs10 offset-xs1>
       <form>
@@ -14,7 +14,7 @@
           required
         ></v-text-field>
         <v-text-field
-          label="Transport from"
+          label="Carry from"
           v-model="from"
           v-validate="'required|min:24|max:24'"
           :counter="24"
@@ -23,7 +23,7 @@
           required
         ></v-text-field>
         <v-text-field
-          label="Transport to"
+          label="Carry to"
           v-model="to"
           v-validate="'required|min:24|max:24'"
           :counter="24"
@@ -50,10 +50,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { TaskType, validateTransportTask } from '@typescreeps/common';
+import { TaskType, validateCarryTask } from '@typescreeps/common';
 
 @Component
-export default class TransportTaskForm extends Vue {
+export default class CarryTaskForm extends Vue {
 
   name = '';
   to = '';
@@ -74,19 +74,19 @@ export default class TransportTaskForm extends Vue {
     try {
       const valid = await this.$validator.validateAll();
       if (!valid) {
-        throw Error('Transport taks not valid');
+        throw Error('Carry taks not valid');
       }
 
-      const transportTask = {
+      const carryTask = {
         id: this.name,
-        type: TaskType.TRANSPORT,
+        type: TaskType.CARRY,
         to: this.to,
         from: this.from,
         creepName: this.creepName,
       }
-      validateTransportTask(transportTask);
+      validateCarryTask(carryTask);
 
-      this.$emit('newTask', transportTask);
+      this.$emit('newTask', carryTask);
     } catch (error) {
       console.error(error);
     }

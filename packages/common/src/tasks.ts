@@ -6,7 +6,7 @@ import { validate, validateMore } from './utils';
 export enum TaskType {
   MINE = 'mine',
   BUILD = 'build',
-  TRANSPORT = 'transport',
+  CARRY = 'carry',
 }
 
 const TaskCodec = t.type({
@@ -26,13 +26,13 @@ export const validateMiningTaskParams = (u: unknown) => validate(MiningTaskParam
 export type MiningTask = Task & MiningTaskParams;
 export const validateMiningTask = (u: unknown) => validateMore([TaskCodec, MiningTaskParamsCodec], u);
 
-const TransportTaskParamsCodec = t.type({
+const CarryTaskParamsCodec = t.type({
   creepName: t.string,
   from: t.string,
   to: t.string,
 });
-export type TransportTaskParams = t.TypeOf<typeof TransportTaskParamsCodec>;
-export const validateTransportTaskParams = (u: unknown) => validate(TransportTaskParamsCodec, u);
+export type CarryTaskParams = t.TypeOf<typeof CarryTaskParamsCodec>;
+export const validateCarryTaskParams = (u: unknown) => validate(CarryTaskParamsCodec, u);
 
-export type TransportTask = Task & TransportTaskParams;
-export const validateTransportTask = (u: unknown) => validateMore([TaskCodec, TransportTaskParamsCodec], u);
+export type CarryTask = Task & CarryTaskParams;
+export const validateCarryTask = (u: unknown) => validateMore([TaskCodec, CarryTaskParamsCodec], u);

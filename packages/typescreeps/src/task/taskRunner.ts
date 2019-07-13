@@ -1,5 +1,5 @@
-import { TaskType, Task, MiningTask, TransportTask } from '@typescreeps/common/dist';
-import { mining, transport } from './tasks';
+import { TaskType, Task, MiningTask, CarryTask } from '@typescreeps/common/dist';
+import { mining, carry } from './tasks';
 
 const TASK_SEGMENT = 5;
 
@@ -16,8 +16,8 @@ export function taskRunner() {
         mining.runTask(task as MiningTask);
         break;
       }
-      case TaskType.TRANSPORT: {
-        transport.runTask(task as TransportTask);
+      case TaskType.CARRY: {
+        carry.runTask(task as CarryTask);
         break;
       }
       default: {
