@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { MiningTask, validateMiningTask, TaskType } from '@typescreeps/common';
+import { MiningTask, TaskType } from '@typescreeps/common';
 
 @Component
 export default class MineTaskForm extends Vue {
@@ -67,13 +67,12 @@ export default class MineTaskForm extends Vue {
         throw Error('Mining taks not valid');
       }
 
-      const miningTask = {
+      const miningTask: MiningTask = {
         id: this.name,
         type: TaskType.MINE,
         sourceId: this.sourceId,
         creepName: this.creepName,
       }
-      validateMiningTask(miningTask);
 
       this.$emit('newTask', miningTask);
     } catch (error) {

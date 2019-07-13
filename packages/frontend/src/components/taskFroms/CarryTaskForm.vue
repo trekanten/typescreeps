@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { TaskType, validateCarryTask } from '@typescreeps/common';
+import { TaskType, CarryTask } from '@typescreeps/common';
 
 @Component
 export default class CarryTaskForm extends Vue {
@@ -77,14 +77,13 @@ export default class CarryTaskForm extends Vue {
         throw Error('Carry taks not valid');
       }
 
-      const carryTask = {
+      const carryTask: CarryTask = {
         id: this.name,
         type: TaskType.CARRY,
         to: this.to,
         from: this.from,
         creepName: this.creepName,
       }
-      validateCarryTask(carryTask);
 
       this.$emit('newTask', carryTask);
     } catch (error) {

@@ -11,7 +11,11 @@
             <v-select v-model="selectedTask" :items="taskTypes" label="Task Type"></v-select>
           </v-flex>
           <v-flex xs4>
-            <v-btn color="success" @click="()=>this.showDialog = true" :disabled="taskForm === null">Add new task</v-btn>
+            <v-btn
+              color="success"
+              @click="()=>this.showDialog = true"
+              :disabled="taskForm === null"
+            >Add new task</v-btn>
           </v-flex>
         </v-layout>
       </v-card>
@@ -27,7 +31,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Task, TaskType, MiningTask, validateTask, validateMiningTask } from '@typescreeps/common';
+import { Task, TaskType, MiningTask } from '@typescreeps/common';
 
 import TaskListTile from '../components/TaskListTile.vue'
 import MineTaskForm from '../components/taskFroms/MineTaskForm.vue'
@@ -50,7 +54,7 @@ export default class Home extends Vue {
     return taskTypes;
   }
 
-    get taskForm() {
+  get taskForm() {
     if (!this.selectedTask) {
       return null;
     }
@@ -79,14 +83,9 @@ export default class Home extends Vue {
   }
 
   async addTask(task: Task) {
-    try {
-      validateTask(task);
-      await this.$api.addTask(task);
-      await this.fetchTasks();
-      this.showDialog = false;
-    } catch (error) {
-      alert(error)
-    }
+    await this.$api.addTask(task);
+    await this.fetchTasks();
+    this.showDialog = false;
   }
 
   async deleteTask(taskId: string) {

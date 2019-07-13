@@ -1,8 +1,8 @@
-import { TaskType, MiningTask, MiningTaskParams } from '@typescreeps/common/dist';
+import { MiningTask } from '@typescreeps/common/dist';
 import { getCreepByName, spawnCreep, mine, deposit, getSpawn } from '../../creep';
 import { TaskBase } from './taskBase';
 
-class Mining implements TaskBase<MiningTask, MiningTaskParams> {
+class Mining implements TaskBase<MiningTask> {
 
   public runTask(task: MiningTask) {
 
@@ -10,6 +10,7 @@ class Mining implements TaskBase<MiningTask, MiningTaskParams> {
     if (!source) {
       throw Error(`Task ${task.id}: Invalid sourceId ${task.sourceId}`);
     }
+
     const creep = getCreepByName(task.creepName);
     if (!creep) {
       spawnCreep(task.creepName, source);
@@ -19,18 +20,24 @@ class Mining implements TaskBase<MiningTask, MiningTaskParams> {
     if (creep.carry.energy < creep.carryCapacity) {
       mine(creep, source);
     } else {
-      deposit(creep, getSpawn(source));
+      deposit(creep, this.getTarget(creep, task));
     }
-
   }
 
-  public createTask(params: MiningTask) {
-    return {
-      id: params.id,
-      type: TaskType.MINE,
-      sourceId: params.sourceId,
-      creepName: params.creepName,
-    };
+  private getTarget(creep: Creep, task: MiningTask): Structure {
+    if (task.depositId) {
+      const target = Game.getObjectById(task.depositId) as Structure;
+      if (!target) {
+        throw Error(`Task ${task.id}: Invalid depositId ${task.depositId}`);
+      }
+      return target;
+    }
+
+    const target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES);
+    if (!target) {
+      throw Error(`Task ${task.id}: Found nowhere to deposit`);
+    }
+    return target;
   }
 }
 

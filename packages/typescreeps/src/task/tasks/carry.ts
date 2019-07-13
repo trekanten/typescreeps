@@ -1,8 +1,8 @@
-import { TaskType, CarryTask, CarryTaskParams } from '@typescreeps/common/dist';
+import { CarryTask } from '@typescreeps/common/dist';
 import { getCreepByName, spawnCreep, deposit, withdraw } from '../../creep';
 import { TaskBase } from './taskBase';
 
-class Carry implements TaskBase<CarryTask, CarryTaskParams> {
+class Carry implements TaskBase<CarryTask> {
 
   public runTask(task: CarryTask) {
 
@@ -27,16 +27,6 @@ class Carry implements TaskBase<CarryTask, CarryTaskParams> {
     } else {
       deposit(creep, to);
     }
-  }
-
-  public createTask(params: CarryTask) {
-    return {
-      id: params.id,
-      type: TaskType.CARRY,
-      to: params.to,
-      from: params.from,
-      creepName: params.creepName,
-    };
   }
 }
 
