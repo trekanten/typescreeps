@@ -1,17 +1,21 @@
 <template>
   <v-layout row>
     <v-dialog v-model="showDialog" width="500">
-      <MineTaskForm @newTask="addTask" />
+      <component :is="taskForm" @newTask="addTask" />
     </v-dialog>
     <v-flex xs12 sm10 offset-sm1 md8 offset-md2>
       <v-card>
         <h3>Typescreeps</h3>
         <v-layout row>
           <v-flex offset-xs2 xs4>
-            <v-select :items="taskTypes" label="Task Type"></v-select>
+            <v-select v-model="selectedTask" :items="taskTypes" label="Task Type"></v-select>
           </v-flex>
           <v-flex xs4>
-            <v-btn color="success" @click="()=>this.showDialog = true">Add new task</v-btn>
+            <v-btn
+              color="success"
+              @click="()=>this.showDialog = true"
+              :disabled="taskForm === null"
+            >Add new task</v-btn>
           </v-flex>
         </v-layout>
       </v-card>
@@ -27,16 +31,19 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Task, TaskType, MiningTask, validateTask, validateMiningTask } from '@typescreeps/common';
+import { Task, TaskType, MiningTask } from '@typescreeps/common';
 
 import TaskListTile from '../components/TaskListTile.vue'
 import MineTaskForm from '../components/taskFroms/MineTaskForm.vue'
+import CarryTaskForm from '../components/taskFroms/CarryTaskForm.vue'
 
-@Component({ components: { TaskListTile, MineTaskForm } })
+@Component({ components: { TaskListTile, MineTaskForm, CarryTaskForm } })
 export default class Home extends Vue {
 
 
   tasks: Task[] | null = null;
+  selectedTask: TaskType | null = null;
+
   showDialog = false;
 
   get taskTypes() {
@@ -45,6 +52,26 @@ export default class Home extends Vue {
       taskTypes.push(TaskType[key]);
     }
     return taskTypes;
+  }
+
+  get taskForm() {
+    if (!this.selectedTask) {
+      return null;
+    }
+    switch (this.selectedTask) {
+      case TaskType.MINE: {
+        return 'MineTaskForm';
+        break;
+      }
+      case TaskType.CARRY: {
+        return 'CarryTaskForm';
+        break;
+      }
+      default: {
+        console.error(`Task form for task type ${this.selectedTask} not found`);
+        return null;
+      }
+    }
   }
 
   async created() {
@@ -56,14 +83,9 @@ export default class Home extends Vue {
   }
 
   async addTask(task: Task) {
-    try {
-      validateTask(task);
-      await this.$api.addTask(task);
-      await this.fetchTasks();
-      this.showDialog = false;
-    } catch (error) {
-      alert(error)
-    }
+    await this.$api.addTask(task);
+    await this.fetchTasks();
+    this.showDialog = false;
   }
 
   async deleteTask(taskId: string) {

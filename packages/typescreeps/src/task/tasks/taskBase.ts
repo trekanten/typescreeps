@@ -1,4 +1,10 @@
-export abstract class TaskBase<Type, Params> {
-  public abstract runTask(task: Type): void;
-  public abstract createTask(params: Params): Type;
+export abstract class TaskBase<Type> {
+
+  protected task: Type;
+
+  constructor(task: Type) {
+    this.task = task;
+  }
+
+  public abstract runTask(): void;
 }

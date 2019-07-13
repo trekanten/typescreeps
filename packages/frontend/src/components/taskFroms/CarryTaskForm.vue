@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="headline grey lighten-2" primary-title>New Mining Task</v-card-title>
+    <v-card-title class="headline grey lighten-2" primary-title>New Carry Task</v-card-title>
 
     <v-flex xs10 offset-xs1>
       <form>
@@ -14,12 +14,21 @@
           required
         ></v-text-field>
         <v-text-field
-          label="Source ID"
-          v-model="sourceId"
+          label="Carry from"
+          v-model="from"
           v-validate="'required|min:24|max:24'"
           :counter="24"
-          :error-messages="errors.collect('sourceId')"
-          data-vv-name="sourceId"
+          :error-messages="errors.collect('from')"
+          data-vv-name="from"
+          required
+        ></v-text-field>
+        <v-text-field
+          label="Carry to"
+          v-model="to"
+          v-validate="'required|min:24|max:24'"
+          :counter="24"
+          :error-messages="errors.collect('to')"
+          data-vv-name="to"
           required
         ></v-text-field>
         <v-text-field
@@ -41,13 +50,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { MiningTask, TaskType } from '@typescreeps/common';
+import { TaskType, CarryTask } from '@typescreeps/common';
 
 @Component
-export default class MineTaskForm extends Vue {
+export default class CarryTaskForm extends Vue {
 
   name = '';
-  sourceId = '';
+  to = '';
+  from = '';
   creepName = '';
 
   dictionary = {
@@ -64,17 +74,18 @@ export default class MineTaskForm extends Vue {
     try {
       const valid = await this.$validator.validateAll();
       if (!valid) {
-        throw Error('Mining taks not valid');
+        throw Error('Carry taks not valid');
       }
 
-      const miningTask: MiningTask = {
+      const carryTask: CarryTask = {
         id: this.name,
-        type: TaskType.MINE,
-        sourceId: this.sourceId,
+        type: TaskType.CARRY,
+        to: this.to,
+        from: this.from,
         creepName: this.creepName,
       }
 
-      this.$emit('newTask', miningTask);
+      this.$emit('newTask', carryTask);
     } catch (error) {
       console.error(error);
     }
@@ -82,7 +93,8 @@ export default class MineTaskForm extends Vue {
   };
   clear() {
     this.name = ''
-    this.sourceId = ''
+    this.to = ''
+    this.from = ''
     this.creepName = ''
     this.$validator.reset()
   };

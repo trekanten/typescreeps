@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Task, TaskType, MiningTask, validateTask, validateMiningTask } from '@typescreeps/common';
+import { Task, TaskType, MiningTask } from '@typescreeps/common';
 
 @Component
 export default class TaskListtile extends Vue {

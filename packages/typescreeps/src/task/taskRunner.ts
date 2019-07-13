@@ -1,6 +1,5 @@
-import { TaskType, Task, MiningTask } from '@typescreeps/common';
-import { mining } from './tasks/mining';
-import { getId } from '../utils/id';
+import { TaskType, Task, MiningTask, CarryTask } from '@typescreeps/common/dist';
+import { Mining, Carry } from './tasks';
 
 const TASK_SEGMENT = 5;
 
@@ -12,25 +11,24 @@ export function taskRunner() {
   }
 
   for (const task of tasks) {
-    switch (task.type) {
-      case TaskType.MINE: {
-        mining.runTask(task as MiningTask);
-        break;
-      }
-      default: {
-        throw Error(`Found invalid task of type ${task.type}`);
-      }
-    }
-  }
-}
+    try {
 
-export function makeTask(type: TaskType, sourceId: string): Task | null {
-  switch (type) {
-    case TaskType.MINE: {
-      return mining.createTask({ sourceId, creepName: getId() });
-    }
-    default: {
-      return null;
+      switch (task.type) {
+        case TaskType.MINE: {
+          new Mining(task).runTask();
+          break;
+        }
+        case TaskType.CARRY: {
+          new Carry(task).runTask();
+          break;
+        }
+        default: {
+          throw Error(`Found invalid task of type ${task.type}`);
+        }
+      }
+
+    } catch (error) {
+      console.log(error);
     }
   }
 }
@@ -38,7 +36,6 @@ export function makeTask(type: TaskType, sourceId: string): Task | null {
 function getTasks(): Task[] | any {
   try {
     const rawTasks = RawMemory.segments[TASK_SEGMENT];
-    console.log(rawTasks);
     if (rawTasks === undefined) {
       RawMemory.setActiveSegments([TASK_SEGMENT]);
       throw Error(`Task segment is undefined. Setting segment ${TASK_SEGMENT} to active.`);

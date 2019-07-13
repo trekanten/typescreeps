@@ -1,40 +1,50 @@
-import { TaskType, MiningTask, MiningTaskParams } from '@typescreeps/common';
-import { getCreepByName, spawnCreep, mine, deposit, getSpawn } from '../../creep';
-import { getId } from '../../utils/id';
+import { MiningTask } from '@typescreeps/common/dist';
+import { getCreepByName, spawnCreep, mine, deposit } from '../../creep';
 import { TaskBase } from './taskBase';
 
-class Mining implements TaskBase<MiningTask, MiningTaskParams> {
+export class Mining extends TaskBase<MiningTask> {
 
-  public runTask(task: MiningTask) {
+  private source: Source;
+  private creep: Creep;
 
-    const source = Game.getObjectById(task.sourceId) as Source;
+  constructor(task: MiningTask) {
+    super(task);
+
+    const source = Game.getObjectById(this.task.sourceId) as Source;
     if (!source) {
-      throw Error(`Task ${task.id}: Invalid sourceId ${task.sourceId}`);
+      throw Error(`Task ${this.task.id}: Invalid sourceId ${this.task.sourceId}`);
     }
-    const creep = getCreepByName(task.creepName);
+    this.source = source;
+
+    const creep = getCreepByName(this.task.creepName);
     if (!creep) {
-      spawnCreep(task.creepName, source);
-      return;
+      spawnCreep(this.task.creepName, this.source);
+      throw Error(`Task ${this.task.id}: Waiting for creep ${task.creepName} to spawn`);
     }
-
-    if (creep.carry.energy < creep.carryCapacity) {
-      mine(creep, source);
-    } else {
-      deposit(creep, getSpawn(source));
-    }
-
+    this.creep = creep;
   }
 
-  public createTask(params: MiningTaskParams) {
-    return {
-      id: getId(), // TODO should this be part of params?
-      type: TaskType.MINE, // TODO should this be part of params?
-      sourceId: params.sourceId,
-      creepName: params.creepName,
-    };
+  public runTask() {
+    if (this.creep.carry.energy < this.creep.carryCapacity) {
+      mine(this.creep, this.source);
+    } else {
+      deposit(this.creep, this.getTarget());
+    }
+  }
+
+  private getTarget(): Structure {
+    if (this.task.depositId) {
+      const target = Game.getObjectById(this.task.depositId) as Structure;
+      if (!target) {
+        throw Error(`Task ${this.task.id}: Invalid depositId ${this.task.depositId}`);
+      }
+      return target;
+    }
+
+    const target = this.creep.pos.findClosestByRange(FIND_MY_STRUCTURES);
+    if (!target) {
+      throw Error(`Task ${this.task.id}: Found nowhere to deposit`);
+    }
+    return target;
   }
 }
-
-const mining = new Mining();
-
-export { mining };
