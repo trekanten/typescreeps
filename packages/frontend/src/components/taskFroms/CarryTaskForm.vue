@@ -13,6 +13,9 @@
           data-vv-name="name"
           required
         ></v-text-field>
+
+        <BodyPartsSelect v-model="bodyParts" :preset="'carry'" />
+
         <v-text-field
           label="Carry from"
           v-model="from"
@@ -22,6 +25,7 @@
           data-vv-name="from"
           required
         ></v-text-field>
+
         <v-text-field
           label="Carry to"
           v-model="to"
@@ -41,12 +45,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { TaskType, CarryTask } from '@typescreeps/common';
+import { TaskType, CarryTask, BodyPart } from '@typescreeps/common';
 
-@Component
+import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
+
+@Component({ components: { BodyPartsSelect } })
 export default class CarryTaskForm extends Vue {
 
   name = '';
+  bodyParts = null;
   to = '';
   from = '';
 
@@ -66,10 +73,14 @@ export default class CarryTaskForm extends Vue {
       if (!valid) {
         throw Error('Carry taks not valid');
       }
+      if (!this.bodyParts) {
+        throw Error('Mining task missing body parts');
+      }
 
       const carryTask: CarryTask = {
         name: this.name,
         type: TaskType.CARRY,
+        bodyParts: this.bodyParts as unknown as BodyPart[],
         to: this.to,
         from: this.from,
       }

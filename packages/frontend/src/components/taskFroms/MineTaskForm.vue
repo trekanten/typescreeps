@@ -13,6 +13,9 @@
           data-vv-name="name"
           required
         ></v-text-field>
+
+        <BodyPartsSelect v-model="bodyParts" :preset="'mine'" />
+
         <v-text-field
           label="Source ID"
           v-model="sourceId"
@@ -22,6 +25,7 @@
           data-vv-name="sourceId"
           required
         ></v-text-field>
+
         <v-text-field
           label="Deposit ID"
           v-model="depositId"
@@ -40,14 +44,19 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { MiningTask, TaskType } from '@typescreeps/common';
+import { MiningTask, TaskType, BodyPart } from '@typescreeps/common';
 
-@Component
+import { bodyPartPresets } from '../bodyPart/bodyPartPresets';
+
+import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
+
+@Component({ components: { BodyPartsSelect } })
 export default class MineTaskForm extends Vue {
 
   name = '';
+  bodyParts = null;
   sourceId = '';
-  depositId = undefined;
+  depositId = '';
 
   dictionary = {
     custom: {
@@ -63,14 +72,18 @@ export default class MineTaskForm extends Vue {
     try {
       const valid = await this.$validator.validateAll();
       if (!valid) {
-        throw Error('Mining taks not valid');
+        throw Error('Mining task not valid');
+      }
+      if (!this.bodyParts) {
+        throw Error('Mining task missing body parts');
       }
 
       const miningTask: MiningTask = {
         name: this.name,
         type: TaskType.MINE,
+        bodyParts: this.bodyParts as unknown as BodyPart[],
         sourceId: this.sourceId,
-        depositId: this.depositId,
+        depositId: this.depositId === '' ? undefined : this.depositId,
       }
 
       this.$emit('newTask', miningTask);
@@ -82,7 +95,7 @@ export default class MineTaskForm extends Vue {
   clear() {
     this.name = ''
     this.sourceId = ''
-    this.depositId = undefined
+    this.depositId = ''
     this.$validator.reset()
   };
 }

@@ -21,7 +21,7 @@ export class Carry extends TaskBase<CarryTask> {
   }
 
   getTo() {
-    const to = Game.getObjectById(this.task.from) as Structure;
+    const to = Game.getObjectById(this.task.to) as Structure;
     if (!to) {
       throw Error(`Task ${this.task.name}: Invalid 'to' ${this.task.to}`);
     }

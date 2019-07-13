@@ -1,4 +1,4 @@
 export * from './tasks';
 
 // Enums
-export { TaskType } from './tasks';
+export { BodyPart, TaskType } from './tasks';

@@ -10,7 +10,7 @@ export abstract class TaskBase<TaskType extends Task> {
     this.task = task;
     const creep = Game.creeps[this.task.name];
     if (!creep) {
-      spawnCreep(this.task.name, this.getSpawn());
+      spawnCreep(this.task, this.getSpawn());
       throw Error(`Task ${this.task.name}: Waiting for creep to spawn`);
     }
     this.creep = creep;

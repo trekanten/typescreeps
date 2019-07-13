@@ -1,13 +1,9 @@
-export function spawnCreep(creepName: string, spawn: StructureSpawn) {
-  try {
-    const body: BodyPartConstant[] = [
-      MOVE,
-      MOVE,
-      CARRY,
-      WORK,
-    ];
+import { Task } from '@typescreeps/common/dist';
 
-    spawn.createCreep(body, creepName);
+export function spawnCreep(task: Task, spawn: StructureSpawn) {
+  try {
+
+    spawn.createCreep(task.bodyParts, task.name);
 
   } catch (error) {
     throw error;

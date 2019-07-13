@@ -7,9 +7,11 @@ import store from './store';
 
 import Vuetify from 'vuetify';
 import VeeValidate from 'vee-validate';
+import { plugin } from 'vue-function-api';
 
 Vue.use(Vuetify);
 Vue.use(VeeValidate);
+Vue.use(plugin);
 
 Vue.config.productionTip = false;
 

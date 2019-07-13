@@ -13,6 +13,9 @@
           data-vv-name="name"
           required
         ></v-text-field>
+
+        <BodyPartsSelect v-model="bodyParts" :preset="'build'" />
+
         <v-text-field
           label="Room"
           v-model="room"
@@ -22,6 +25,7 @@
           data-vv-name="room"
           required
         ></v-text-field>
+
         <v-text-field
           label="Source ID"
           v-model="sourceId"
@@ -30,6 +34,7 @@
           :error-messages="errors.collect('sourceId')"
           data-vv-name="sourceId"
         ></v-text-field>
+
         <v-btn @click="clear">reset</v-btn>
         <v-btn color="success" @click="submit">Add Task</v-btn>
       </form>
@@ -39,14 +44,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { BuildTask, TaskType } from '@typescreeps/common';
+import { BuildTask, TaskType, BodyPart } from '@typescreeps/common';
 
-@Component
+import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
+
+@Component({ components: { BodyPartsSelect } })
 export default class BuildTaskForm extends Vue {
 
   name = '';
+  bodyParts = null;
   room = '';
-  sourceId = undefined;
+  sourceId = '';
   priority = undefined;
 
   dictionary = {
@@ -65,12 +73,16 @@ export default class BuildTaskForm extends Vue {
       if (!valid) {
         throw Error('Build task not valid');
       }
+      if (!this.bodyParts) {
+        throw Error('Mining task missing body parts');
+      }
 
       const buildTask: BuildTask = {
         name: this.name,
         type: TaskType.BUILD,
+        bodyParts: this.bodyParts as unknown as BodyPart[],
         room: this.room,
-        sourceId: this.sourceId,
+        sourceId: this.sourceId === '' ? undefined : this.sourceId,
         priority: this.priority,
       }
 
@@ -83,7 +95,7 @@ export default class BuildTaskForm extends Vue {
   clear() {
     this.name = ''
     this.room = ''
-    this.sourceId = undefined
+    this.sourceId = ''
     this.priority = undefined
     this.$validator.reset()
   };
