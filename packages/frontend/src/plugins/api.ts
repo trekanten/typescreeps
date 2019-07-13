@@ -27,8 +27,8 @@ export class API {
     return await this.instance.post('screeps/tasks/add', task).then((r: any) => r.data);
   }
 
-  public async deleteTask(taskId: string): Promise<null> {
-    return await this.instance.delete(`screeps/tasks/delete/${taskId}`).then((r: any) => r.data);
+  public async deleteTask(taskName: string): Promise<null> {
+    return await this.instance.delete(`screeps/tasks/delete/${taskName}`).then((r: any) => r.data);
   }
 }
 

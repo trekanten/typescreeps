@@ -5,12 +5,12 @@
     </v-list-tile-avatar>
 
     <v-list-tile-content>
-      <v-list-tile-title>{{ task.id }}</v-list-tile-title>
+      <v-list-tile-title>{{ task.name }}</v-list-tile-title>
       <v-list-tile-sub-title>{{ task.type }}</v-list-tile-sub-title>
     </v-list-tile-content>
 
     <v-list-tile-action>
-      <v-btn icon ripple @click="deleteTask(task.id)">
+      <v-btn icon ripple @click="deleteTask">
         <v-icon color="grey lighten-1">delete</v-icon>
       </v-btn>
     </v-list-tile-action>
@@ -28,8 +28,8 @@ export default class TaskListtile extends Vue {
   @Prop({ required: true })
   task!: Task;
 
-  async deleteTask(taskId: string) {
-    this.$emit('delete', this.task.id);
+  async deleteTask() {
+    this.$emit('delete', this.task.name);
   }
 
 }

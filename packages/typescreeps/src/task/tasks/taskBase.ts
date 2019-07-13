@@ -1,10 +1,21 @@
-export abstract class TaskBase<Type> {
+import { Task } from '@typescreeps/common/dist';
+import { spawnCreep } from '@/creep';
 
-  protected task: Type;
+export abstract class TaskBase<TaskType extends Task> {
 
-  constructor(task: Type) {
+  protected task: TaskType;
+  protected creep: Creep;
+
+  constructor(task: TaskType) {
     this.task = task;
+    const creep = Game.creeps[this.task.name];
+    if (!creep) {
+      spawnCreep(this.task.name, this.getSpawn());
+      throw Error(`Task ${this.task.name}: Waiting for creep to spawn`);
+    }
+    this.creep = creep;
   }
 
-  public abstract runTask(): void;
+  protected abstract runTask(): void;
+  protected abstract getSpawn(): StructureSpawn;
 }

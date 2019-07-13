@@ -23,12 +23,12 @@
           required
         ></v-text-field>
         <v-text-field
-          label="Creep Name"
-          v-model="creepName"
-          v-validate="'required|min:5|max:15'"
-          :counter="15"
-          :error-messages="errors.collect('creepName')"
-          data-vv-name="creepName"
+          label="Deposit ID"
+          v-model="depositId"
+          v-validate="'min:24|max:24'"
+          :counter="24"
+          :error-messages="errors.collect('depositId')"
+          data-vv-name="depositId"
           required
         ></v-text-field>
 
@@ -48,7 +48,7 @@ export default class MineTaskForm extends Vue {
 
   name = '';
   sourceId = '';
-  creepName = '';
+  depositId = undefined;
 
   dictionary = {
     custom: {
@@ -68,10 +68,10 @@ export default class MineTaskForm extends Vue {
       }
 
       const miningTask: MiningTask = {
-        id: this.name,
+        name: this.name,
         type: TaskType.MINE,
         sourceId: this.sourceId,
-        creepName: this.creepName,
+        depositId: this.depositId,
       }
 
       this.$emit('newTask', miningTask);
@@ -83,7 +83,7 @@ export default class MineTaskForm extends Vue {
   clear() {
     this.name = ''
     this.sourceId = ''
-    this.creepName = ''
+    this.depositId = undefined
     this.$validator.reset()
   };
 }

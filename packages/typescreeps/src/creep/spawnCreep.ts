@@ -1,9 +1,5 @@
-export function spawnCreep(creepName: string, targetObject: RoomObject) {
+export function spawnCreep(creepName: string, spawn: StructureSpawn) {
   try {
-    const spawn = getSpawn(targetObject);
-    if (!spawn.canCreateCreep) {
-      return;
-    }
     const body: BodyPartConstant[] = [
       MOVE,
       MOVE,
@@ -18,7 +14,7 @@ export function spawnCreep(creepName: string, targetObject: RoomObject) {
   }
 }
 
-export function getSpawn(targetObject: RoomObject): StructureSpawn {
+export function getSpawnFromRoomObject(targetObject: RoomObject): StructureSpawn {
   const targetRoom = targetObject.room;
   if (!targetRoom) {
     throw Error(`Room not found for object ${JSON.stringify(targetObject)}`);

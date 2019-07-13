@@ -5,7 +5,7 @@
     <v-flex xs10 offset-xs1>
       <form>
         <v-text-field
-          label="Task Name"
+          label="Name"
           v-model="name"
           v-validate="'required|max:10'"
           :counter="10"
@@ -31,15 +31,6 @@
           data-vv-name="to"
           required
         ></v-text-field>
-        <v-text-field
-          label="Creep Name"
-          v-model="creepName"
-          v-validate="'required|min:5|max:15'"
-          :counter="15"
-          :error-messages="errors.collect('creepName')"
-          data-vv-name="creepName"
-          required
-        ></v-text-field>
 
         <v-btn @click="clear">reset</v-btn>
         <v-btn color="success" @click="submit">Add Task</v-btn>
@@ -58,7 +49,6 @@ export default class CarryTaskForm extends Vue {
   name = '';
   to = '';
   from = '';
-  creepName = '';
 
   dictionary = {
     custom: {
@@ -78,11 +68,10 @@ export default class CarryTaskForm extends Vue {
       }
 
       const carryTask: CarryTask = {
-        id: this.name,
+        name: this.name,
         type: TaskType.CARRY,
         to: this.to,
         from: this.from,
-        creepName: this.creepName,
       }
 
       this.$emit('newTask', carryTask);
@@ -95,7 +84,6 @@ export default class CarryTaskForm extends Vue {
     this.name = ''
     this.to = ''
     this.from = ''
-    this.creepName = ''
     this.$validator.reset()
   };
 }

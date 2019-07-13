@@ -5,18 +5,16 @@ export enum TaskType {
 }
 
 export interface Task {
-  id: string;
+  name: string;
   type: string;
 }
 
 export interface MiningTask extends Task {
-  creepName: string;
   sourceId: string;
   depositId?: string;
 }
 
 export interface CarryTask extends Task {
-  creepName: string;
   from: string;
   to: string;
 }

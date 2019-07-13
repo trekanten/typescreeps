@@ -1,31 +1,34 @@
 import { CarryTask } from '@typescreeps/common/dist';
-import { getCreepByName, spawnCreep, deposit, withdraw } from '../../creep';
+import { deposit, withdraw, getSpawnFromRoomObject } from '../../creep';
 import { TaskBase } from './taskBase';
 
 export class Carry extends TaskBase<CarryTask> {
 
-  public runTask() {
+  runTask() {
+    if (this.creep.carry.energy < this.creep.carryCapacity) {
+      withdraw(this.creep, this.getFrom());
+    } else {
+      deposit(this.creep, this.getTo());
+    }
+  }
 
+  getFrom() {
     const from = Game.getObjectById(this.task.from) as Structure;
     if (!from) {
-      throw Error(`Task ${this.task.id}: Invalid 'from' ${this.task.from}`);
+      throw Error(`Task ${this.task.name}: Invalid 'from' ${this.task.from}`);
     }
+    return from;
+  }
 
+  getTo() {
     const to = Game.getObjectById(this.task.from) as Structure;
     if (!to) {
-      throw Error(`Task ${this.task.id}: Invalid 'to' ${this.task.to}`);
+      throw Error(`Task ${this.task.name}: Invalid 'to' ${this.task.to}`);
     }
+    return to;
+  }
 
-    const creep = getCreepByName(this.task.creepName);
-    if (!creep) {
-      spawnCreep(this.task.creepName, from);
-      return;
-    }
-
-    if (creep.carry.energy < creep.carryCapacity) {
-      withdraw(creep, from);
-    } else {
-      deposit(creep, to);
-    }
+  getSpawn() {
+    return getSpawnFromRoomObject(this.getFrom());
   }
 }

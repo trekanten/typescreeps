@@ -22,7 +22,7 @@
       <v-card>
         <v-list two-line subheader>
           <v-subheader inset>Tasks</v-subheader>
-          <TaskListTile v-for="task in tasks" :key="task.id" :task="task" @delete="deleteTask" />
+          <TaskListTile v-for="task in tasks" :key="task.name" :task="task" @delete="deleteTask" />
         </v-list>
       </v-card>
     </v-flex>
@@ -88,8 +88,8 @@ export default class Home extends Vue {
     this.showDialog = false;
   }
 
-  async deleteTask(taskId: string) {
-    await this.$api.deleteTask(taskId);
+  async deleteTask(taskName: string) {
+    await this.$api.deleteTask(taskName);
     await this.fetchTasks();
   }
 

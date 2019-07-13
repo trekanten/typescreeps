@@ -29,10 +29,10 @@ router.post('/tasks/add', async (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
-router.delete('/tasks/delete/:taskId', async (req: Request, res: Response) => {
-  const taskId = req.params.taskId;
+router.delete('/tasks/delete/:taskName', async (req: Request, res: Response) => {
+  const taskName = req.params.taskName;
   const tasks = await getSegment(TASK_SEGMENT) as Task[];
-  const updatedTasks = tasks.filter(task => task.id !== taskId);
+  const updatedTasks = tasks.filter(task => task.name !== taskName);
   await setSegment(TASK_SEGMENT, updatedTasks);
   res.sendStatus(200);
 });
