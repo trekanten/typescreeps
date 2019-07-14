@@ -3,6 +3,7 @@ export enum TaskType {
   CARRY = 'carry',
   MINE = 'mine',
   MINE_BUILD = 'mine_build',
+  REPAIR = 'repair',
   UPGRADE = 'upgrade',
 }
 
@@ -45,6 +46,11 @@ export interface MineTask extends Task {
 export interface MineBuildTask extends Task {
   type: TaskType.MINE_BUILD;
   sourceId: string;
+}
+
+export interface RepairTask extends Task {
+  type: TaskType.REPAIR;
+  sourceId?: string;
 }
 
 export interface UpgradeTask extends Task {

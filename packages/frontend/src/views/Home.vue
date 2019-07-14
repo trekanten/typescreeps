@@ -39,9 +39,10 @@ import BuildTaskForm from '../components/taskFroms/BuildTaskForm.vue'
 import CarryTaskForm from '../components/taskFroms/CarryTaskForm.vue'
 import MineTaskForm from '../components/taskFroms/MineTaskForm.vue'
 import MineBuildTaskForm from '../components/taskFroms/MineBuildTaskForm.vue'
+import RepairTaskForm from '../components/taskFroms/RepairTaskForm.vue'
 import UpgradeTaskForm from '../components/taskFroms/UpgradeTaskForm.vue'
 
-@Component({ components: { TaskListTile, BuildTaskForm, CarryTaskForm, MineTaskForm, MineBuildTaskForm, UpgradeTaskForm } })
+@Component({ components: { TaskListTile, BuildTaskForm, CarryTaskForm, MineTaskForm, MineBuildTaskForm, RepairTaskForm, UpgradeTaskForm } })
 export default class Home extends Vue {
 
 
@@ -75,12 +76,16 @@ export default class Home extends Vue {
         return 'MineTaskForm';
         break;
       }
-      case TaskType.UPGRADE: {
-        return 'UpgradeTaskForm';
-        break;
-      }
       case TaskType.MINE_BUILD: {
         return 'MineBuildTaskForm';
+        break;
+      }
+      case TaskType.REPAIR: {
+        return 'RepairTaskForm';
+        break;
+      }
+      case TaskType.UPGRADE: {
+        return 'UpgradeTaskForm';
         break;
       }
       default: {

@@ -5,4 +5,5 @@ interface Memory {
 
 interface CreepMemory {
     build: boolean;
+    repair: boolean;
 }

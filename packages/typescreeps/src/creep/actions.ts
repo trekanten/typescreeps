@@ -4,12 +4,6 @@ export function build(creep: Creep, target: ConstructionSite) {
   }
 }
 
-export function withdraw(creep: Creep, source: Structure) {
-  if (creep.withdraw(source, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(source);
-  }
-}
-
 export function deposit(creep: Creep, target: Structure) {
   if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
     creep.moveTo(target);
@@ -22,8 +16,20 @@ export function mine(creep: Creep, source: Source) {
   }
 }
 
+export function repair(creep: Creep, controller: Structure) {
+  if (creep.repair(controller) === ERR_NOT_IN_RANGE) {
+    creep.moveTo(controller);
+  }
+}
+
 export function upgradeController(creep: Creep, controller: StructureController) {
   if (creep.upgradeController(controller) === ERR_NOT_IN_RANGE) {
     creep.moveTo(controller);
+  }
+}
+
+export function withdraw(creep: Creep, source: Structure) {
+  if (creep.withdraw(source, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+    creep.moveTo(source);
   }
 }

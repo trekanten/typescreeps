@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="headline grey lighten-2" primary-title>New Mining Task</v-card-title>
+    <v-card-title class="headline grey lighten-2" primary-title>New Mine Build Task</v-card-title>
 
     <v-flex xs10 offset-xs1>
       <form>

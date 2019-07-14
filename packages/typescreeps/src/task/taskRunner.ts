@@ -3,6 +3,7 @@ import { Mining, Carry } from './tasks';
 import { Upgrade } from './tasks/upgrade';
 import { Build } from './tasks/build';
 import { MineBuild } from './tasks/miningBuild';
+import { Repair } from './tasks/repair';
 
 const TASK_SEGMENT = 5;
 
@@ -31,6 +32,10 @@ export function taskRunner() {
         }
         case TaskType.MINE_BUILD: {
           new MineBuild(task).runTask();
+          break;
+        }
+        case TaskType.REPAIR: {
+          new Repair(task).runTask();
           break;
         }
         case TaskType.UPGRADE: {
