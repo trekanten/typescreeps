@@ -31,16 +31,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Task, TaskType, MiningTask } from '@typescreeps/common';
+import { Task, TaskType, MineTask } from '@typescreeps/common';
 
 import TaskListTile from '../components/TaskListTile.vue'
 
 import BuildTaskForm from '../components/taskFroms/BuildTaskForm.vue'
 import CarryTaskForm from '../components/taskFroms/CarryTaskForm.vue'
 import MineTaskForm from '../components/taskFroms/MineTaskForm.vue'
+import MineBuildTaskForm from '../components/taskFroms/MineBuildTaskForm.vue'
 import UpgradeTaskForm from '../components/taskFroms/UpgradeTaskForm.vue'
 
-@Component({ components: { TaskListTile, BuildTaskForm, CarryTaskForm, MineTaskForm, UpgradeTaskForm } })
+@Component({ components: { TaskListTile, BuildTaskForm, CarryTaskForm, MineTaskForm, MineBuildTaskForm, UpgradeTaskForm } })
 export default class Home extends Vue {
 
 
@@ -76,6 +77,10 @@ export default class Home extends Vue {
       }
       case TaskType.UPGRADE: {
         return 'UpgradeTaskForm';
+        break;
+      }
+      case TaskType.MINE_BUILD: {
+        return 'MineBuildTaskForm';
         break;
       }
       default: {

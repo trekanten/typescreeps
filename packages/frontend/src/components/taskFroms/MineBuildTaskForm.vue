@@ -26,15 +26,6 @@
           required
         ></v-text-field>
 
-        <v-text-field
-          label="Deposit ID"
-          v-model="depositId"
-          v-validate="'min:24|max:24'"
-          :counter="24"
-          :error-messages="errors.collect('depositId')"
-          data-vv-name="depositId"
-        ></v-text-field>
-
         <v-btn @click="clear">reset</v-btn>
         <v-btn color="success" @click="submit">Add Task</v-btn>
       </form>
@@ -44,7 +35,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { MineTask, TaskType, BodyPart } from '@typescreeps/common';
+import { TaskType, BodyPart, MineBuildTask } from '@typescreeps/common';
 
 import { bodyPartPresets } from '../bodyPart/bodyPartPresets';
 
@@ -56,7 +47,6 @@ export default class MineTaskForm extends Vue {
   name = '';
   bodyParts = null;
   sourceId = '';
-  depositId = '';
 
   dictionary = {
     custom: {
@@ -72,21 +62,20 @@ export default class MineTaskForm extends Vue {
     try {
       const valid = await this.$validator.validateAll();
       if (!valid) {
-        throw Error('Mining task not valid');
+        throw Error('Mine Build task not valid');
       }
       if (!this.bodyParts) {
-        throw Error('Mining task missing body parts');
+        throw Error('Mine Build task missing body parts');
       }
 
-      const MineTask: MineTask = {
+      const MineBuildTask: MineBuildTask = {
         name: this.name,
-        type: TaskType.MINE,
+        type: TaskType.MINE_BUILD,
         bodyParts: this.bodyParts as unknown as BodyPart[],
         sourceId: this.sourceId,
-        depositId: this.depositId === '' ? undefined : this.depositId,
       }
 
-      this.$emit('newTask', MineTask);
+      this.$emit('newTask', MineBuildTask);
     } catch (error) {
       console.error(error);
     }
@@ -95,7 +84,6 @@ export default class MineTaskForm extends Vue {
   clear() {
     this.name = ''
     this.sourceId = ''
-    this.depositId = ''
     this.$validator.reset()
   };
 }

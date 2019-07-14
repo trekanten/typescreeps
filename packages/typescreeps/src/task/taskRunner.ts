@@ -2,6 +2,7 @@ import { TaskType, Task } from '@typescreeps/common/dist';
 import { Mining, Carry } from './tasks';
 import { Upgrade } from './tasks/upgrade';
 import { Build } from './tasks/build';
+import { MineBuild } from './tasks/miningBuild';
 
 const TASK_SEGMENT = 5;
 
@@ -26,6 +27,10 @@ export function taskRunner() {
         }
         case TaskType.MINE: {
           new Mining(task).runTask();
+          break;
+        }
+        case TaskType.MINE_BUILD: {
+          new MineBuild(task).runTask();
           break;
         }
         case TaskType.UPGRADE: {
