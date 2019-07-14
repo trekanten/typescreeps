@@ -1,6 +1,7 @@
 export enum TaskType {
   BUILD = 'build',
   CARRY = 'carry',
+  CLAIM = 'claim',
   MINE = 'mine',
   MINE_BUILD = 'mine_build',
   REPAIR = 'repair',
@@ -36,6 +37,12 @@ export interface CarryTask extends Task {
   type: TaskType.CARRY;
   from: string;
   to: string;
+}
+
+export interface ClaimTask extends Task {
+  type: TaskType.CLAIM;
+  targetRoom: string;
+  spawnRoom: string;
 }
 
 export interface MineTask extends Task {
