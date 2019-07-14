@@ -5,10 +5,16 @@ import { TaskBase } from './taskBase';
 export class MineBuild extends TaskBase<MineBuildTask> {
 
   runTask() {
-    if (this.creep.carry.energy < this.creep.carryCapacity) {
-      mine(this.creep, this.getSource());
-    } else {
+    if (this.creep.carry.energy === this.creep.carryCapacity) {
+      this.creep.memory.build = true;
+    } else if (this.creep.carry.energy === 0) {
+      this.creep.memory.build = false;
+    }
+
+    if (this.creep.memory.build) {
       build(this.creep, this.getTarget());
+    } else {
+      mine(this.creep, this.getSource());
     }
   }
 
