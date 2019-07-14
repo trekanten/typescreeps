@@ -17,13 +17,22 @@
         <BodyPartsSelect v-model="bodyParts" :preset="'mine'" />
 
         <v-text-field
-          label="Source ID"
-          v-model="sourceId"
-          v-validate="'required|min:24|max:24'"
-          :counter="24"
-          :error-messages="errors.collect('sourceId')"
-          data-vv-name="sourceId"
+          label="Room"
+          v-model="room"
+          v-validate="'required|min:4|max:6'"
+          :counter="6"
+          :error-messages="errors.collect('room')"
+          data-vv-name="room"
           required
+        ></v-text-field>
+
+        <v-text-field
+          label="Container ID"
+          v-model="containerId"
+          v-validate="'min:24|max:24'"
+          :counter="24"
+          :error-messages="errors.collect('containerId')"
+          data-vv-name="containerId"
         ></v-text-field>
 
         <v-btn @click="clear">reset</v-btn>
@@ -46,7 +55,8 @@ export default class MineTaskForm extends Vue {
 
   name = '';
   bodyParts = null;
-  sourceId = '';
+  room = '';
+  containerId = '';
 
   dictionary = {
     custom: {
@@ -72,7 +82,8 @@ export default class MineTaskForm extends Vue {
         name: this.name,
         type: TaskType.REPAIR,
         bodyParts: this.bodyParts as unknown as BodyPart[],
-        sourceId: this.sourceId,
+        room: this.room,
+        containerId: this.containerId === '' ? undefined : this.containerId,
       }
 
       this.$emit('newTask', RepairTask);
@@ -83,7 +94,8 @@ export default class MineTaskForm extends Vue {
   };
   clear() {
     this.name = ''
-    this.sourceId = ''
+    this.room = ''
+    this.containerId = ''
     this.$validator.reset()
   };
 }

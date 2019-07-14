@@ -6,7 +6,7 @@ export class Upgrade extends TaskBase<UpgradeTask> {
 
   runTask() {
     if (this.creep.carry.energy <= 1) {
-      withdraw(this.creep, this.getSource());
+      withdraw(this.creep, this.getContainer());
     } else {
       upgradeController(this.creep, this.getController());
     }
@@ -32,19 +32,19 @@ export class Upgrade extends TaskBase<UpgradeTask> {
     return controller;
   }
 
-  getSource() {
-    if (this.task.sourceId) {
-      const source = Game.getObjectById(this.task.sourceId) as Structure;
-      if (!source) {
-        throw Error(`Task ${this.task.name}: Invalid sourceId ${this.task.sourceId}`);
+  getContainer() {
+    if (this.task.containerId) {
+      const container = Game.getObjectById(this.task.containerId) as Structure;
+      if (!container) {
+        throw Error(`Task ${this.task.name}: Invalid containerId ${this.task.containerId}`);
       }
-      return source;
+      return container;
     }
 
-    const source = this.creep.pos.findClosestByRange(FIND_MY_STRUCTURES);
-    if (!source) {
+    const container = this.creep.pos.findClosestByRange(FIND_MY_STRUCTURES);
+    if (!container) {
       throw Error(`Task ${this.task.name}: Found no source`);
     }
-    return source;
+    return container;
   }
 }

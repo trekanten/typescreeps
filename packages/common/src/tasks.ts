@@ -27,7 +27,7 @@ export interface Task {
 export interface BuildTask extends Task {
   type: TaskType.BUILD;
   room: string;
-  sourceId?: string;
+  containerId?: string;
   priority?: string[];
 }
 
@@ -50,11 +50,17 @@ export interface MineBuildTask extends Task {
 
 export interface RepairTask extends Task {
   type: TaskType.REPAIR;
-  sourceId?: string;
+  room: string;
+  containerId?: string;
+}
+
+export interface SpawnDistrobutor extends Task {
+  type: TaskType.REPAIR;
+  containerId?: string;
 }
 
 export interface UpgradeTask extends Task {
   type: TaskType.UPGRADE;
   room: string;
-  sourceId?: string;
+  containerId?: string;
 }

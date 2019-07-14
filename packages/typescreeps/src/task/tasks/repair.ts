@@ -1,6 +1,6 @@
 import { TaskBase } from './taskBase';
 import { RepairTask } from '@typescreeps/common/dist';
-import { getSpawnFromRoomObject, withdraw, repair } from '@/creep';
+import { withdraw, repair, getSpawnFromRoom } from '@/creep';
 
 export class Repair extends TaskBase<RepairTask> {
 
@@ -26,27 +26,35 @@ export class Repair extends TaskBase<RepairTask> {
         this.creep.say('Done!');
       }
     } else {
-      withdraw(this.creep, this.getSource());
+      withdraw(this.creep, this.getContainer());
     }
   }
 
-  getSource() {
-    if (this.task.sourceId) {
-      const source = Game.getObjectById(this.task.sourceId) as Structure;
-      if (!source) {
-        throw Error(`Task ${this.task.name}: Invalid sourceId ${this.task.sourceId}`);
+  getContainer() {
+    if (this.task.containerId) {
+      const container = Game.getObjectById(this.task.containerId) as Structure;
+      if (!container) {
+        throw Error(`Task ${this.task.name}: Invalid containerId ${this.task.containerId}`);
       }
-      return source;
+      return container;
     }
 
-    const source = this.creep.pos.findClosestByRange(FIND_MY_STRUCTURES);
-    if (!source) {
+    const container = this.creep.pos.findClosestByRange(FIND_MY_STRUCTURES);
+    if (!container) {
       throw Error(`Task ${this.task.name}: Found no source`);
     }
-    return source;
+    return container;
+  }
+
+  getRoom(): Room {
+    const room = Game.rooms[this.task.room];
+    if (!room) {
+      throw Error(`Task ${this.task.name}: Room ${this.task.room} not found`);
+    }
+    return room;
   }
 
   getSpawn() {
-    return getSpawnFromRoomObject(getSpawnFromRoomObject(this.getSource()));
+    return getSpawnFromRoom(this.getRoom());
   }
 }

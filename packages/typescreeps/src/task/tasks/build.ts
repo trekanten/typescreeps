@@ -6,7 +6,7 @@ export class Build extends TaskBase<BuildTask>{
 
   runTask() {
     if (this.creep.carry.energy <= 1) {
-      withdraw(this.creep, this.getSource());
+      withdraw(this.creep, this.getContainer());
     } else {
       build(this.creep, this.getTarget());
     }
@@ -32,11 +32,11 @@ export class Build extends TaskBase<BuildTask>{
     return target;
   }
 
-  getSource() {
-    if (this.task.sourceId) {
-      const source = Game.getObjectById(this.task.sourceId) as Structure;
+  getContainer() {
+    if (this.task.containerId) {
+      const source = Game.getObjectById(this.task.containerId) as Structure;
       if (!source) {
-        throw Error(`Task ${this.task.name}: Invalid sourceId ${this.task.sourceId}`);
+        throw Error(`Task ${this.task.name}: Invalid containerId ${this.task.containerId}`);
       }
       return source;
     }

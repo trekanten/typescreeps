@@ -27,12 +27,12 @@
         ></v-text-field>
 
         <v-text-field
-          label="Source ID"
-          v-model="sourceId"
+          label="Container ID"
+          v-model="containerId"
           v-validate="'min:24|max:24'"
           :counter="24"
-          :error-messages="errors.collect('sourceId')"
-          data-vv-name="sourceId"
+          :error-messages="errors.collect('containerId')"
+          data-vv-name="containerId"
         ></v-text-field>
 
         <v-btn @click="clear">reset</v-btn>
@@ -54,7 +54,7 @@ export default class BuildTaskForm extends Vue {
   name = '';
   bodyParts = null;
   room = '';
-  sourceId = '';
+  containerId = '';
 
   dictionary = {
     custom: {
@@ -81,7 +81,7 @@ export default class BuildTaskForm extends Vue {
         type: TaskType.UPGRADE,
         bodyParts: this.bodyParts as unknown as BodyPart[],
         room: this.room,
-        sourceId: this.sourceId === '' ? undefined : this.sourceId,
+        containerId: this.containerId === '' ? undefined : this.containerId,
       }
 
       this.$emit('newTask', upgradeTask);
@@ -93,7 +93,7 @@ export default class BuildTaskForm extends Vue {
   clear() {
     this.name = ''
     this.room = ''
-    this.sourceId = ''
+    this.containerId = ''
     this.$validator.reset()
   };
 }
