@@ -73,7 +73,7 @@ export default class BuildTaskForm extends Vue {
         throw Error('Upgrade task not valid');
       }
       if (!this.bodyParts) {
-        throw Error('Mining task missing body parts');
+        throw Error('Upgrade task missing body parts');
       }
 
       const upgradeTask: UpgradeTask = {

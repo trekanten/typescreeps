@@ -74,7 +74,7 @@ export default class BuildTaskForm extends Vue {
         throw Error('Build task not valid');
       }
       if (!this.bodyParts) {
-        throw Error('Mining task missing body parts');
+        throw Error('Build task missing body parts');
       }
 
       const buildTask: BuildTask = {

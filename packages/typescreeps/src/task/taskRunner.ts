@@ -4,7 +4,7 @@ import { Upgrade } from './tasks/upgrade';
 import { Build } from './tasks/build';
 import { MineBuild } from './tasks/miningBuild';
 import { Repair } from './tasks/repair';
-import { SpawnDistrobution } from './tasks/spawnDistrobutor';
+import { SpawnDistribution } from './tasks/spawnDistributor';
 
 const TASK_SEGMENT = 5;
 
@@ -39,8 +39,8 @@ export function taskRunner() {
           new Repair(task).runTask();
           break;
         }
-        case TaskType.SPAWN_DISTROBUTOR: {
-          new SpawnDistrobution(task).runTask();
+        case TaskType.SPAWN_DISTRIBUTOR: {
+          new SpawnDistribution(task).runTask();
           break;
         }
         case TaskType.UPGRADE: {

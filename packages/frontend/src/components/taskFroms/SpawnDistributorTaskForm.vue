@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="headline grey lighten-2" primary-title>New Carry Task</v-card-title>
+    <v-card-title class="headline grey lighten-2" primary-title>New Spawn Distributor Task</v-card-title>
 
     <v-flex xs10 offset-xs1>
       <form>
@@ -17,23 +17,22 @@
         <BodyPartsSelect v-model="bodyParts" :preset="'carry'" />
 
         <v-text-field
-          label="Carry from"
-          v-model="from"
-          v-validate="'required|min:24|max:24'"
-          :counter="24"
-          :error-messages="errors.collect('from')"
-          data-vv-name="from"
+          label="Room"
+          v-model="room"
+          v-validate="'required|min:4|max:6'"
+          :counter="6"
+          :error-messages="errors.collect('room')"
+          data-vv-name="room"
           required
         ></v-text-field>
 
         <v-text-field
-          label="Carry to"
-          v-model="to"
-          v-validate="'required|min:24|max:24'"
+          label="Container ID"
+          v-model="containerId"
+          v-validate="'min:24|max:24'"
           :counter="24"
-          :error-messages="errors.collect('to')"
-          data-vv-name="to"
-          required
+          :error-messages="errors.collect('containerId')"
+          data-vv-name="containerId"
         ></v-text-field>
 
         <v-btn @click="clear">reset</v-btn>
@@ -45,17 +44,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { TaskType, CarryTask, BodyPart } from '@typescreeps/common';
+import { SpawnDistributorTask, TaskType, BodyPart } from '@typescreeps/common';
 
 import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
 
 @Component({ components: { BodyPartsSelect } })
-export default class CarryTaskForm extends Vue {
+export default class BuildTaskForm extends Vue {
 
   name = '';
   bodyParts = null;
-  to = '';
-  from = '';
+  room = '';
+  containerId = '';
 
   dictionary = {
     custom: {
@@ -71,21 +70,21 @@ export default class CarryTaskForm extends Vue {
     try {
       const valid = await this.$validator.validateAll();
       if (!valid) {
-        throw Error('Carry taks not valid');
+        throw Error('Spawn Distributor task not valid');
       }
       if (!this.bodyParts) {
-        throw Error('Carry task missing body parts');
+        throw Error('Spawn Distributor task missing body parts');
       }
 
-      const carryTask: CarryTask = {
+      const spawnDistributionTask: SpawnDistributorTask = {
         name: this.name,
-        type: TaskType.CARRY,
+        type: TaskType.SPAWN_DISTRIBUTOR,
         bodyParts: this.bodyParts as unknown as BodyPart[],
-        to: this.to,
-        from: this.from,
+        room: this.room,
+        containerId: this.containerId === '' ? undefined : this.containerId,
       }
 
-      this.$emit('newTask', carryTask);
+      this.$emit('newTask', spawnDistributionTask);
     } catch (error) {
       console.error(error);
     }
@@ -93,8 +92,8 @@ export default class CarryTaskForm extends Vue {
   };
   clear() {
     this.name = ''
-    this.to = ''
-    this.from = ''
+    this.room = ''
+    this.containerId = ''
     this.$validator.reset()
   };
 }

@@ -1,8 +1,8 @@
 import { TaskBase } from './taskBase';
-import { SpawnDistrobutorTask } from '@typescreeps/common/dist';
+import { SpawnDistributorTask } from '@typescreeps/common/dist';
 import { getSpawnFromRoom, withdraw, deposit } from '@/creep';
 
-export class SpawnDistrobution extends TaskBase<SpawnDistrobutorTask>{
+export class SpawnDistribution extends TaskBase<SpawnDistributorTask>{
 
   runTask() {
     if (this.creep.carry.energy === 0) {
