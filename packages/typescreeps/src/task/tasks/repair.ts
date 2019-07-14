@@ -1,55 +1,38 @@
 import { TaskBase } from './taskBase';
 import { RepairTask } from '@typescreeps/common/dist';
 import { withdraw, repair, getSpawnFromRoom } from '@/creep';
+import { getClosestContainer, getClosestRepairTarget } from '@/creep/getters';
 
 export class Repair extends TaskBase<RepairTask> {
 
   runTask() {
     if (this.creep.carry.energy === this.creep.carryCapacity) {
       this.creep.memory.repair = true;
+      this.creep.memory.containerId = null;
     } else if (this.creep.carry.energy === 0) {
       this.creep.memory.repair = false;
+      this.creep.memory.targetId = null;
     }
 
     if (this.creep.memory.repair === true) {
-
-      const targets = this.creep.room.find(FIND_STRUCTURES, {
-        // tslint:disable-next-line:max-line-length
-        filter: object => (object.hits < (object.hitsMax)) && (object.structureType !== STRUCTURE_WALL) && (object.structureType !== STRUCTURE_RAMPART),
-      });
-      targets.sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
-      const target = targets[0];
-
-      if (target !== undefined) {
-        repair(this.creep, target);
-      } else {
-        this.creep.say('Done!');
+      if (!this.creep.memory.targetId) {
+        this.creep.memory.targetId = getClosestRepairTarget(this.creep).id;
       }
+      const target = Game.getObjectById(this.creep.memory.targetId) as Structure;
+      repair(this.creep, target);
     } else {
-      withdraw(this.creep, this.getContainer());
-    }
-  }
-
-  getContainer() {
-    if (this.task.containerId) {
-      const container = Game.getObjectById(this.task.containerId) as Structure;
-      if (!container) {
-        throw Error(`Task ${this.task.name}: Invalid containerId ${this.task.containerId}`);
+      if (!this.creep.memory.containerId) {
+        this.creep.memory.containerId = getClosestContainer(this.creep).id;
       }
-      return container;
+      const container = Game.getObjectById(this.creep.memory.containerId) as Structure;
+      withdraw(this.creep, container);
     }
-
-    const container = this.creep.pos.findClosestByRange(FIND_MY_STRUCTURES);
-    if (!container) {
-      throw Error(`Task ${this.task.name}: Found no source`);
-    }
-    return container;
   }
 
   getRoom(): Room {
     const room = Game.rooms[this.task.room];
     if (!room) {
-      throw Error(`Task ${this.task.name}: Room ${this.task.room} not found`);
+      throw Error(`${this.task.name}: Room ${this.task.room} not found`);
     }
     return room;
   }

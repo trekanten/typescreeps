@@ -11,8 +11,6 @@ export class SpawnDistribution extends TaskBase<SpawnDistributorTask>{
       const target = this.getTarget();
       if (target) {
         deposit(this.creep, target);
-      } else {
-        this.creep.say('I\'m done');
       }
     }
   }
