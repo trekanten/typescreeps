@@ -1,14 +1,31 @@
 import { TaskBase } from './taskBase';
 import { BuildTask } from '@typescreeps/common/dist';
 import { getSpawnFromRoom, withdraw, build } from '@/creep';
+import { getClosestContainer } from '@/creep/getters';
 
 export class Build extends TaskBase<BuildTask>{
 
   runTask() {
-    if (this.creep.carry.energy <= 1) {
-      withdraw(this.creep, this.getContainer());
+    if (this.creep.carry.energy === this.creep.carryCapacity) {
+      this.creep.memory.build = true;
+      this.creep.memory.containerId = null;
+    } else if (this.creep.carry.energy === 0) {
+      this.creep.memory.build = false;
+      this.creep.memory.targetId = null;
+    }
+
+    if (this.creep.memory.build) {
+      if (!this.creep.memory.targetId) {
+        this.creep.memory.targetId = this.getTarget().id;
+      }
+      const target = Game.getObjectById(this.creep.memory.targetId) as ConstructionSite;
+      build(this.creep, target);
     } else {
-      build(this.creep, this.getTarget());
+      if (!this.creep.memory.containerId) {
+        this.creep.memory.containerId = getClosestContainer(this.creep).id;
+      }
+      const container = Game.getObjectById(this.creep.memory.containerId) as Structure;
+      withdraw(this.creep, container);
     }
   }
 
@@ -30,21 +47,5 @@ export class Build extends TaskBase<BuildTask>{
       throw Error(`Task ${this.task.name}: No construction site found in ${this.task.room}`);
     }
     return target;
-  }
-
-  getContainer() {
-    if (this.task.containerId) {
-      const source = Game.getObjectById(this.task.containerId) as Structure;
-      if (!source) {
-        throw Error(`Task ${this.task.name}: Invalid containerId ${this.task.containerId}`);
-      }
-      return source;
-    }
-
-    const source = this.creep.pos.findClosestByRange(FIND_MY_STRUCTURES);
-    if (!source) {
-      throw Error(`Task ${this.task.name}: Found no source`);
-    }
-    return source;
   }
 }
