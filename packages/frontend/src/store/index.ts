@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import { Mutation, State, createVuexStore, useStore, Action, Getter } from 'vuex-simple';
 import { api } from '@/plugins/api';
+import { Task } from '@typescreeps/common';
 
 export class SimpleStore {
 
@@ -10,6 +11,9 @@ export class SimpleStore {
 
   @State()
   public rooms: string[] = [];
+
+  @State()
+  public tasks: Task[] = [];
 
   // Mutations
 
@@ -19,11 +23,22 @@ export class SimpleStore {
     this.setRooms(rooms);
   }
 
+  @Action()
+  public async fetchTasks(): Promise<void> {
+    const tasks = await api.getTasks();
+    this.setTasks(tasks);
+  }
+
   // Mutations
 
   @Mutation()
   public setRooms(rooms: string[]): void {
     this.rooms = rooms;
+  }
+
+  @Mutation()
+  public setTasks(tasks: Task[]): void {
+    this.tasks = tasks;
   }
 }
 

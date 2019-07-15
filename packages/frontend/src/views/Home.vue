@@ -21,8 +21,30 @@
       </v-card>
       <v-card>
         <v-list two-line subheader>
-          <v-subheader inset>Tasks</v-subheader>
-          <TaskListTile v-for="task in tasks" :key="task.name" :task="task" @delete="deleteTask" />
+          <v-list-group
+            v-for="group in groupedTasks"
+            :key="group.title"
+            v-model="group.active"
+            no-action
+          >
+            <template v-slot:activator>
+              <v-list-tile>
+                <v-list-tile-avatar>
+                  <img :src="group.icon" />
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ group.title }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+
+            <TaskListTile
+              v-for="task in group.tasks"
+              :key="task.name"
+              :task="task"
+              @delete="deleteTask"
+            />
+          </v-list-group>
         </v-list>
       </v-card>
     </v-flex>
@@ -30,9 +52,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Task, TaskType, MineTask } from '@typescreeps/common';
 
+import { Getter, State } from 'vuex-class';
 import { store } from '@/store';
 
 import TaskListTile from '../components/TaskListTile.vue'
@@ -45,12 +68,28 @@ import MineBuildTaskForm from '../components/taskFroms/MineBuildTaskForm.vue'
 import RepairTaskForm from '../components/taskFroms/RepairTaskForm.vue'
 import SpawnDistributorTaskForm from '../components/taskFroms//SpawnDistributorTaskForm.vue'
 import UpgradeTaskForm from '../components/taskFroms/UpgradeTaskForm.vue'
+import { getTaskTypeIcon } from '../service/taskType';
+
+interface GroupedTask {
+  title: string,
+  active: boolean,
+  icon: string,
+  tasks: Task[],
+}
 
 @Component({ components: { TaskListTile, BuildTaskForm, CarryTaskForm, ClaimTaskForm, MineTaskForm, MineBuildTaskForm, RepairTaskForm, SpawnDistributorTaskForm, UpgradeTaskForm } })
 export default class Home extends Vue {
 
 
-  tasks: Task[] | null = null;
+  @State('tasks') tasks!: Task[];
+
+  @Watch('tasks')
+  onTasksUpdated(newTasks: Task[]) {
+    this.updateGroupedTasks(newTasks);
+  }
+
+  groupedTasks: GroupedTask[] = [];
+
   selectedTask: TaskType | null = null;
 
   showDialog = false;
@@ -107,24 +146,37 @@ export default class Home extends Vue {
     }
   }
 
-  async created() {
-    store.fetchRooms();
-    this.fetchTasks();
+  updateGroupedTasks(tasks: Task[]) {
+    this.groupedTasks = [];
+    for (const task of tasks) {
+      const group = this.groupedTasks.find(gp => gp.title === task.type);
+      if (!group) {
+        this.groupedTasks.push({
+          title: task.type,
+          active: true,
+          icon: getTaskTypeIcon(task.type),
+          tasks: [task],
+        })
+      } else {
+        group.tasks.push(task)
+      }
+    }
   }
 
-  async fetchTasks() {
-    this.tasks = await this.$api.getTasks();
+  async created() {
+    store.fetchRooms();
+    store.fetchTasks();
   }
 
   async addTask(task: Task) {
     await this.$api.addTask(task);
-    await this.fetchTasks();
+    store.fetchTasks();
     this.showDialog = false;
   }
 
   async deleteTask(taskName: string) {
     await this.$api.deleteTask(taskName);
-    await this.fetchTasks();
+    store.fetchTasks();
   }
 
 }
