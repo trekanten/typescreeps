@@ -1,5 +1,5 @@
 import { Task } from '@typescreeps/common/dist';
-import { spawnCreep } from '@/creep';
+import { spawnCreep, spawnCreepInAvailableRoom } from '@/creep';
 
 export abstract class TaskBase<TaskType extends Task> {
 
@@ -10,7 +10,12 @@ export abstract class TaskBase<TaskType extends Task> {
     this.task = task;
     const creep = Game.creeps[this.task.name];
     if (!creep) {
-      spawnCreep(this.task, this.getSpawn());
+      try {
+        spawnCreep(this.task, this.getSpawn());
+      } catch (error) {
+        console.log(`${this.task.name} Overriding default spawn: spawning in any available room`);
+        spawnCreepInAvailableRoom(this.task);
+      }
       throw Error(`Task ${this.task.name}: Waiting for creep to spawn`);
     }
     this.creep = creep;

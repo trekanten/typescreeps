@@ -1,4 +1,23 @@
-import { Task } from '@typescreeps/common/dist';
+import { Task, GameRoom } from '@typescreeps/common/dist';
+
+export function spawnCreepInAvailableRoom(task: Task) {
+  const rooms = Memory.gameRooms as GameRoom[];
+  if (rooms.length === 0) {
+    throw Error(`${task.name} No rooms found in memory.gameRooms`);
+  }
+
+  let roomName = null;
+  for (const key in rooms) {
+    roomName = key;
+  }
+
+  if (!roomName) {
+    throw Error(`${task.name} No rooms found in memory.gameRooms`);
+  }
+
+  const spawn = getSpawnFromRoom(Game.rooms[roomName]);
+  spawnCreep(task, spawn);
+}
 
 export function spawnCreep(task: Task, spawn: StructureSpawn) {
   try {
