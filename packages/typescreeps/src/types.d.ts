@@ -1,5 +1,6 @@
 
 interface Memory {
+    gameRooms: any;
     tasks: any[];
 }
 

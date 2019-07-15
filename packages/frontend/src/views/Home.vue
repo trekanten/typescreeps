@@ -33,6 +33,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Task, TaskType, MineTask } from '@typescreeps/common';
 
+import { store } from '@/store';
+
 import TaskListTile from '../components/TaskListTile.vue'
 
 import BuildTaskForm from '../components/taskFroms/BuildTaskForm.vue'
@@ -106,6 +108,7 @@ export default class Home extends Vue {
   }
 
   async created() {
+    store.fetchRooms();
     this.fetchTasks();
   }
 

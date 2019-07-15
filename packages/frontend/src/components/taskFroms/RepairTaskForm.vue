@@ -16,7 +16,7 @@
 
         <BodyPartsSelect v-model="bodyParts" :preset="'mine'" />
 
-        <v-text-field
+        <RoomSelect
           label="Room"
           v-model="room"
           v-validate="'required|min:4|max:6'"
@@ -24,7 +24,7 @@
           :error-messages="errors.collect('room')"
           data-vv-name="room"
           required
-        ></v-text-field>
+        />
 
         <v-text-field
           label="Container ID"
@@ -49,8 +49,9 @@ import { TaskType, BodyPart, MineBuildTask, RepairTask } from '@typescreeps/comm
 import { bodyPartPresets } from '../bodyPart/bodyPartPresets';
 
 import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
+import RoomSelect from '../RoomSelect.vue'
 
-@Component({ components: { BodyPartsSelect } })
+@Component({ components: { BodyPartsSelect, RoomSelect } })
 export default class MineTaskForm extends Vue {
 
   name = '';

@@ -18,7 +18,7 @@ export async function getMemory(path: string) {
     .then((memory: any) => {
       const zippedData = (memory.data as string).slice(3);
       const data = unzip(zippedData);
-      return data;
+      return JSON.parse(data);
     });
 }
 

@@ -16,7 +16,7 @@
 
         <BodyPartsSelect v-model="bodyParts" :preset="'mine'" />
 
-        <v-text-field
+        <RoomSelect
           label="Target Room"
           v-model="targetRoom"
           v-validate="'required|min:4|max:6'"
@@ -24,9 +24,9 @@
           :error-messages="errors.collect('targetRoom')"
           data-vv-name="targetRoom"
           required
-        ></v-text-field>
+        />
 
-        <v-text-field
+        <RoomSelect
           label="Spawn Room"
           v-model="spawnRoom"
           v-validate="'required|min:4|max:6'"
@@ -34,7 +34,7 @@
           :error-messages="errors.collect('spawnRoom')"
           data-vv-name="spawnRoom"
           required
-        ></v-text-field>
+        />
 
         <v-btn @click="clear">reset</v-btn>
         <v-btn color="success" @click="submit">Add Task</v-btn>
@@ -50,8 +50,9 @@ import { TaskType, BodyPart, MineBuildTask, RepairTask, ClaimTask } from '@types
 import { bodyPartPresets } from '../bodyPart/bodyPartPresets';
 
 import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
+import RoomSelect from '../RoomSelect.vue'
 
-@Component({ components: { BodyPartsSelect } })
+@Component({ components: { BodyPartsSelect, RoomSelect } })
 export default class MineTaskForm extends Vue {
 
   name = '';

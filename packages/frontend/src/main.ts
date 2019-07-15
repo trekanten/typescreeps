@@ -3,7 +3,7 @@ import { api } from './plugins/api';
 
 import App from './App.vue';
 import router from './router';
-import store from './store';
+import { vueStore } from './store';
 
 import Vuetify from 'vuetify';
 import VeeValidate from 'vee-validate';
@@ -19,6 +19,6 @@ Vue.prototype.$api = api;
 
 new Vue({
   router,
-  store,
+  store: vueStore,
   render: h => h(App),
 }).$mount('#app');

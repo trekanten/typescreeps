@@ -16,7 +16,7 @@
 
         <BodyPartsSelect v-model="bodyParts" :preset="'build'" />
 
-        <v-text-field
+        <RoomSelect
           label="Room"
           v-model="room"
           v-validate="'required|min:4|max:6'"
@@ -24,7 +24,7 @@
           :error-messages="errors.collect('room')"
           data-vv-name="room"
           required
-        ></v-text-field>
+        />
 
         <v-text-field
           label="Container ID"
@@ -47,8 +47,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import { BuildTask, TaskType, BodyPart } from '@typescreeps/common';
 
 import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
+import RoomSelect from '../RoomSelect.vue'
 
-@Component({ components: { BodyPartsSelect } })
+@Component({ components: { BodyPartsSelect, RoomSelect } })
 export default class BuildTaskForm extends Vue {
 
   name = '';
