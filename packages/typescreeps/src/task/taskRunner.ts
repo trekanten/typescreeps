@@ -5,6 +5,7 @@ import { Build } from './tasks/build';
 import { MineBuild } from './tasks/miningBuild';
 import { Repair } from './tasks/repair';
 import { SpawnDistribution } from './tasks/spawnDistributor';
+import { Claim } from './tasks/claim';
 
 const TASK_SEGMENT = 5;
 
@@ -25,6 +26,10 @@ export function taskRunner() {
         }
         case TaskType.CARRY: {
           new Carry(task).runTask();
+          break;
+        }
+        case TaskType.CLAIM: {
+          new Claim(task).runTask();
           break;
         }
         case TaskType.MINE: {

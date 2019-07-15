@@ -19,7 +19,11 @@ export class Repair extends TaskBase<RepairTask> {
         this.creep.memory.targetId = getClosestRepairTarget(this.creep).id;
       }
       const target = Game.getObjectById(this.creep.memory.targetId) as Structure;
-      repair(this.creep, target);
+      if (target.hits === target.hitsMax) {
+        this.creep.memory.targetId = null;
+      } else {
+        repair(this.creep, target);
+      }
     } else {
       if (!this.creep.memory.containerId) {
         this.creep.memory.containerId = getClosestContainer(this.creep).id;
