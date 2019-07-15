@@ -71,7 +71,7 @@ import Vue from 'vue'
 import { Component, Prop } from 'vue-property-decorator';
 import { BodyPart } from '@typescreeps/common';
 
-import { getBodyPartCost, getBodyPartColor } from './bodyPart';
+import { getBodyPartColor } from './bodyPart';
 
 @Component
 export default class BodyPartList extends Vue {

@@ -1,15 +1,20 @@
-import { Task, GameRoom } from '@typescreeps/common/dist';
+import { Task, getTotalBodyPartCost } from '@typescreeps/common/dist';
 
 export function spawnCreepInAvailableRoom(task: Task) {
-  const rooms = Memory.gameRooms as GameRoom[];
-  if (rooms.length === 0) {
+  const gameRooms = Memory.gameRooms as Room[];
+  if (gameRooms.length === 0) {
     throw Error(`${task.name} No rooms found in memory.gameRooms`);
   }
 
+  const creepCost = getTotalBodyPartCost(task.bodyParts);
+
   let spawn = null;
-  for (const roomName in rooms) {
+  for (const gameRoom of gameRooms) {
     try {
-      spawn = getSpawnFromRoom(Game.rooms[roomName]);
+      if (creepCost > gameRoom.energyCapacityAvailable) {
+        throw Error(`${gameRoom.name} does not have enough energy capacity for ${task.name}`);
+      }
+      spawn = getSpawnFromRoom(Game.rooms[gameRoom.name]);
       break;
     } catch (error) {
       console.log(error);

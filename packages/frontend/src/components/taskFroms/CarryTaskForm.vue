@@ -44,16 +44,28 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { TaskType, CarryTask, BodyPart } from '@typescreeps/common';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { TaskType, CarryTask, BodyPart, Task } from '@typescreeps/common';
 
 import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
 
 @Component({ components: { BodyPartsSelect } })
 export default class CarryTaskForm extends Vue {
 
+  @Prop()
+  taskToEdit!: CarryTask | undefined;
+
+  created() {
+    if (this.taskToEdit) {
+      this.name = this.taskToEdit.name;
+      this.bodyParts = this.taskToEdit.bodyParts;
+      this.to = this.taskToEdit.to;
+      this.from = this.taskToEdit.from;
+    }
+  }
+
   name = '';
-  bodyParts = null;
+  bodyParts: BodyPart[] | null = null;
   to = '';
   from = '';
 
@@ -85,7 +97,7 @@ export default class CarryTaskForm extends Vue {
         from: this.from,
       }
 
-      this.$emit('newTask', carryTask);
+      this.$emit('submit', carryTask);
     } catch (error) {
       console.error(error);
     }

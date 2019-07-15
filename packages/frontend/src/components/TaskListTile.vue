@@ -61,11 +61,10 @@ export default class TaskListtile extends Vue {
   }
 
   editTask() {
-    console.log('EditIt');
-
+    this.$emit('edit', this.task);
   }
 
-  async deleteTask() {
+  deleteTask() {
     this.$emit('delete', this.task.name);
   }
 

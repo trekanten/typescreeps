@@ -11,12 +11,12 @@ router.get('/', async (_: Request, res: Response) => {
 });
 
 router.get('/rooms', async (_: Request, res: Response) => {
-  const roomsObject = await getMemory('gameRooms');
-  const rooms: string[] = [];
-  for (const key in roomsObject) {
-    rooms.push(key);
+  const gameRooms = await getMemory('gameRooms');
+  const roomNames: string[] = [];
+  for (const gameRoom of gameRooms) {
+    roomNames.push(gameRoom.name);
   }
-  res.send(rooms);
+  res.send(roomNames);
 });
 
 router.get('/tasks', async (_: Request, res: Response) => {

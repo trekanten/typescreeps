@@ -15,3 +15,37 @@ export function getTaskTypeIcon(taskType: TaskType | string) {
     default: return 'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fimage.flaticon.com%2Ficons%2Fpng%2F512%2F36%2F36601.png&f=1';
   }
 }
+
+export function getTaskForm(taskType: TaskType | string) {
+  switch (taskType) {
+
+    case TaskType.BUILD:
+      return 'BuildTaskForm';
+
+    case TaskType.CARRY:
+      return 'CarryTaskForm';
+
+    case TaskType.CLAIM:
+      return 'ClaimTaskForm';
+
+    case TaskType.MINE:
+      return 'MineTaskForm';
+
+    case TaskType.MINE_BUILD:
+      return 'MineBuildTaskForm';
+
+    case TaskType.REPAIR:
+      return 'RepairTaskForm';
+
+    case TaskType.SPAWN_DISTRIBUTOR:
+      return 'SpawnDistributorTaskForm';
+
+    case TaskType.UPGRADE:
+      return 'UpgradeTaskForm';
+
+    default: {
+      console.error(`Task form for task type ${taskType} not found`);
+      return null;
+    }
+  }
+}

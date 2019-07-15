@@ -52,9 +52,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { value, Wrapper, computed, watch } from 'vue-function-api';
-import { BodyPart } from '@typescreeps/common';
+import { BodyPart, getTotalBodyPartCost } from '@typescreeps/common';
 
-import { getBodyPartColor, getTotalBodyPartCost } from './bodyPart';
+import { getBodyPartColor } from './bodyPart';
 
 import BodyPartList from './BodyPartList.vue'
 

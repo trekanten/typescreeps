@@ -1,8 +1,12 @@
 <template>
   <v-layout row>
     <v-dialog v-model="showDialog" width="500">
-      <component :is="taskForm" @newTask="addTask" />
+      <component :is="taskForm" @submit="addNewTask" />
     </v-dialog>
+    <v-dialog v-model="showEditDialog" width="500">
+      <component :is="editForm" :taskToEdit="taskToEdit" @submit="updateTask" />
+    </v-dialog>
+
     <v-flex xs12 sm10 offset-sm1 md8 offset-md2>
       <v-card>
         <h3>Typescreeps</h3>
@@ -19,6 +23,7 @@
           </v-flex>
         </v-layout>
       </v-card>
+
       <v-card>
         <v-list two-line subheader>
           <v-list-group
@@ -43,6 +48,7 @@
               :key="task.name"
               :task="task"
               @delete="deleteTask"
+              @edit="editTask"
             />
           </v-list-group>
         </v-list>
@@ -68,7 +74,7 @@ import MineBuildTaskForm from '../components/taskFroms/MineBuildTaskForm.vue'
 import RepairTaskForm from '../components/taskFroms/RepairTaskForm.vue'
 import SpawnDistributorTaskForm from '../components/taskFroms//SpawnDistributorTaskForm.vue'
 import UpgradeTaskForm from '../components/taskFroms/UpgradeTaskForm.vue'
-import { getTaskTypeIcon } from '../service/taskType';
+import { getTaskTypeIcon, getTaskForm } from '../service/taskType';
 
 interface GroupedTask {
   title: string,
@@ -94,6 +100,10 @@ export default class Home extends Vue {
 
   showDialog = false;
 
+  showEditDialog = false;
+  taskToEdit: Task | null = null;
+  editForm: string | null = null;
+
   get taskTypes() {
     const taskTypes = [];
     for (var key in TaskType) {
@@ -106,54 +116,18 @@ export default class Home extends Vue {
     if (!this.selectedTask) {
       return null;
     }
-    switch (this.selectedTask) {
-      case TaskType.BUILD: {
-        return 'BuildTaskForm';
-        break;
-      }
-      case TaskType.CARRY: {
-        return 'CarryTaskForm';
-        break;
-      }
-      case TaskType.CLAIM: {
-        return 'ClaimTaskForm';
-        break;
-      }
-      case TaskType.MINE: {
-        return 'MineTaskForm';
-        break;
-      }
-      case TaskType.MINE_BUILD: {
-        return 'MineBuildTaskForm';
-        break;
-      }
-      case TaskType.REPAIR: {
-        return 'RepairTaskForm';
-        break;
-      }
-      case TaskType.SPAWN_DISTRIBUTOR: {
-        return 'SpawnDistributorTaskForm';
-        break;
-      }
-      case TaskType.UPGRADE: {
-        return 'UpgradeTaskForm';
-        break;
-      }
-      default: {
-        console.error(`Task form for task type ${this.selectedTask} not found`);
-        return null;
-      }
-    }
+    return getTaskForm(this.selectedTask);
   }
 
   updateGroupedTasks(tasks: Task[]) {
-    this.groupedTasks = [];
+    const groupedTasks = [];
     for (const task of tasks) {
-      const group = this.groupedTasks.find(gp => gp.title === task.type);
+      const group = groupedTasks.find(gp => gp.title === task.type);
+      const oldGroup = this.groupedTasks.find(gp => gp.title === task.type);
       if (!group) {
-        this.groupedTasks.push({
+        groupedTasks.push({
           title: task.type,
-          active: true,
+          active: oldGroup ? oldGroup.active : false,
           icon: getTaskTypeIcon(task.type),
           tasks: [task],
         })
@@ -161,6 +135,7 @@ export default class Home extends Vue {
         group.tasks.push(task)
       }
     }
+    this.groupedTasks = groupedTasks;
   }
 
   async created() {
@@ -168,15 +143,28 @@ export default class Home extends Vue {
     store.fetchTasks();
   }
 
-  async addTask(task: Task) {
+  async addNewTask(task: Task) {
     await this.$api.addTask(task);
     store.fetchTasks();
     this.showDialog = false;
   }
 
+  async updateTask(task: Task) {
+    // await this.$api.addTask(task);
+    // store.fetchTasks();
+    this.showEditDialog = false;
+    throw Error('updateTask not implemented');
+  }
+
   async deleteTask(taskName: string) {
     await this.$api.deleteTask(taskName);
     store.fetchTasks();
+  }
+
+  editTask(task: Task) {
+    this.editForm = getTaskForm(task.type);
+    this.taskToEdit = task;
+    this.showEditDialog = true;
   }
 
 }
