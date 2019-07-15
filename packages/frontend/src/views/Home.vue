@@ -1,9 +1,9 @@
 <template>
   <v-layout row>
-    <v-dialog v-model="showDialog" width="500">
+    <v-dialog v-if="showDialog" v-model="showDialog" width="500">
       <component :is="taskForm" @submit="addNewTask" />
     </v-dialog>
-    <v-dialog v-model="showEditDialog" width="500">
+    <v-dialog v-if="showEditDialog" v-model="showEditDialog" width="500">
       <component :is="editForm" :taskToEdit="taskToEdit" @submit="updateTask" />
     </v-dialog>
 

@@ -39,7 +39,7 @@ import { TaskType, BodyPart, MineBuildTask } from '@typescreeps/common';
 
 import { bodyPartPresets } from '../bodyPart/bodyPartPresets';
 
-import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
+import BodyPartsSelect from '@/components/formComponents/BodyPartsSelect.vue'
 
 @Component({ components: { BodyPartsSelect } })
 export default class MineTaskForm extends Vue {

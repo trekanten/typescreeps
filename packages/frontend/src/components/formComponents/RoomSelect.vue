@@ -1,13 +1,9 @@
 <template>
-  <v-combobox
-    v-model="room"
-    :items="rooms"
-    v-bind="$attrs"
-  ></v-combobox>
+  <v-combobox v-model="room" :items="rooms" v-bind="$attrs"></v-combobox>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 import { store } from '@/store';
 
 @Component

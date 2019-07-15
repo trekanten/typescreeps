@@ -14,7 +14,7 @@
           required
         ></v-text-field>
 
-        <BodyPartsSelect v-model="bodyParts" :preset="'carry'" />
+        <BodyPartsSelect v-model="this.bodyParts" :preset="'carry'" />
 
         <v-text-field
           label="Carry from"
@@ -47,25 +47,37 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { TaskType, CarryTask, BodyPart, Task } from '@typescreeps/common';
 
-import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
+import BodyPartsSelect from '@/components/formComponents/BodyPartsSelect.vue'
 
 @Component({ components: { BodyPartsSelect } })
 export default class CarryTaskForm extends Vue {
+
+  test = []
 
   @Prop()
   taskToEdit!: CarryTask | undefined;
 
   created() {
+    this.init();
+  }
+
+  activated() {
+    this.init();
+  }
+
+  init() {
     if (this.taskToEdit) {
       this.name = this.taskToEdit.name;
       this.bodyParts = this.taskToEdit.bodyParts;
+      this.bodyPartsTemp = this.taskToEdit.bodyParts;
       this.to = this.taskToEdit.to;
       this.from = this.taskToEdit.from;
     }
   }
 
   name = '';
-  bodyParts: BodyPart[] | null = null;
+  bodyParts: BodyPart[] = [];
+  bodyPartsTemp: BodyPart[] = [];
   to = '';
   from = '';
 
@@ -85,7 +97,7 @@ export default class CarryTaskForm extends Vue {
       if (!valid) {
         throw Error('Carry taks not valid');
       }
-      if (!this.bodyParts) {
+      if (this.bodyParts.length === 0) {
         throw Error('Carry task missing body parts');
       }
 
@@ -105,6 +117,7 @@ export default class CarryTaskForm extends Vue {
   };
   clear() {
     this.name = ''
+    this.bodyParts = []
     this.to = ''
     this.from = ''
     this.$validator.reset()

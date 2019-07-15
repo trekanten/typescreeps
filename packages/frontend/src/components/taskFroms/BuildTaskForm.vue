@@ -46,7 +46,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { BuildTask, TaskType, BodyPart } from '@typescreeps/common';
 
-import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
+import BodyPartsSelect from '@/components/formComponents/BodyPartsSelect.vue'
 import RoomSelect from '@/components/formComponents/RoomSelect.vue'
 
 @Component({ components: { BodyPartsSelect, RoomSelect } })
