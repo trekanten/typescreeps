@@ -87,7 +87,7 @@ export default class MineTaskForm extends Vue {
         containerId: this.containerId === '' ? undefined : this.containerId,
       }
 
-      this.$emit('newTask', RepairTask);
+      this.$emit('submit', RepairTask);
     } catch (error) {
       console.error(error);
     }

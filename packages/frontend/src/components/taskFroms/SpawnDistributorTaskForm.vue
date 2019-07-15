@@ -85,7 +85,7 @@ export default class BuildTaskForm extends Vue {
         containerId: this.containerId === '' ? undefined : this.containerId,
       }
 
-      this.$emit('newTask', spawnDistributionTask);
+      this.$emit('submit', spawnDistributionTask);
     } catch (error) {
       console.error(error);
     }

@@ -88,7 +88,7 @@ export default class MineTaskForm extends Vue {
         spawnRoom: this.spawnRoom,
       }
 
-      this.$emit('newTask', claimTask);
+      this.$emit('submit', claimTask);
     } catch (error) {
       console.error(error);
     }

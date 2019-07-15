@@ -86,7 +86,7 @@ export default class MineTaskForm extends Vue {
         depositId: this.depositId === '' ? undefined : this.depositId,
       }
 
-      this.$emit('newTask', MineTask);
+      this.$emit('submit', MineTask);
     } catch (error) {
       console.error(error);
     }

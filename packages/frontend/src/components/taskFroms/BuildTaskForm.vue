@@ -87,7 +87,7 @@ export default class BuildTaskForm extends Vue {
         priority: this.priority,
       }
 
-      this.$emit('newTask', buildTask);
+      this.$emit('submit', buildTask);
     } catch (error) {
       console.error(error);
     }

@@ -1,41 +1,28 @@
 import { Task, getTotalBodyPartCost } from '@typescreeps/common/dist';
 
-export function spawnCreepInAvailableRoom(task: Task) {
-  const gameRooms = Memory.gameRooms as Room[];
-  if (gameRooms.length === 0) {
-    throw Error(`${task.name} No rooms found in memory.gameRooms`);
+export function spawnCreep(task: Task, spawn: StructureSpawn) {
+  const canSpawnCreep = spawn.spawnCreep(task.bodyParts, task.name, { dryRun: true }) === OK;
+
+  if (canSpawnCreep) {
+    spawn.spawnCreep(task.bodyParts, task.name);
+    return;
   }
 
   const creepCost = getTotalBodyPartCost(task.bodyParts);
+  if (creepCost < spawn.room.energyCapacityAvailable) {
+    throw Error(`${task.name}: Waiting for spawn ${spawn.name}, currently not enough energy`);
+  }
 
-  let spawn = null;
-  for (const gameRoom of gameRooms) {
-    try {
-      if (creepCost > gameRoom.energyCapacityAvailable) {
-        throw Error(`${gameRoom.name} does not have enough energy capacity for ${task.name}`);
-      }
-      spawn = getSpawnFromRoom(Game.rooms[gameRoom.name]);
-      break;
-    } catch (error) {
-      console.log(error);
+  for (const spawnName in Game.spawns) {
+    const spawn = Game.spawns[spawnName];
+
+    if (creepCost < spawn.room.energyAvailable) {
+      spawn.spawnCreep(task.bodyParts, task.name);
+      throw Error(`${task.name} spawning in spawn ${spawn.name}`);
     }
   }
 
-  if (!spawn) {
-    throw Error(`${task.name} No suitable spawns found in memory.gameRooms`);
-  }
-
-  spawnCreep(task, spawn);
-}
-
-export function spawnCreep(task: Task, spawn: StructureSpawn) {
-  try {
-
-    spawn.createCreep(task.bodyParts, task.name);
-
-  } catch (error) {
-    throw error;
-  }
+  throw Error(`${task.name} no suitable spawn found!`);
 }
 
 export function getSpawnFromRoom(room: Room): StructureSpawn {

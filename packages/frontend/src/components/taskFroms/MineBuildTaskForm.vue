@@ -75,7 +75,7 @@ export default class MineTaskForm extends Vue {
         sourceId: this.sourceId,
       }
 
-      this.$emit('newTask', MineBuildTask);
+      this.$emit('submit', MineBuildTask);
     } catch (error) {
       console.error(error);
     }
