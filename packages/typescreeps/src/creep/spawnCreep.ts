@@ -6,16 +6,20 @@ export function spawnCreepInAvailableRoom(task: Task) {
     throw Error(`${task.name} No rooms found in memory.gameRooms`);
   }
 
-  let roomName = null;
-  for (const key in rooms) {
-    roomName = key;
+  let spawn = null;
+  for (const roomName in rooms) {
+    try {
+      spawn = getSpawnFromRoom(Game.rooms[roomName]);
+      break;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  if (!roomName) {
-    throw Error(`${task.name} No rooms found in memory.gameRooms`);
+  if (!spawn) {
+    throw Error(`${task.name} No suitable spawns found in memory.gameRooms`);
   }
 
-  const spawn = getSpawnFromRoom(Game.rooms[roomName]);
   spawnCreep(task, spawn);
 }
 
