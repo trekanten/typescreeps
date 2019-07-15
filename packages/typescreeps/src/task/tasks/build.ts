@@ -22,7 +22,11 @@ export class Build extends TaskBase<BuildTask>{
       build(this.creep, target);
     } else {
       if (!this.creep.memory.containerId) {
-        this.creep.memory.containerId = getClosestContainer(this.creep).id;
+        const container = getClosestContainer(this.creep);
+        if (!container) {
+          throw (`${this.task.name} does not find any container`);
+        }
+        this.creep.memory.containerId = container.id;
       }
       const container = Game.getObjectById(this.creep.memory.containerId) as Structure;
       withdraw(this.creep, container);
