@@ -1,7 +1,7 @@
 <template>
   <div class="bodypart-builder">
     <h5>Body parts. Total cost: {{totalCost}}</h5>
-    <div v-for="(bodyPart) in BodyPart" :key="bodyPart">
+    <div v-for="bodyPart in bodyPartEnum" :key="bodyPart">
       <h6>{{bodyPart}}</h6>
       <div class="bodypart-row">
         <div class="bodypart remove" @click="removeBodyPart(bodyPart)"></div>
@@ -14,7 +14,7 @@
         ></div>
         <div
           class="bodypart"
-          v-for="c in (maxParts - (bodyParts.filter(bp => bp === bodyPart).length))"
+          v-for="c in (10 - (bodyParts.filter(bp => bp === bodyPart).length))"
           :key="`${bodyPart}-${c}`"
           @click="addBodyPart(bodyPart, c)"
         ></div>
@@ -66,21 +66,29 @@ export default class BodyPartBuilder extends Vue {
   BodyPart = BodyPart;
   getBodyPartColor = getBodyPartColor;
 
+  // Constants
   maxParts = 10
 
   @Prop({ required: true })
   value!: BodyPart[]
 
+  bodyParts: BodyPart[] = [];
+
   created() {
-    console.log(this.value);
-    
     this.bodyParts = this.value;
   }
 
-  bodyParts: BodyPart[] = [BodyPart.MOVE, BodyPart.MOVE, BodyPart.WORK];
-  @Watch('bodyParts')
-  onBodyPartsChanged(value: BodyPart[], oldValue: BodyPart[]) {
+  @Watch('bodyParts', { deep: true })
+  onBPsChanged(value: BodyPart[]) {
     this.$emit('input', value);
+  }
+
+  get bodyPartEnum() {
+    const bodyParts = [];
+    for (const key in BodyPart) {
+      bodyParts.push(BodyPart[key]);
+    }
+    return bodyParts;
   }
 
   get totalCost() {

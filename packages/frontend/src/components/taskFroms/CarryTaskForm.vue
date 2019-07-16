@@ -14,7 +14,7 @@
           required
         ></v-text-field>
 
-        <BodyPartsSelect v-model="this.bodyParts" :preset="'carry'" />
+        <BodyPartsSelect v-model="bodyParts"/>
 
         <v-text-field
           label="Carry from"
@@ -69,7 +69,6 @@ export default class CarryTaskForm extends Vue {
     if (this.taskToEdit) {
       this.name = this.taskToEdit.name;
       this.bodyParts = this.taskToEdit.bodyParts;
-      this.bodyPartsTemp = this.taskToEdit.bodyParts;
       this.to = this.taskToEdit.to;
       this.from = this.taskToEdit.from;
     }
@@ -77,7 +76,6 @@ export default class CarryTaskForm extends Vue {
 
   name = '';
   bodyParts: BodyPart[] = [];
-  bodyPartsTemp: BodyPart[] = [];
   to = '';
   from = '';
 
