@@ -46,7 +46,13 @@ export class Build extends TaskBase<BuildTask>{
   }
 
   getTarget(): ConstructionSite {
-    const target = this.creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+    let target;
+    if (this.creep.room.name !== this.task.room) {
+      const targets = Game.rooms[this.task.room].find(FIND_CONSTRUCTION_SITES);
+      target = targets[0];
+    } else {
+      target = this.creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+    }
     if (!target) {
       throw Error(`Task ${this.task.name}: No construction site found in ${this.task.room}`);
     }

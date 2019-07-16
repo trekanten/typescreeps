@@ -1,11 +1,15 @@
 import { Task, getTotalBodyPartCost } from '@typescreeps/common/dist';
 
 export function spawnCreep(task: Task, spawn: StructureSpawn) {
-  const canSpawnCreep = spawn.spawnCreep(task.bodyParts, task.name, { dryRun: true }) === OK;
+  const canSpawnCreep = spawn.spawnCreep(task.bodyParts, task.name, { dryRun: true });
 
-  if (canSpawnCreep) {
+  if (canSpawnCreep === OK) {
     spawn.spawnCreep(task.bodyParts, task.name);
     return;
+  }
+
+  if (canSpawnCreep === ERR_BUSY) {
+    throw Error(`${task.name}: Waiting for spawn ${spawn.name}, currently busy `);
   }
 
   const creepCost = getTotalBodyPartCost(task.bodyParts);
@@ -18,11 +22,11 @@ export function spawnCreep(task: Task, spawn: StructureSpawn) {
 
     if (creepCost < spawn.room.energyAvailable) {
       spawn.spawnCreep(task.bodyParts, task.name);
-      throw Error(`${task.name} spawning in spawn ${spawn.name}`);
+      throw Error(`${task.name}: Spawning in spawn ${spawn.name}`);
     }
   }
 
-  throw Error(`${task.name} no suitable spawn found!`);
+  throw Error(`${task.name}: No suitable spawn found!`);
 }
 
 export function getSpawnFromRoom(room: Room): StructureSpawn {
