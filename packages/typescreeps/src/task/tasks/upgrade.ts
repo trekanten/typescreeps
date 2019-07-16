@@ -17,7 +17,7 @@ export class Upgrade extends TaskBase<UpgradeTask> {
       upgradeController(this.creep, this.getController());
     } else {
       if (!this.creep.memory.containerId) {
-        const container = getClosestContainer(this.creep);
+        const container = getClosestContainer(this.creep, this.task.containerId);
         if (!container) {
           throw (`${this.task.name} does not find any container`);
         }

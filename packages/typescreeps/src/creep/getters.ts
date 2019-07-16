@@ -1,6 +1,7 @@
 // tslint:disable:max-line-length
 
 type EnergyStructure =
+  // | StructureContainer
   | StructureExtension
   | StructureLink
   | StructureNuker
@@ -25,6 +26,10 @@ function filterNotFull<T extends EnergyStructure>(structures: T[]) {
   return structures.filter(structure => structure.energy !== structure.energyCapacity);
 }
 
+function filterNotEmpty<T extends EnergyStructure>(structures: T[]) {
+  return structures.filter(structure => structure.energy !== 0);
+}
+
 function getStructures<T extends AnyStructure>(creep: Creep, constant: StructureConstant) {
   return creep.room.find(FIND_MY_STRUCTURES, {
     filter: structure => structure.structureType === constant,
@@ -39,35 +44,52 @@ function getClosestStructure<T extends AnyStructure>(creep: Creep, constant: Str
   return sortedStructures[0];
 }
 
-export function getClosestContainer(creep: Creep, containerId?: string) {
-
-  if (containerId) {
-    const container = Game.getObjectById(containerId) as Structure;
-    if (!container) {
-      return null;
-    }
-    return container as StructureContainer;
+function getClosestNotFullStructure<T extends EnergyStructure>(creep: Creep, constant: StructureConstant) {
+  const structures = getStructures<T>(creep, constant);
+  const notFullStructures = sortStructuresOnClosest(creep, filterNotFull(structures));
+  if (notFullStructures.length === 0) {
+    return null;
   }
+  return notFullStructures[0];
+}
 
+function getClosestNotEmptyStructure<T extends EnergyStructure>(creep: Creep, constant: StructureConstant) {
+  const structures = getStructures<T>(creep, constant);
+  const notEmptyStructures = sortStructuresOnClosest(creep, filterNotEmpty(structures));
+  if (notEmptyStructures.length === 0) {
+    return null;
+  }
+  return notEmptyStructures[0];
+}
+
+function getContainerById(containerId: string) {
+  const container = Game.getObjectById(containerId) as Structure;
+  if (!container) {
+    return null;
+  }
+  return container as StructureContainer;
+}
+
+export function getClosestContainer(creep: Creep, containerId?: string) {
+  if (containerId) {
+    const container = getContainerById(containerId);
+    if (container) {
+      return container;
+    }
+  }
   return getClosestStructure<StructureContainer>(creep, STRUCTURE_CONTAINER);
 }
 
 export function getClosestNotFullExtention(creep: Creep) {
-  const extentions = getStructures<StructureExtension>(creep, STRUCTURE_EXTENSION);
-  const filtered = sortStructuresOnClosest(creep, filterNotFull(extentions));
-  if (filtered.length === 0) {
-    return null;
-  }
-  return filtered[0];
+  return getClosestNotFullStructure<StructureExtension>(creep, STRUCTURE_EXTENSION);
 }
 
 export function getClosestNotFullSpawn(creep: Creep) {
-  const extentions = getStructures<StructureSpawn>(creep, STRUCTURE_SPAWN);
-  const filtered = sortStructuresOnClosest(creep, filterNotFull(extentions));
-  if (filtered.length === 0) {
-    return null;
-  }
-  return filtered[0];
+  return getClosestNotFullStructure<StructureSpawn>(creep, STRUCTURE_SPAWN);
+}
+
+export function getClosestNotFullTower(creep: Creep) {
+  return getClosestNotFullStructure<StructureTower>(creep, STRUCTURE_TOWER);
 }
 
 export function getClosestRepairTarget(creep: Creep) {

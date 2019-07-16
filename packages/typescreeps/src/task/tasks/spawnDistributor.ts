@@ -2,7 +2,7 @@ import { TaskBase } from './taskBase';
 import { SpawnDistributorTask } from '@typescreeps/common/dist';
 import { getSpawnFromRoom, withdraw, deposit } from '@/creep';
 import {
-  getClosestNotFullExtention, getClosestNotFullSpawn, getClosestContainer,
+  getClosestNotFullExtention, getClosestNotFullSpawn, getClosestContainer, getClosestNotFullTower,
 } from '@/creep/getters';
 
 export class SpawnDistribution extends TaskBase<SpawnDistributorTask>{
@@ -31,7 +31,7 @@ export class SpawnDistribution extends TaskBase<SpawnDistributorTask>{
   }
 
   getContainer() {
-    const container = getClosestContainer(this.creep);
+    const container = getClosestContainer(this.creep, this.task.containerId);
     if (!container) {
       throw (`${this.task.name} does not find any container`);
     }
@@ -47,6 +47,11 @@ export class SpawnDistribution extends TaskBase<SpawnDistributorTask>{
     const closestSpawn = getClosestNotFullSpawn(this.creep);
     if (closestSpawn) {
       return closestSpawn;
+    }
+
+    const closestTower = getClosestNotFullTower(this.creep);
+    if (closestTower) {
+      return closestTower;
     }
 
     return null;

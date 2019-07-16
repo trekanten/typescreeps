@@ -22,7 +22,7 @@ export class Build extends TaskBase<BuildTask>{
       build(this.creep, target);
     } else {
       if (!this.creep.memory.containerId) {
-        const container = getClosestContainer(this.creep);
+        const container = getClosestContainer(this.creep, this.task.containerId);
         if (!container) {
           throw (`${this.task.name} does not find any container`);
         }
