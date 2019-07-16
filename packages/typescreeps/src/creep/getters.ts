@@ -11,10 +11,10 @@ type EnergyStructure =
   // | StructureTerminal
   | StructureTower;
 
-function sortStructuresOnClosest<T extends AnyStructure>(creep: Creep, structures: T[]) {
+function sortStructuresOnClosest<T extends AnyStructure>(pos: RoomPosition, structures: T[]) {
   return structures.sort((a, b) =>
-    Math.sqrt(Math.pow((creep.pos.x - a.pos.x), 2) + Math.pow((creep.pos.y - a.pos.y), 2))
-    - Math.sqrt(Math.pow((creep.pos.x - b.pos.x), 2) + Math.pow((creep.pos.y - b.pos.y), 2)),
+    Math.sqrt(Math.pow((pos.x - a.pos.x), 2) + Math.pow((pos.y - a.pos.y), 2))
+    - Math.sqrt(Math.pow((pos.x - b.pos.x), 2) + Math.pow((pos.y - b.pos.y), 2)),
   );
 }
 
@@ -30,14 +30,14 @@ function filterNotEmpty<T extends EnergyStructure>(structures: T[]) {
   return structures.filter(structure => structure.energy !== 0);
 }
 
-function getStructures<T extends AnyStructure>(creep: Creep, constant: StructureConstant) {
-  return creep.room.find(FIND_MY_STRUCTURES, {
+function getStructures<T extends AnyStructure>(room: Room, constant: StructureConstant) {
+  return room.find(FIND_MY_STRUCTURES, {
     filter: structure => structure.structureType === constant,
   }) as T[];
 }
 
 function getClosestStructure<T extends AnyStructure>(creep: Creep, constant: StructureConstant) {
-  const sortedStructures = sortStructuresOnClosest(creep, getStructures<T>(creep, constant));
+  const sortedStructures = sortStructuresOnClosest(creep.pos, getStructures<T>(creep.room, constant));
   if (sortedStructures.length === 0) {
     return null;
   }
@@ -45,8 +45,8 @@ function getClosestStructure<T extends AnyStructure>(creep: Creep, constant: Str
 }
 
 function getClosestNotFullStructure<T extends EnergyStructure>(creep: Creep, constant: StructureConstant) {
-  const structures = getStructures<T>(creep, constant);
-  const notFullStructures = sortStructuresOnClosest(creep, filterNotFull(structures));
+  const structures = getStructures<T>(creep.room, constant);
+  const notFullStructures = sortStructuresOnClosest(creep.pos, filterNotFull(structures));
   if (notFullStructures.length === 0) {
     return null;
   }
@@ -54,8 +54,8 @@ function getClosestNotFullStructure<T extends EnergyStructure>(creep: Creep, con
 }
 
 function getClosestNotEmptyStructure<T extends EnergyStructure>(creep: Creep, constant: StructureConstant) {
-  const structures = getStructures<T>(creep, constant);
-  const notEmptyStructures = sortStructuresOnClosest(creep, filterNotEmpty(structures));
+  const structures = getStructures<T>(creep.room, constant);
+  const notEmptyStructures = sortStructuresOnClosest(creep.pos, filterNotEmpty(structures));
   if (notEmptyStructures.length === 0) {
     return null;
   }
@@ -92,10 +92,14 @@ export function getClosestNotFullTower(creep: Creep) {
   return getClosestNotFullStructure<StructureTower>(creep, STRUCTURE_TOWER);
 }
 
-export function getClosestRepairTarget(creep: Creep) {
+export function getTowers(room: Room) {
+  return getStructures<StructureTower>(room, STRUCTURE_TOWER);
+}
+
+export function getLowestRepairTarget(room: Room) {
 
   // Get all structures
-  const targets = creep.room.find(FIND_STRUCTURES, {
+  const targets = room.find(FIND_STRUCTURES, {
     filter: object =>
       (object.hits < (object.hitsMax))
       && (object.structureType !== STRUCTURE_WALL)
@@ -107,7 +111,7 @@ export function getClosestRepairTarget(creep: Creep) {
 
   // Throw if no targets exist
   if (sortedTargets.length === 0) {
-    throw Error(`${creep.name}: Not able find any repair targets`);
+    return null;
   }
 
   return targets[0];

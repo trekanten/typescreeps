@@ -1,7 +1,7 @@
 import { TaskBase } from './taskBase';
 import { RepairTask } from '@typescreeps/common/dist';
 import { withdraw, repair, getSpawnFromRoom } from '@/creep';
-import { getClosestContainer, getClosestRepairTarget } from '@/creep/getters';
+import { getClosestContainer, getLowestRepairTarget } from '@/creep/getters';
 
 export class Repair extends TaskBase<RepairTask> {
 
@@ -16,7 +16,11 @@ export class Repair extends TaskBase<RepairTask> {
 
     if (this.creep.memory.repair === true) {
       if (!this.creep.memory.targetId) {
-        this.creep.memory.targetId = getClosestRepairTarget(this.creep).id;
+        const target = getLowestRepairTarget(this.creep.room);
+        if (!target) {
+          throw Error(`${this.task.name}: Not able find any repair targets`);
+        }
+        this.creep.memory.targetId = target.id;
       }
       const target = Game.getObjectById(this.creep.memory.targetId) as Structure;
       if (target.hits === target.hitsMax) {
