@@ -22,7 +22,11 @@ export class Build extends TaskBase<BuildTask>{
       build(this.creep, target);
     } else {
       if (!this.creep.memory.containerId) {
-        this.creep.memory.containerId = getClosestContainer(this.creep).id;
+        const container = getClosestContainer(this.creep, this.task.containerId);
+        if (!container) {
+          throw (`${this.task.name} does not find any container`);
+        }
+        this.creep.memory.containerId = container.id;
       }
       const container = Game.getObjectById(this.creep.memory.containerId) as Structure;
       withdraw(this.creep, container);
@@ -42,7 +46,13 @@ export class Build extends TaskBase<BuildTask>{
   }
 
   getTarget(): ConstructionSite {
-    const target = this.creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+    let target;
+    if (this.creep.room.name !== this.task.room) {
+      const targets = Game.rooms[this.task.room].find(FIND_CONSTRUCTION_SITES);
+      target = targets[0];
+    } else {
+      target = this.creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+    }
     if (!target) {
       throw Error(`Task ${this.task.name}: No construction site found in ${this.task.room}`);
     }

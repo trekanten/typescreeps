@@ -11,7 +11,7 @@ export class Claim extends TaskBase<ClaimTask>{
       this.creep.moveTo(exit);
     } else {
       const controller = this.creep.room.controller as StructureController;
-      if (this.creep.reserveController(controller) === ERR_NOT_IN_RANGE) {
+      if (this.creep.claimController(controller) === ERR_NOT_IN_RANGE) {
         this.creep.moveTo(controller);
       }
     }
