@@ -31,6 +31,10 @@ export class API {
     return await this.instance.delete(`screeps/tasks/${taskName}`).then((r: any) => r.data);
   }
 
+  public async updateTask(taskName: string, task: Task): Promise<null> {
+    return await this.instance.patch(`screeps/tasks/${taskName}`, task).then((r: any) => r.data);
+  }
+
   public async getRoooms(): Promise<string[]> {
     return await this.instance.get('screeps/rooms').then((r: any) => r.data);
   }

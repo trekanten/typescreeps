@@ -66,21 +66,18 @@ export default class BodyPartBuilder extends Vue {
   BodyPart = BodyPart;
   getBodyPartColor = getBodyPartColor;
 
-  // Constants
-  maxParts = 10
-
   @Prop({ required: true })
   value!: BodyPart[]
+
+  @Watch('value')
+  valueUpdated(newValue: BodyPart[]){
+    this.bodyParts = this.value;
+  }
 
   bodyParts: BodyPart[] = [];
 
   created() {
     this.bodyParts = this.value;
-  }
-
-  @Watch('bodyParts', { deep: true })
-  onBPsChanged(value: BodyPart[]) {
-    this.$emit('input', value);
   }
 
   get bodyPartEnum() {
@@ -104,11 +101,13 @@ export default class BodyPartBuilder extends Vue {
     for (let i = 0; i < count; i++) {
       this.bodyParts.push(bodyPart);
       this.bodyParts = this.bodyParts.sort();
+      this.$emit('input', this.bodyParts);
     }
   }
 
   removeBodyPart(bodyPart: BodyPart) {
-    this.bodyParts = this.bodyParts.filter(bp => bp !== bodyPart)
+    this.bodyParts = this.bodyParts.filter(bp => bp !== bodyPart);
+    this.$emit('input', this.bodyParts);
   }
 }
 </script>

@@ -40,14 +40,15 @@ router.delete('/tasks/:taskName', async (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
-// router.patch('/tasks/:taskName', async (req: Request, res: Response) => {
-//   const taskName = req.params.taskName;
-//   const body = req.body as Task;
-//   const tasks = await getSegment(TASK_SEGMENT) as Task[];
-//   const updatedTasks = tasks.filter(task => task.name !== taskName);
-//   await setSegment(TASK_SEGMENT, updatedTasks);
-//   res.sendStatus(200);
-// });
+router.patch('/tasks/:taskName', async (req: Request, res: Response) => {
+  const taskName = req.params.taskName;
+  const body = req.body as Task;
+  const tasks = await getSegment(TASK_SEGMENT) as Task[];
+  const updatedTasks = tasks.filter(task => task.name !== taskName);
+  updatedTasks.push(body);
+  await setSegment(TASK_SEGMENT, updatedTasks);
+  res.sendStatus(200);
+});
 
 router.get('/segment/:segmentNr', async (req: Request, res: Response) => {
   const segmentNr = req.params.segmentNr;

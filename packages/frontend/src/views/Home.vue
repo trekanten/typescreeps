@@ -4,7 +4,7 @@
       <component :is="taskForm" @submit="addNewTask" />
     </v-dialog>
     <v-dialog v-if="showEditDialog" v-model="showEditDialog" width="500">
-      <component :is="editForm" :taskToEdit="taskToEdit" @submit="updateTask" />
+      <component :is="editForm" :originalTask="taskToEdit" @submit="updateTask" />
     </v-dialog>
 
     <v-flex xs12 sm10 offset-sm1 md8 offset-md2>
@@ -145,20 +145,22 @@ export default class Home extends Vue {
 
   async addNewTask(task: Task) {
     await this.$api.addTask(task);
-    store.fetchTasks();
+    await store.fetchTasks();
     this.showDialog = false;
   }
 
   async updateTask(task: Task) {
-    // await this.$api.addTask(task);
-    // store.fetchTasks();
+    if (!this.taskToEdit) {
+      throw Error('No Task to edit')
+    }
+    await this.$api.updateTask(this.taskToEdit.name, task);
+    await store.fetchTasks();
     this.showEditDialog = false;
-    throw Error('updateTask not implemented');
   }
 
   async deleteTask(taskName: string) {
     await this.$api.deleteTask(taskName);
-    store.fetchTasks();
+    await store.fetchTasks();
   }
 
   editTask(task: Task) {

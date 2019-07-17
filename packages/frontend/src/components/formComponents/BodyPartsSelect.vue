@@ -1,5 +1,9 @@
 <template>
   <div>
+    <!-- <BodyPartBuilder
+      v-if="useCustomBodyParts"
+      v-model="builderBodyParts"
+    /> -->
     <BodyPartBuilder
       v-if="useCustomBodyParts"
       v-model="builderBodyParts"
@@ -13,6 +17,7 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { TaskType, BodyPart } from '@typescreeps/common';
 
+import BodyPartPresetSelect from '@/components/bodyPart/BodyPartPresetSelect.vue'
 import BodyPartBuilder from '@/components/bodyPart/BodyPartBuilder.vue'
 
 @Component({ components: { BodyPartBuilder } })
@@ -20,6 +25,11 @@ export default class BodyPartsSelect extends Vue {
 
   @Prop()
   value!: BodyPart[];
+
+  @Watch('value')
+  valueUpdated(newBodyParts: BodyPart[]) {
+    this.builderBodyParts = this.value;
+  }
 
   builderBodyParts: BodyPart[] = []
 

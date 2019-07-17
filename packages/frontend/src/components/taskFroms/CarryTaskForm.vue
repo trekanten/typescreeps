@@ -6,7 +6,7 @@
       <form>
         <v-text-field
           label="Name"
-          v-model="name"
+          v-model="task.name"
           v-validate="'required|max:10'"
           :counter="10"
           :error-messages="errors.collect('name')"
@@ -14,11 +14,11 @@
           required
         ></v-text-field>
 
-        <BodyPartsSelect v-model="bodyParts"/>
+        <BodyPartsSelect v-model="task.bodyParts" />
 
         <v-text-field
           label="Carry from"
-          v-model="from"
+          v-model="task.from"
           v-validate="'required|min:24|max:24'"
           :counter="24"
           :error-messages="errors.collect('from')"
@@ -28,7 +28,7 @@
 
         <v-text-field
           label="Carry to"
-          v-model="to"
+          v-model="task.to"
           v-validate="'required|min:24|max:24'"
           :counter="24"
           :error-messages="errors.collect('to')"
@@ -52,10 +52,8 @@ import BodyPartsSelect from '@/components/formComponents/BodyPartsSelect.vue'
 @Component({ components: { BodyPartsSelect } })
 export default class CarryTaskForm extends Vue {
 
-  test = []
-
   @Prop()
-  taskToEdit!: CarryTask | undefined;
+  originalTask!: CarryTask | undefined;
 
   created() {
     this.init();
@@ -66,18 +64,18 @@ export default class CarryTaskForm extends Vue {
   }
 
   init() {
-    if (this.taskToEdit) {
-      this.name = this.taskToEdit.name;
-      this.bodyParts = this.taskToEdit.bodyParts;
-      this.to = this.taskToEdit.to;
-      this.from = this.taskToEdit.from;
+    if (this.originalTask) {
+      this.task = JSON.parse(JSON.stringify(this.originalTask))
     }
   }
 
-  name = '';
-  bodyParts: BodyPart[] = [];
-  to = '';
-  from = '';
+  task: CarryTask = {
+    type: TaskType.CARRY,
+    name: '',
+    bodyParts: [],
+    to: '',
+    from: '',
+  }
 
   dictionary = {
     custom: {
@@ -95,29 +93,25 @@ export default class CarryTaskForm extends Vue {
       if (!valid) {
         throw Error('Carry taks not valid');
       }
-      if (this.bodyParts.length === 0) {
+      if (this.task.bodyParts.length === 0) {
         throw Error('Carry task missing body parts');
       }
 
-      const carryTask: CarryTask = {
-        name: this.name,
-        type: TaskType.CARRY,
-        bodyParts: this.bodyParts as unknown as BodyPart[],
-        to: this.to,
-        from: this.from,
-      }
-
-      this.$emit('submit', carryTask);
+      this.$emit('submit', this.task);
     } catch (error) {
       console.error(error);
     }
 
   };
   clear() {
-    this.name = ''
-    this.bodyParts = []
-    this.to = ''
-    this.from = ''
+    if (this.originalTask) {
+      this.task = JSON.parse(JSON.stringify(this.originalTask))
+    } else {
+      this.task.name = ''
+      this.task.bodyParts = []
+      this.task.to = ''
+      this.task.from = ''
+    }
     this.$validator.reset()
   };
 }
