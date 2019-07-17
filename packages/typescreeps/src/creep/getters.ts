@@ -31,7 +31,7 @@ function filterNotEmpty<T extends EnergyStructure>(structures: T[]) {
 }
 
 function getStructures<T extends AnyStructure>(room: Room, constant: StructureConstant) {
-  return room.find(FIND_MY_STRUCTURES, {
+  return room.find(FIND_STRUCTURES, {
     filter: structure => structure.structureType === constant,
   }) as T[];
 }
