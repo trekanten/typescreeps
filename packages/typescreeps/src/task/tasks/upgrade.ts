@@ -1,6 +1,6 @@
 import { TaskBase } from './taskBase';
 import { UpgradeTask } from '@typescreeps/common/dist';
-import { getSpawnFromRoomObject, withdraw, upgradeController } from '@/creep';
+import { withdraw, upgradeController } from '@/creep';
 import { getClosestContainer } from '@/creep/getters';
 
 export class Upgrade extends TaskBase<UpgradeTask> {
@@ -28,11 +28,7 @@ export class Upgrade extends TaskBase<UpgradeTask> {
     }
   }
 
-  getSpawn() {
-    return getSpawnFromRoomObject(this.getController());
-  }
-
-  getRoom(): Room {
+  getSpawnRoom(): Room {
     const room = Game.rooms[this.task.room];
     if (!room) {
       throw Error(`Task ${this.task.name}: Room ${this.task.room} not found`);
@@ -41,7 +37,7 @@ export class Upgrade extends TaskBase<UpgradeTask> {
   }
 
   getController() {
-    const controller = this.getRoom().controller;
+    const controller = this.getSpawnRoom().controller;
     if (!controller) {
       throw Error(`Task ${this.task.name}: Controller not found in room ${this.task.room}`);
     }

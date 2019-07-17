@@ -1,20 +1,39 @@
 import { Task, getTotalBodyPartCost } from '@typescreeps/common/dist';
 
-export function spawnCreep(task: Task, spawn: StructureSpawn) {
-  const canSpawnCreep = spawn.spawnCreep(task.bodyParts, task.name, { dryRun: true });
+export function spawnCreep(task: Task, room: Room) {
 
-  if (canSpawnCreep === OK) {
-    spawn.spawnCreep(task.bodyParts, task.name);
-    return;
-  }
-
-  if (canSpawnCreep === ERR_BUSY) {
-    throw Error(`${task.name}: Waiting for spawn ${spawn.name}, currently busy `);
+  let spawn: StructureSpawn | undefined;
+  try {
+    spawn = getSpawnFromRoom(room);
+  } catch (error) {
+    console.log(`${task.name} not able find spawn in ideal room ${room.name}`);
   }
 
   const creepCost = getTotalBodyPartCost(task.bodyParts);
-  if (creepCost < spawn.room.energyCapacityAvailable) {
-    throw Error(`${task.name}: Waiting for spawn ${spawn.name}, currently not enough energy`);
+
+  if (spawn) {
+    const canSpawnCreep = spawn.spawnCreep(task.bodyParts, task.name, { dryRun: true });
+
+    if (canSpawnCreep === OK) {
+      spawn.spawnCreep(task.bodyParts, task.name);
+      return;
+    }
+
+    const hasCapacity = creepCost < spawn.room.energyCapacityAvailable;
+
+    if (hasCapacity) {
+      if (canSpawnCreep === ERR_NOT_ENOUGH_ENERGY) {
+        throw Error(`${task.name}: Waiting for spawn ${spawn.name}, currently not enough energy`);
+      }
+      if (canSpawnCreep === ERR_BUSY) {
+        throw Error(`${task.name}: Waiting for spawn ${spawn.name}, currently busy `);
+      }
+    }
+  }
+
+  const spawns: StructureSpawn[] = [];
+  for (const spawnName in Game.spawns) {
+    spawns.push(Game.spawns[spawnName]);
   }
 
   for (const spawnName in Game.spawns) {

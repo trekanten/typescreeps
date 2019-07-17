@@ -1,6 +1,6 @@
 import { TaskBase } from './taskBase';
 import { SpawnDistributorTask } from '@typescreeps/common/dist';
-import { getSpawnFromRoom, withdraw, deposit } from '@/creep';
+import { withdraw, deposit } from '@/creep';
 import {
   getClosestNotFullExtention, getClosestNotFullSpawn, getClosestContainer, getClosestNotFullTower,
 } from '@/creep/getters';
@@ -18,11 +18,7 @@ export class SpawnDistribution extends TaskBase<SpawnDistributorTask>{
     }
   }
 
-  getSpawn() {
-    return getSpawnFromRoom(this.getRoom());
-  }
-
-  getRoom(): Room {
+  getSpawnRoom(): Room {
     const room = Game.rooms[this.task.room];
     if (!room) {
       throw Error(`Task ${this.task.name}: Room ${this.task.room} not found`);

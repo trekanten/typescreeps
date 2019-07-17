@@ -1,6 +1,6 @@
 import { TaskBase } from './taskBase';
 import { RepairTask } from '@typescreeps/common/dist';
-import { withdraw, repair, getSpawnFromRoom } from '@/creep';
+import { withdraw, repair } from '@/creep';
 import { getClosestContainer, getLowestRepairTarget } from '@/creep/getters';
 
 export class Repair extends TaskBase<RepairTask> {
@@ -41,15 +41,11 @@ export class Repair extends TaskBase<RepairTask> {
     }
   }
 
-  getRoom(): Room {
+  getSpawnRoom(): Room {
     const room = Game.rooms[this.task.room];
     if (!room) {
       throw Error(`${this.task.name}: Room ${this.task.room} not found`);
     }
     return room;
-  }
-
-  getSpawn() {
-    return getSpawnFromRoom(this.getRoom());
   }
 }

@@ -1,5 +1,5 @@
 import { MineTask } from '@typescreeps/common/dist';
-import { mine, deposit, getSpawnFromRoomObject } from '../../creep';
+import { mine, deposit } from '../../creep';
 import { TaskBase } from './taskBase';
 
 export class Mining extends TaskBase<MineTask> {
@@ -36,7 +36,7 @@ export class Mining extends TaskBase<MineTask> {
     return target;
   }
 
-  getSpawn() {
-    return getSpawnFromRoomObject(this.getSource());
+  getSpawnRoom() {
+    return this.getSource().room;
   }
 }

@@ -1,6 +1,5 @@
 import { TaskBase } from './taskBase';
 import { ClaimTask } from '@typescreeps/common/dist';
-import { getSpawnFromRoom } from '@/creep';
 
 export class Claim extends TaskBase<ClaimTask>{
 
@@ -15,10 +14,6 @@ export class Claim extends TaskBase<ClaimTask>{
         this.creep.moveTo(controller);
       }
     }
-  }
-
-  getSpawn() {
-    return getSpawnFromRoom(this.getSpawnRoom());
   }
 
   getSpawnRoom(): Room {

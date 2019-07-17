@@ -1,5 +1,5 @@
 import { CarryTask } from '@typescreeps/common/dist';
-import { deposit, withdraw, getSpawnFromRoomObject } from '../../creep';
+import { deposit, withdraw } from '../../creep';
 import { TaskBase } from './taskBase';
 
 export class Carry extends TaskBase<CarryTask> {
@@ -28,7 +28,7 @@ export class Carry extends TaskBase<CarryTask> {
     return to;
   }
 
-  getSpawn() {
-    return getSpawnFromRoomObject(this.getFrom());
+  getSpawnRoom() {
+    return this.getFrom().room;
   }
 }
