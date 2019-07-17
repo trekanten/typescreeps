@@ -43,31 +43,36 @@ function getNeediestLinkTarget(targets: LinkTarget[]): NeedyTarget | null {
 
 export function linkRunner() {
 
-  const linkJobs = getLinkSegment();
+  try {
 
-  if (!linkJobs) {
-    return;
-  }
+    const linkJobs = getLinkSegment();
 
-  for (const linkJob of linkJobs) {
-    const link: StructureLink = getLinkById(linkJob.id);
-
-    if (link.cooldown === 0) {
+    if (!linkJobs) {
       return;
     }
 
-    const target = getNeediestLinkTarget(linkJob.targets);
-    if (!target || !target.link || !target.info) {
-      throw Error(`Link ${linkJob.id} has no targets`);
-    }
+    for (const linkJob of linkJobs) {
+      const link: StructureLink = getLinkById(linkJob.id);
 
-    const maxEnergy = link.energy;
-    const targetAmount = target.info.amount - target.link.energy;
-    const amount = Math.min(maxEnergy, targetAmount);
+      if (link.cooldown !== 0) {
+        return;
+      }
 
-    const status = link.transferEnergy(target.link, amount);
-    if (status !== OK) {
-      throw Error(`${link.id} not able to transfer: ${status}`);
+      const target = getNeediestLinkTarget(linkJob.targets);
+      if (!target || !target.link || !target.info) {
+        throw Error(`Link ${linkJob.id} has no targets`);
+      }
+
+      const maxEnergy = link.energy;
+      const targetAmount = target.info.amount - target.link.energy;
+      const amount = Math.min(maxEnergy, targetAmount);
+
+      const status = link.transferEnergy(target.link, amount);
+      if (status !== OK) {
+        throw Error(`${link.id} not able to transfer: ${status}`);
+      }
     }
+  } catch (error) {
+    console.log(error);
   }
 }
