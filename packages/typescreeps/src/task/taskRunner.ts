@@ -19,7 +19,7 @@ export function taskRunner() {
     return;
   }
 
-  for (const task of tasks) {
+  for (const task of (tasks as any[])) {
     try {
 
       switch (task.type) {
@@ -70,7 +70,7 @@ export function taskRunner() {
   }
 }
 
-function getTasks(): Task[] | any {
+function getTasks(): Task[] | null {
   try {
     const rawTasks = RawMemory.segments[TASK_SEGMENT];
     if (rawTasks === undefined) {

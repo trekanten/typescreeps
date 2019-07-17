@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 
 import { Mutation, State, createVuexStore, useStore, Action, Getter } from 'vuex-simple';
 import { api } from '@/plugins/api';
-import { Task } from '@typescreeps/common';
+import { Task, LinkJob } from '@typescreeps/common';
 
 export class SimpleStore {
 
@@ -14,6 +14,9 @@ export class SimpleStore {
 
   @State()
   public tasks: Task[] = [];
+
+  @State()
+  public linkJobs: LinkJob[] = [];
 
   // Mutations
 
@@ -29,6 +32,12 @@ export class SimpleStore {
     this.setTasks(tasks);
   }
 
+  @Action()
+  public async fetchLinkJobs(): Promise<void> {
+    const linkJobs = await api.getLinkJobs();
+    this.setLinkJobs(linkJobs);
+  }
+
   // Mutations
 
   @Mutation()
@@ -39,6 +48,11 @@ export class SimpleStore {
   @Mutation()
   public setTasks(tasks: Task[]): void {
     this.tasks = tasks;
+  }
+
+  @Mutation()
+  public setLinkJobs(linkJobs: LinkJob[]): void {
+    this.linkJobs = linkJobs;
   }
 }
 

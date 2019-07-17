@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { Task } from '@typescreeps/common';
+import { Task, LinkJob } from '@typescreeps/common';
 
 export class API {
   private instance = Axios.create({
@@ -11,12 +11,16 @@ export class API {
     },
   });
 
-  public async getSegment(segment: number): Promise<any> {
-    return await this.instance.get(`screeps/segment/${segment}`).then((r: any) => r.data);
+  public async getLinkJobs(): Promise<LinkJob[]> {
+    return await this.instance.get('screeps/links').then((r: any) => r.data);
   }
 
-  public async setSegment(segment: number, data: any): Promise<null> {
-    return await this.instance.post(`screeps/segment/${segment}`, data).then((r: any) => r.data);
+  public async addLinkJob(linkJob: LinkJob): Promise<null> {
+    return await this.instance.post('screeps/links', linkJob).then((r: any) => r.data);
+  }
+
+  public async deleteLinkJob(id: string): Promise<null> {
+    return await this.instance.delete(`screeps/links/${id}`).then((r: any) => r.data);
   }
 
   public async getTasks(): Promise<Task[]> {

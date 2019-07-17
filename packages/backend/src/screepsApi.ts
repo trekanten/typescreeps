@@ -22,13 +22,13 @@ export async function getMemory(path: string) {
     });
 }
 
-export async function getSegment(segmentNr: string) {
-  return await api.segment.get(segmentNr, shard)
+export async function getSegment(segmentNr: number) {
+  return await api.segment.get(segmentNr.toString(), shard)
       .then((response: any) => JSON.parse(response.data));
 }
 
-export async function setSegment(segmentNr: string, data: object) {
-  return await api.segment.set(segmentNr, JSON.stringify(data), shard)
+export async function setSegment(segmentNr: number, data: object) {
+  return await api.segment.set(segmentNr.toString(), JSON.stringify(data), shard)
     .then((response: any) => JSON.stringify(response.data));
 }
 
