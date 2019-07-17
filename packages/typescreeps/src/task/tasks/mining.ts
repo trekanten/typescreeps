@@ -1,5 +1,5 @@
 import { MineTask } from '@typescreeps/common/dist';
-import { mine, deposit } from '../../creep';
+import { mine, deposit } from '@/helpers/creepActions';
 import { TaskBase } from './taskBase';
 
 export class Mining extends TaskBase<MineTask> {

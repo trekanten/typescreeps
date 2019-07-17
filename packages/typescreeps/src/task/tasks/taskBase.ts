@@ -1,5 +1,5 @@
 import { Task } from '@typescreeps/common/dist';
-import { spawnCreep } from '@/creep';
+import { spawnCreep } from '@/helpers/spawnMethods';
 
 export abstract class TaskBase<TaskType extends Task> {
 

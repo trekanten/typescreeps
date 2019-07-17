@@ -1,7 +1,7 @@
 import { TaskBase } from './taskBase';
 import { UpgradeTask } from '@typescreeps/common/dist';
-import { withdraw, upgradeController } from '@/creep';
-import { getClosestContainer } from '@/creep/getters';
+import { withdraw, upgradeController } from '@/helpers/creepActions';
+import { getClosestContainer } from '@/helpers/structureGetters';
 
 export class Upgrade extends TaskBase<UpgradeTask> {
 

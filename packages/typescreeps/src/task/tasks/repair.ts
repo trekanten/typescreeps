@@ -1,7 +1,7 @@
 import { TaskBase } from './taskBase';
 import { RepairTask } from '@typescreeps/common/dist';
-import { withdraw, repair } from '@/creep';
-import { getClosestContainer, getLowestRepairTarget } from '@/creep/getters';
+import { withdraw, repair } from '@/helpers/creepActions';
+import { getClosestContainer, getLowestRepairTarget } from '@/helpers/structureGetters';
 
 export class Repair extends TaskBase<RepairTask> {
 

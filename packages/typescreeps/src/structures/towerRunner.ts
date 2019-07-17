@@ -1,4 +1,4 @@
-import { getTowers, getLowestRepairTarget } from '@/creep/getters';
+import { getTowers, getLowestRepairTarget } from '@/helpers/structureGetters';
 
 function getHealingPower(creep: Creep) {
   return creep.body.filter(bp => bp.type === HEAL).length;

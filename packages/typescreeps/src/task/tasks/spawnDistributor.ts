@@ -1,9 +1,9 @@
 import { TaskBase } from './taskBase';
 import { SpawnDistributorTask } from '@typescreeps/common/dist';
-import { withdraw, deposit } from '@/creep';
+import { withdraw, deposit } from '@/helpers/creepActions';
 import {
   getClosestNotFullExtention, getClosestNotFullSpawn, getClosestContainer, getClosestNotFullTower,
-} from '@/creep/getters';
+} from '@/helpers/structureGetters';
 
 export class SpawnDistribution extends TaskBase<SpawnDistributorTask>{
 

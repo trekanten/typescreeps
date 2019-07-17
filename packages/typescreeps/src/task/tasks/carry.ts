@@ -1,5 +1,5 @@
 import { CarryTask } from '@typescreeps/common/dist';
-import { deposit, withdraw } from '../../creep';
+import { deposit, withdraw } from '@/helpers/creepActions';
 import { TaskBase } from './taskBase';
 
 export class Carry extends TaskBase<CarryTask> {

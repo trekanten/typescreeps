@@ -1,5 +1,5 @@
 import { TaskType, Task } from '@typescreeps/common/dist';
-import { Mining, Carry } from './tasks';
+
 import { Upgrade } from './tasks/upgrade';
 import { Build } from './tasks/build';
 import { MineBuild } from './tasks/miningBuild';
@@ -7,6 +7,8 @@ import { Repair } from './tasks/repair';
 import { SpawnDistribution } from './tasks/spawnDistributor';
 import { Claim } from './tasks/claim';
 import { Reserve } from './tasks/reserve';
+import { Carry } from './tasks/carry';
+import { Mining } from './tasks/mining';
 
 const TASK_SEGMENT = 5;
 

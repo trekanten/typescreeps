@@ -1,7 +1,7 @@
 import { TaskBase } from './taskBase';
 import { BuildTask } from '@typescreeps/common/dist';
-import { withdraw, build } from '@/creep';
-import { getClosestContainer } from '@/creep/getters';
+import { withdraw, build } from '@/helpers/creepActions';
+import { getClosestContainer } from '@/helpers/structureGetters';
 
 export class Build extends TaskBase<BuildTask>{
 
