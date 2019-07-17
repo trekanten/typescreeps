@@ -39,11 +39,11 @@
                         :data-vv-name="`target-${index}`"
                       ></v-text-field>
 
-                      <v-subheader class="pl-0">Amount</v-subheader>
+                      <v-subheader class="pl-0">Target amount</v-subheader>
 
                       <v-layout row>
                         <v-flex class="pr-3">
-                          <v-slider v-model="target.amount" :max="800" :min="0"></v-slider>
+                          <v-slider v-model="target.amount" :max="800" :min="1"></v-slider>
                         </v-flex>
 
                         <v-flex shrink style="width: 60px">
