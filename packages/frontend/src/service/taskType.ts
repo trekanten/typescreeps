@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 
-import { TaskType, Task, BuildTask, CarryTask, ClaimTask, MineTask, MineBuildTask, RepairTask, SpawnDistributorTask, UpgradeTask } from '@typescreeps/common';
+import { TaskType, Task, BuildTask, CarryTask, ClaimTask, MineTask, MineBuildTask, RepairTask, SpawnDistributorTask, UpgradeTask, ReserveTask } from '@typescreeps/common';
 
 interface TaskTypeInfo<T extends Task> {
   icon: string;
@@ -76,6 +76,18 @@ const repairBuildTaskInfo: TaskTypeInfo<RepairTask> = {
   },
 };
 
+const reserveBuildTaskInfo: TaskTypeInfo<ReserveTask> = {
+  icon: 'https://image.flaticon.com/icons/png/128/174/174444.png',
+  formName: 'ReserveTaskForm',
+  emptyTask: {
+    name: '',
+    type: TaskType.RESERVE,
+    bodyParts: [],
+    targetRoom: '',
+    spawnRoom: '',
+  },
+};
+
 const spawnDistributorBuildTaskInfo: TaskTypeInfo<SpawnDistributorTask> = {
   icon: 'http://cdn.onlinewebfonts.com/svg/img_267113.png',
   formName: 'SpawnDistributorTaskForm',
@@ -118,6 +130,9 @@ export function getTaskInfo(taskType: TaskType | string): TaskTypeInfo<Task> {
 
     case TaskType.REPAIR:
       return repairBuildTaskInfo;
+
+    case TaskType.RESERVE:
+      return reserveBuildTaskInfo;
 
     case TaskType.SPAWN_DISTRIBUTOR:
       return spawnDistributorBuildTaskInfo;

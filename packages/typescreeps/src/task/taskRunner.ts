@@ -6,6 +6,7 @@ import { MineBuild } from './tasks/miningBuild';
 import { Repair } from './tasks/repair';
 import { SpawnDistribution } from './tasks/spawnDistributor';
 import { Claim } from './tasks/claim';
+import { Reserve } from './tasks/reserve';
 
 const TASK_SEGMENT = 5;
 
@@ -42,6 +43,10 @@ export function taskRunner() {
         }
         case TaskType.REPAIR: {
           new Repair(task).runTask();
+          break;
+        }
+        case TaskType.RESERVE: {
+          new Reserve(task).runTask();
           break;
         }
         case TaskType.SPAWN_DISTRIBUTOR: {

@@ -43,5 +43,5 @@ import BodyPartsSelect from '@/components/formComponents/BodyPartsSelect.vue'
 import RoomSelect from '@/components/formComponents/RoomSelect.vue'
 
 @Component({ components: { BodyPartsSelect, RoomSelect } })
-export default class ClaimTaskForm extends TaskFormTemplate { }
+export default class ReserveTaskForm extends TaskFormTemplate { }
 </script>

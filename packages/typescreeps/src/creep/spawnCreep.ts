@@ -41,7 +41,7 @@ export function spawnCreep(task: Task, room: Room) {
 
     if (creepCost < spawn.room.energyAvailable) {
       spawn.spawnCreep(task.bodyParts, task.name);
-      throw Error(`${task.name}: Spawning in spawn ${spawn.name}`);
+      throw Error(`${task.name} spawning in room ${spawn.room.name} [${spawn.name}]`);
     }
   }
 

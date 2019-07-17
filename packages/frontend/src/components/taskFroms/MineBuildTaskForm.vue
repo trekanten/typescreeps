@@ -31,5 +31,5 @@ import TaskFormTemplate from './TaskFormTemplate';
 import BodyPartsSelect from '@/components/formComponents/BodyPartsSelect.vue'
 
 @Component({ components: { BodyPartsSelect } })
-export default class CarryTaskForm extends TaskFormTemplate { }
+export default class MineBuildTaskForm extends TaskFormTemplate { }
 </script>

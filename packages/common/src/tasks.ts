@@ -5,6 +5,7 @@ export enum TaskType {
   MINE = 'mine',
   MINE_BUILD = 'mine_build',
   REPAIR = 'repair',
+  RESERVE = 'reserve',
   SPAWN_DISTRIBUTOR = 'spawn_distributor',
   UPGRADE = 'upgrade',
 }
@@ -59,6 +60,12 @@ export interface RepairTask extends Task {
   type: TaskType.REPAIR;
   room: string;
   containerId?: string;
+}
+
+export interface ReserveTask extends Task {
+  type: TaskType.RESERVE;
+  targetRoom: string;
+  spawnRoom: string;
 }
 
 export interface SpawnDistributorTask extends Task {
