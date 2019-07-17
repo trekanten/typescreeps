@@ -9,6 +9,14 @@ import { store } from '@/store';
 @Component
 export default class RoomSelect extends Vue {
 
+  @Prop()
+  value!: string;
+
+  @Watch('value', { immediate: true })
+  onChanged(newValue: string) {
+    this.room = newValue;
+  }
+
   room = ''
   rooms = store.rooms;
 

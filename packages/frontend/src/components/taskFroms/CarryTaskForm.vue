@@ -1,5 +1,5 @@
 <template>
-  <div v-if="task">
+  <div>
     <v-text-field
       label="Name"
       v-model="task.name"
@@ -35,51 +35,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { TaskType, CarryTask, BodyPart, Task } from '@typescreeps/common';
+import { Component, Vue } from 'vue-property-decorator';
 
-import { ITaskForm } from './ITaskForm';
-
+import TaskFormTemplate from './TaskFormTemplate';
 import BodyPartsSelect from '@/components/formComponents/BodyPartsSelect.vue'
-import { value } from 'vue-function-api';
 
 @Component({ components: { BodyPartsSelect } })
-export default class CarryTaskForm extends Vue implements ITaskForm<CarryTask> {
-
-  @Prop({ required: true })
-  value!: CarryTask;
-
-  @Watch('value', { deep: true, immediate: true })
-  onChanged(newValue: CarryTask) {
-    this.task = newValue;
-  }
-
-  task: CarryTask = this.value;
-
-  @Watch('task', { deep: true })
-  onTask() {
-    if (this.task) {
-      this.$emit('input', this.task);
-    }
-  }
-
-  dictionary = {
-    custom: {
-      name: {
-        required: () => 'Name can not be empty',
-        max: 'The name field may not be greater than 10 characters'
-        // custom messages
-      },
-    }
-  }
-
-  async validate() {
-    return await this.$validator.validateAll();
-  }
-
-  async reset(task: CarryTask) {
-    this.task = task;
-    this.$validator.reset();
-  }
-}
+export default class CarryTaskForm extends TaskFormTemplate { }
 </script>
