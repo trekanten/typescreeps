@@ -1,113 +1,45 @@
 <template>
-  <v-card>
-    <v-card-title class="headline grey lighten-2" primary-title>New Carry Task</v-card-title>
+  <div>
+    <v-text-field
+      label="Name"
+      v-model="task.name"
+      v-validate="'required|max:10'"
+      :counter="10"
+      :error-messages="errors.collect('name')"
+      data-vv-name="name"
+      required
+    ></v-text-field>
 
-    <v-flex xs10 offset-xs1>
-      <form>
-        <v-text-field
-          label="Name"
-          v-model="name"
-          v-validate="'required|max:10'"
-          :counter="10"
-          :error-messages="errors.collect('name')"
-          data-vv-name="name"
-          required
-        ></v-text-field>
+    <BodyPartsSelect v-model="task.bodyParts" />
 
-        <BodyPartsSelect v-model="bodyParts" :preset="'carry'" />
+    <v-text-field
+      label="Carry from"
+      v-model="task.from"
+      v-validate="'required|min:24|max:24'"
+      :counter="24"
+      :error-messages="errors.collect('from')"
+      data-vv-name="from"
+      required
+    ></v-text-field>
 
-        <v-text-field
-          label="Carry from"
-          v-model="from"
-          v-validate="'required|min:24|max:24'"
-          :counter="24"
-          :error-messages="errors.collect('from')"
-          data-vv-name="from"
-          required
-        ></v-text-field>
-
-        <v-text-field
-          label="Carry to"
-          v-model="to"
-          v-validate="'required|min:24|max:24'"
-          :counter="24"
-          :error-messages="errors.collect('to')"
-          data-vv-name="to"
-          required
-        ></v-text-field>
-
-        <v-btn @click="clear">reset</v-btn>
-        <v-btn color="success" @click="submit">Add Task</v-btn>
-      </form>
-    </v-flex>
-  </v-card>
+    <v-text-field
+      label="Carry to"
+      v-model="task.to"
+      v-validate="'required|min:24|max:24'"
+      :counter="24"
+      :error-messages="errors.collect('to')"
+      data-vv-name="to"
+      required
+    ></v-text-field>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { TaskType, CarryTask, BodyPart, Task } from '@typescreeps/common';
+import { Component, Vue } from 'vue-property-decorator';
 
-import BodyPartsSelect from '../bodyPart/BodyPartsSelect.vue'
+import TaskFormTemplate from './TaskFormTemplate';
+import BodyPartsSelect from '@/components/formComponents/BodyPartsSelect.vue'
 
 @Component({ components: { BodyPartsSelect } })
-export default class CarryTaskForm extends Vue {
-
-  @Prop()
-  taskToEdit!: CarryTask | undefined;
-
-  created() {
-    if (this.taskToEdit) {
-      this.name = this.taskToEdit.name;
-      this.bodyParts = this.taskToEdit.bodyParts;
-      this.to = this.taskToEdit.to;
-      this.from = this.taskToEdit.from;
-    }
-  }
-
-  name = '';
-  bodyParts: BodyPart[] | null = null;
-  to = '';
-  from = '';
-
-  dictionary = {
-    custom: {
-      name: {
-        required: () => 'Name can not be empty',
-        max: 'The name field may not be greater than 10 characters'
-        // custom messages
-      },
-    }
-  }
-
-  async submit() {
-    try {
-      const valid = await this.$validator.validateAll();
-      if (!valid) {
-        throw Error('Carry taks not valid');
-      }
-      if (!this.bodyParts) {
-        throw Error('Carry task missing body parts');
-      }
-
-      const carryTask: CarryTask = {
-        name: this.name,
-        type: TaskType.CARRY,
-        bodyParts: this.bodyParts as unknown as BodyPart[],
-        to: this.to,
-        from: this.from,
-      }
-
-      this.$emit('submit', carryTask);
-    } catch (error) {
-      console.error(error);
-    }
-
-  };
-  clear() {
-    this.name = ''
-    this.to = ''
-    this.from = ''
-    this.$validator.reset()
-  };
-}
+export default class CarryTaskForm extends TaskFormTemplate { }
 </script>

@@ -1,10 +1,10 @@
 <template>
   <v-layout row>
-    <v-dialog v-model="showDialog" width="500">
-      <component :is="taskForm" @submit="addNewTask" />
+    <v-dialog v-if="showDialog" v-model="showDialog" width="500">
+      <TaskForm :taskType="selectedTaskType" @submit="addNewTask" />
     </v-dialog>
-    <v-dialog v-model="showEditDialog" width="500">
-      <component :is="editForm" :taskToEdit="taskToEdit" @submit="updateTask" />
+    <v-dialog v-if="showEditDialog" v-model="showEditDialog" width="500">
+      <TaskForm :taskType="taskToEdit.type" :originalTask="taskToEdit" @submit="updateTask" />
     </v-dialog>
 
     <v-flex xs12 sm10 offset-sm1 md8 offset-md2>
@@ -12,13 +12,13 @@
         <h3>Typescreeps</h3>
         <v-layout row>
           <v-flex offset-xs2 xs4>
-            <v-select v-model="selectedTask" :items="taskTypes" label="Task Type"></v-select>
+            <v-select v-model="selectedTaskType" :items="taskTypes" label="Task Type"></v-select>
           </v-flex>
           <v-flex xs4>
             <v-btn
               color="success"
               @click="()=>this.showDialog = true"
-              :disabled="taskForm === null"
+              :disabled="selectedTaskType === null"
             >Add new task</v-btn>
           </v-flex>
         </v-layout>
@@ -66,6 +66,7 @@ import { store } from '@/store';
 
 import TaskListTile from '../components/TaskListTile.vue'
 
+import TaskForm from '../components/taskFroms/TaskForm.vue'
 import BuildTaskForm from '../components/taskFroms/BuildTaskForm.vue'
 import CarryTaskForm from '../components/taskFroms/CarryTaskForm.vue'
 import ClaimTaskForm from '../components/taskFroms/ClaimTaskForm.vue'
@@ -74,7 +75,7 @@ import MineBuildTaskForm from '../components/taskFroms/MineBuildTaskForm.vue'
 import RepairTaskForm from '../components/taskFroms/RepairTaskForm.vue'
 import SpawnDistributorTaskForm from '../components/taskFroms//SpawnDistributorTaskForm.vue'
 import UpgradeTaskForm from '../components/taskFroms/UpgradeTaskForm.vue'
-import { getTaskTypeIcon, getTaskForm } from '../service/taskType';
+import { getTaskTypeIcon, getTaskForm, getTaskTypeArray } from '../service/taskType';
 
 interface GroupedTask {
   title: string,
@@ -83,7 +84,7 @@ interface GroupedTask {
   tasks: Task[],
 }
 
-@Component({ components: { TaskListTile, BuildTaskForm, CarryTaskForm, ClaimTaskForm, MineTaskForm, MineBuildTaskForm, RepairTaskForm, SpawnDistributorTaskForm, UpgradeTaskForm } })
+@Component({ components: { TaskListTile, TaskForm } })
 export default class Home extends Vue {
 
 
@@ -96,7 +97,7 @@ export default class Home extends Vue {
 
   groupedTasks: GroupedTask[] = [];
 
-  selectedTask: TaskType | null = null;
+  selectedTaskType: TaskType | null = null;
 
   showDialog = false;
 
@@ -105,18 +106,7 @@ export default class Home extends Vue {
   editForm: string | null = null;
 
   get taskTypes() {
-    const taskTypes = [];
-    for (var key in TaskType) {
-      taskTypes.push(TaskType[key]);
-    }
-    return taskTypes;
-  }
-
-  get taskForm() {
-    if (!this.selectedTask) {
-      return null;
-    }
-    return getTaskForm(this.selectedTask);
+    return getTaskTypeArray();
   }
 
   updateGroupedTasks(tasks: Task[]) {
@@ -135,7 +125,7 @@ export default class Home extends Vue {
         group.tasks.push(task)
       }
     }
-    this.groupedTasks = groupedTasks;
+    this.groupedTasks = groupedTasks.sort((a, b) => (a.title > b.title ? 1 : -1));
   }
 
   async created() {
@@ -145,20 +135,22 @@ export default class Home extends Vue {
 
   async addNewTask(task: Task) {
     await this.$api.addTask(task);
-    store.fetchTasks();
+    await store.fetchTasks();
     this.showDialog = false;
   }
 
   async updateTask(task: Task) {
-    // await this.$api.addTask(task);
-    // store.fetchTasks();
+    if (!this.taskToEdit) {
+      throw Error('No Task to edit')
+    }
+    await this.$api.updateTask(this.taskToEdit.name, task);
+    await store.fetchTasks();
     this.showEditDialog = false;
-    throw Error('updateTask not implemented');
   }
 
   async deleteTask(taskName: string) {
     await this.$api.deleteTask(taskName);
-    store.fetchTasks();
+    await store.fetchTasks();
   }
 
   editTask(task: Task) {

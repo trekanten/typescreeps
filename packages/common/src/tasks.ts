@@ -30,7 +30,6 @@ export interface BuildTask extends Task {
   type: TaskType.BUILD;
   room: string;
   containerId?: string;
-  priority?: string[];
 }
 
 export interface CarryTask extends Task {
