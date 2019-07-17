@@ -16,7 +16,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { TaskType, CarryTask, BodyPart, Task } from '@typescreeps/common';
-import { getTaskForm, getEmptyTask } from '../../service/taskType';
+import { getTaskForm, getEmptyTask } from '@/service/taskType';
 
 import BuildTaskForm from './BuildTaskForm.vue'
 import CarryTaskForm from './CarryTaskForm.vue'

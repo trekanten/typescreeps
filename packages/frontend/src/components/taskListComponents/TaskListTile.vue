@@ -37,7 +37,7 @@ import { Task, TaskType, MineTask } from '@typescreeps/common';
 
 import { getTaskTypeIcon } from '@/service/taskType';
 
-import BodyPartList from './bodyPart/BodyPartList.vue'
+import BodyPartList from '@/components/bodyPart/BodyPartList.vue'
 
 @Component({ components: { BodyPartList } })
 export default class TaskListtile extends Vue {
@@ -65,7 +65,7 @@ export default class TaskListtile extends Vue {
   }
 
   deleteTask() {
-    this.$emit('delete', this.task.name);
+    this.$emit('delete', this.task);
   }
 
 }

@@ -15,7 +15,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { BodyPart } from '@typescreeps/common';
 
-import { bodyPartPresets } from '../bodyPart/bodyPartPresets';
+import { bodyPartPresets } from '@/components/bodyPart/bodyPartPresets';
 
 import BodyPartList from '@/components/bodyPart/BodyPartList.vue'
 

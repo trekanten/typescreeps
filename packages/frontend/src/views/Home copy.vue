@@ -24,7 +24,35 @@
         </v-layout>
       </v-card>
 
-      <TaskList @editTask="editTask" />
+      <v-card>
+        <v-list two-line subheader>
+          <v-list-group
+            v-for="group in groupedTasks"
+            :key="group.title"
+            v-model="group.active"
+            no-action
+          >
+            <template v-slot:activator>
+              <v-list-tile>
+                <v-list-tile-avatar>
+                  <img :src="group.icon" />
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ group.title }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+
+            <TaskListTile
+              v-for="task in group.tasks"
+              :key="task.name"
+              :task="task"
+              @delete="deleteTask"
+              @edit="editTask"
+            />
+          </v-list-group>
+        </v-list>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
@@ -36,8 +64,9 @@ import { Task, TaskType, MineTask } from '@typescreeps/common';
 import { Getter, State } from 'vuex-class';
 import { store } from '@/store';
 
+import TaskListTile from '@/components/taskListComponents/TaskListTile.vue'
+
 import TaskForm from '@/components/taskFroms/TaskForm.vue'
-import TaskList from '@/components/taskListComponents/TaskList.vue'
 
 import { getTaskTypeIcon, getTaskForm, getTaskTypeArray } from '@/service/taskType';
 
@@ -48,8 +77,18 @@ interface GroupedTask {
   tasks: Task[],
 }
 
-@Component({ components: { TaskList, TaskForm } })
+@Component({ components: { TaskListTile, TaskForm } })
 export default class Home extends Vue {
+
+
+  @State('tasks') tasks!: Task[];
+
+  @Watch('tasks')
+  onTasksUpdated(newTasks: Task[]) {
+    this.updateGroupedTasks(newTasks);
+  }
+
+  groupedTasks: GroupedTask[] = [];
 
   selectedTaskType: TaskType | null = null;
 
@@ -61,6 +100,27 @@ export default class Home extends Vue {
 
   get taskTypes() {
     return getTaskTypeArray();
+  }
+
+  updateGroupedTasks(tasks: Task[]) {
+    const groupedTasks: GroupedTask[] = [];
+    for (const task of tasks) {
+      const group = groupedTasks.find(gp => gp.title === task.type);
+      const oldGroup = this.groupedTasks.find(gp => gp.title === task.type);
+      if (!group) {
+        groupedTasks.push({
+          title: task.type,
+          active: oldGroup ? oldGroup.active : false,
+          icon: getTaskTypeIcon(task.type),
+          tasks: [task],
+        })
+      } else {
+        group.tasks.push(task)
+      }
+    }
+    groupedTasks.sort((a, b) => (a.title > b.title ? 1 : -1));
+    groupedTasks.forEach(gp => gp.tasks.sort((a, b) => (a.name > b.name ? 1 : -1)));
+    this.groupedTasks = groupedTasks;
   }
 
   async created() {
@@ -81,6 +141,11 @@ export default class Home extends Vue {
     await this.$api.updateTask(this.taskToEdit.name, task);
     await store.fetchTasks();
     this.showEditDialog = false;
+  }
+
+  async deleteTask(taskName: string) {
+    await this.$api.deleteTask(taskName);
+    await store.fetchTasks();
   }
 
   editTask(task: Task) {
