@@ -19,7 +19,11 @@ export class Build extends TaskBase<BuildTask>{
         this.creep.memory.targetId = this.getTarget().id;
       }
       const target = Game.getObjectById(this.creep.memory.targetId) as ConstructionSite;
-      build(this.creep, target);
+      if (!target) {
+        this.creep.memory.targetId = null;
+      } else {
+        build(this.creep, target);
+      }
     } else {
       if (!this.creep.memory.containerId) {
         const container = getClosestContainer(this.creep, this.task.containerId);

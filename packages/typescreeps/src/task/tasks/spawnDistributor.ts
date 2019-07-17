@@ -39,14 +39,14 @@ export class SpawnDistribution extends TaskBase<SpawnDistributorTask>{
   }
 
   getTarget() {
-    const closestExtention = getClosestNotFullExtention(this.creep);
-    if (closestExtention) {
-      return closestExtention;
-    }
-
     const closestSpawn = getClosestNotFullSpawn(this.creep);
     if (closestSpawn) {
       return closestSpawn;
+    }
+
+    const closestExtention = getClosestNotFullExtention(this.creep);
+    if (closestExtention) {
+      return closestExtention;
     }
 
     const closestTower = getClosestNotFullTower(this.creep);
