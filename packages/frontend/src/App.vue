@@ -1,10 +1,12 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <ToolBar/>
+      <ToolBar />
       <v-content>
         <v-container fluid>
-          <router-view />
+          <keep-alive>
+            <router-view />
+          </keep-alive>
         </v-container>
       </v-content>
     </v-app>
@@ -27,7 +29,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import ToolBar from '@/components/Toolbar.vue'
 
 
-@Component({components:{ToolBar}})
-export default class App extends Vue{}
+@Component({ components: { ToolBar } })
+export default class App extends Vue { }
 </script>
 
