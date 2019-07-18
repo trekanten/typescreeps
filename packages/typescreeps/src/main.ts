@@ -1,15 +1,14 @@
 
 import { taskRunner } from './task/taskRunner';
-import { memoryRunner } from './memory/memoryRunner';
-import { towerRunner } from './structures/towerRunner';
 import { linkRunner } from './structures/linkRunner';
+import { towerRunner } from './structures/towerRunner';
+import { memoryRunner } from './memory/memoryRunner';
+import { graveRobberRunner } from './auto/graveRobber';
 
 export const loop = () => {
-  console.log();
-  console.log(`--- ${Game.time} ---`);
-
   taskRunner();
   linkRunner();
   towerRunner();
   memoryRunner();
+  graveRobberRunner();
 };

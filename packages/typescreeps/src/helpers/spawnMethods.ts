@@ -1,21 +1,21 @@
-import { Task, getTotalBodyPartCost } from '@typescreeps/common/dist';
+import { Task, getTotalBodyPartCost, BodyPart } from '@typescreeps/common/dist';
 
-export function spawnCreep(task: Task, room: Room) {
+export function spawnCreep(bodyParts: BodyPart[], name: string, room: Room) {
 
   let spawn: StructureSpawn | undefined;
   try {
     spawn = getSpawnFromRoom(room);
   } catch (error) {
-    console.log(`${task.name} not able find spawn in ideal room ${room.name}`);
+    console.log(`${name} not able find spawn in ideal room ${room.name}`);
   }
 
-  const creepCost = getTotalBodyPartCost(task.bodyParts);
+  const creepCost = getTotalBodyPartCost(bodyParts);
 
   if (spawn) {
-    const canSpawnCreep = spawn.spawnCreep(task.bodyParts, task.name, { dryRun: true });
+    const canSpawnCreep = spawn.spawnCreep(bodyParts, name, { dryRun: true });
 
     if (canSpawnCreep === OK) {
-      spawn.spawnCreep(task.bodyParts, task.name);
+      spawn.spawnCreep(bodyParts, name);
       return;
     }
 
@@ -23,10 +23,10 @@ export function spawnCreep(task: Task, room: Room) {
 
     if (hasCapacity) {
       if (canSpawnCreep === ERR_NOT_ENOUGH_ENERGY) {
-        throw Error(`${task.name}: Waiting for spawn ${spawn.name}, currently not enough energy`);
+        throw Error(`${name}: Waiting for spawn ${spawn.name}, currently not enough energy`);
       }
       if (canSpawnCreep === ERR_BUSY) {
-        throw Error(`${task.name}: Waiting for spawn ${spawn.name}, currently busy `);
+        throw Error(`${name}: Waiting for spawn ${spawn.name}, currently busy `);
       }
     }
   }
@@ -40,12 +40,12 @@ export function spawnCreep(task: Task, room: Room) {
     const spawn = Game.spawns[spawnName];
 
     if (creepCost < spawn.room.energyAvailable) {
-      spawn.spawnCreep(task.bodyParts, task.name);
-      throw Error(`${task.name} spawning in room ${spawn.room.name} [${spawn.name}]`);
+      spawn.spawnCreep(bodyParts, name);
+      throw Error(`${name} spawning in room ${spawn.room.name} [${spawn.name}]`);
     }
   }
 
-  throw Error(`${task.name}: No suitable spawn found!`);
+  throw Error(`${name}: No suitable spawn found!`);
 }
 
 export function getSpawnFromRoom(room: Room): StructureSpawn {
