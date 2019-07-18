@@ -74,3 +74,9 @@ export function widthdrawTombStone(creep: Creep, tombStone: Tombstone) {
     creep.moveTo(tombStone);
   }
 }
+
+export function attack(creep: Creep, target: Creep) {
+  if (creep.attack(target) === ERR_NOT_IN_RANGE) {
+    creep.moveTo(target);
+  }
+}

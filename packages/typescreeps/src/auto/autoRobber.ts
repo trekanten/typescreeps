@@ -6,12 +6,12 @@ import { deposit, widthdrawTombStone, pickup } from '@/helpers/creepActions';
 const MINIMUM_GAIN = 100;
 const ROBBER_BODY: BodyPart[] = [BodyPart.MOVE, BodyPart.CARRY];
 
-function getRobberName(room: Room) {
+function getAutoRobberName(room: Room) {
   return `GraveRobber-${room.name}`;
 }
 
-function hasActiveGraveRobber(room: Room) {
-  return !!Game.creeps[getRobberName(room)];
+function hasActiveAutoRobber(room: Room) {
+  return !!Game.creeps[getAutoRobberName(room)];
 }
 
 function getDroppedEnergy(room: Room) {
@@ -47,13 +47,13 @@ function getEnergyAvailableInRoom(room: Room) {
   return totalDroppedEnergy + totalTombStoneEnergy;
 }
 
-export function graveRobberRunner() {
+export function autoRobberRunner() {
   for (const key in Game.rooms) {
     try {
       const room = Game.rooms[key];
 
-      if (hasActiveGraveRobber(room)) {
-        runGraveRobber(room);
+      if (hasActiveAutoRobber(room)) {
+        runAutoRobber(room);
         continue;
       }
 
@@ -63,7 +63,7 @@ export function graveRobberRunner() {
 
       const totalResources = getEnergyAvailableInRoom(room);
       if (totalResources - MINIMUM_GAIN > getTotalBodyPartCost(ROBBER_BODY)) {
-        spawnCreep(ROBBER_BODY, getRobberName(room), room);
+        spawnCreep(ROBBER_BODY, getAutoRobberName(room), room);
       }
 
     } catch (error) {
@@ -72,10 +72,10 @@ export function graveRobberRunner() {
   }
 }
 
-function runGraveRobber(room: Room) {
-  const creep = Game.creeps[getRobberName(room)];
+function runAutoRobber(room: Room) {
+  const creep = Game.creeps[getAutoRobberName(room)];
   if (!creep) {
-    throw Error(`No grave robber with name ${getRobberName(room)} found`);
+    throw Error(`No auto robber with name ${getAutoRobberName(room)} found`);
   }
 
   if (creep.carry.energy === 0) {
