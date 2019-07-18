@@ -47,7 +47,7 @@ export default class TaskListtile extends Vue {
 
   actions = [
     {
-      title: 'Edit (Under development)',
+      title: 'Edit',
       method: this.editTask,
     },
     {
