@@ -16,7 +16,7 @@ export class Repair extends TaskBase<RepairTask> {
 
     if (this.creep.memory.repair === true) {
       if (!this.creep.memory.targetId) {
-        const target = getLowestRepairTarget(this.creep.room);
+        const target = getLowestRepairTarget(this.getSpawnRoom());
         if (!target) {
           throw Error(`${this.task.name}: Not able find any repair targets`);
         }

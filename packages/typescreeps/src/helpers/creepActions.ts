@@ -1,35 +1,64 @@
+function goToStructuresRoom(creep: Creep, targetRoom: Room) {
+  if (targetRoom.name === creep.room.name) {
+    return true;
+  }
+  const exitDir = creep.room.findExitTo(targetRoom) as ExitConstant;
+  const exit = creep.pos.findClosestByRange(exitDir) as RoomPosition;
+  creep.moveTo(exit);
+  return false;
+}
+
 export function build(creep: Creep, target: ConstructionSite) {
-  if (creep.build(target) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(target);
+  if (target.room) {
+    if (goToStructuresRoom(creep, target.room)) {
+      if (creep.build(target) === ERR_NOT_IN_RANGE) {
+        creep.moveTo(target);
+      }
+    }
+  } else {
+    if (creep.build(target) === ERR_NOT_IN_RANGE) {
+      creep.moveTo(target);
+    }
+
   }
 }
 
 export function deposit(creep: Creep, target: Structure) {
-  if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(target);
+  if (goToStructuresRoom(creep, target.room)) {
+    if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+      creep.moveTo(target);
+    }
   }
 }
 
 export function mine(creep: Creep, source: Source) {
-  if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(source);
+  if (goToStructuresRoom(creep, source.room)) {
+    if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
+      creep.moveTo(source);
+    }
   }
 }
 
-export function repair(creep: Creep, controller: Structure) {
-  if (creep.repair(controller) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(controller);
+export function repair(creep: Creep, structure: Structure) {
+  if (goToStructuresRoom(creep, structure.room)) {
+    if (creep.repair(structure) === ERR_NOT_IN_RANGE) {
+      creep.moveTo(structure);
+    }
   }
 }
 
 export function upgradeController(creep: Creep, controller: StructureController) {
-  if (creep.upgradeController(controller) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(controller);
+  if (goToStructuresRoom(creep, controller.room)) {
+    if (creep.upgradeController(controller) === ERR_NOT_IN_RANGE) {
+      creep.moveTo(controller);
+    }
   }
 }
 
 export function withdraw(creep: Creep, source: Structure) {
-  if (creep.withdraw(source, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(source);
+  if (goToStructuresRoom(creep, source.room)) {
+    if (creep.withdraw(source, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+      creep.moveTo(source);
+    }
   }
 }
