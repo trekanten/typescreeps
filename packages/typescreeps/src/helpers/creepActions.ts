@@ -62,3 +62,15 @@ export function withdraw(creep: Creep, source: Structure) {
     }
   }
 }
+
+export function pickup(creep: Creep, resource: Resource) {
+  if (creep.pickup(resource) === ERR_NOT_IN_RANGE) {
+    creep.moveTo(resource);
+  }
+}
+
+export function widthdrawTombStone(creep: Creep, tombStone: Tombstone) {
+  if (creep.withdraw(tombStone, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+    creep.moveTo(tombStone);
+  }
+}
