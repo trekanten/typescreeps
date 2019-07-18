@@ -9,7 +9,6 @@
 
     <v-flex xs12 sm10 offset-sm1 md8 offset-md2>
       <v-card>
-        <h3>Typescreeps</h3>
         <v-layout row>
           <v-flex offset-xs2 xs4>
             <v-select v-model="selectedTaskType" :items="taskTypes" label="Task Type"></v-select>
@@ -49,7 +48,7 @@ interface GroupedTask {
 }
 
 @Component({ components: { TaskList, TaskForm } })
-export default class Home extends Vue {
+export default class TaskView extends Vue {
 
   selectedTaskType: TaskType | null = null;
 

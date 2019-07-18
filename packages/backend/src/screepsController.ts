@@ -1,8 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { getMe, getSegment, setSegment, getMemory } from './screepsApi';
-import { Task } from '@typescreeps/common';
-
-const TASK_SEGMENT = '5';
+import { Task, TASK_SEGMENT, LINK_SEGMENT, LinkJob } from '@typescreeps/common';
 
 const router: Router = Router();
 
@@ -19,11 +17,37 @@ router.get('/rooms', async (_: Request, res: Response) => {
   res.send(roomNames);
 });
 
+// Get all links
+router.get('/links', async (_: Request, res: Response) => {
+  const tasks = await getSegment(LINK_SEGMENT);
+  res.send(tasks);
+});
+
+// Add link
+router.post('/links', async (req: Request, res: Response) => {
+  const body = req.body as LinkJob;
+  const linkJobs = await getSegment(LINK_SEGMENT) as LinkJob[];
+  linkJobs.push(body);
+  await setSegment(LINK_SEGMENT, linkJobs);
+  res.sendStatus(200);
+});
+
+// Delete link by ID
+router.delete('/links/:id', async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const linkJobs = await getSegment(LINK_SEGMENT) as LinkJob[];
+  const updatedLinkJobs = linkJobs.filter(linkJob => linkJob.id !== id);
+  await setSegment(LINK_SEGMENT, updatedLinkJobs);
+  res.sendStatus(200);
+});
+
+// Get all tasks
 router.get('/tasks', async (_: Request, res: Response) => {
   const tasks = await getSegment(TASK_SEGMENT);
   res.send(tasks);
 });
 
+// Add task
 router.post('/tasks', async (req: Request, res: Response) => {
   const body = req.body as Task;
   const tasks = await getSegment(TASK_SEGMENT) as Task[];
@@ -32,6 +56,7 @@ router.post('/tasks', async (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
+// Delete task by taskName
 router.delete('/tasks/:taskName', async (req: Request, res: Response) => {
   const taskName = req.params.taskName;
   const tasks = await getSegment(TASK_SEGMENT) as Task[];
@@ -40,6 +65,7 @@ router.delete('/tasks/:taskName', async (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
+// Patch/Replace task by taskName
 router.patch('/tasks/:taskName', async (req: Request, res: Response) => {
   const taskName = req.params.taskName;
   const body = req.body as Task;

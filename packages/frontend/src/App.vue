@@ -1,7 +1,14 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-        <router-view />
+      <ToolBar />
+      <v-content>
+        <v-container fluid>
+          <keep-alive>
+            <router-view />
+          </keep-alive>
+        </v-container>
+      </v-content>
     </v-app>
   </div>
 </template>
@@ -15,3 +22,14 @@
   color: #2c3e50;
 }
 </style>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+import ToolBar from '@/components/Toolbar.vue'
+
+
+@Component({ components: { ToolBar } })
+export default class App extends Vue { }
+</script>
+
