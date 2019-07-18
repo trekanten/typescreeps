@@ -1,4 +1,4 @@
-function goToStructuresRoom(creep: Creep, targetRoom: Room) {
+function goToRoom(creep: Creep, targetRoom: Room) {
   if (targetRoom.name === creep.room.name) {
     return true;
   }
@@ -10,7 +10,7 @@ function goToStructuresRoom(creep: Creep, targetRoom: Room) {
 
 export function build(creep: Creep, target: ConstructionSite) {
   if (target.room) {
-    if (goToStructuresRoom(creep, target.room)) {
+    if (goToRoom(creep, target.room)) {
       if (creep.build(target) === ERR_NOT_IN_RANGE) {
         creep.moveTo(target);
       }
@@ -24,7 +24,7 @@ export function build(creep: Creep, target: ConstructionSite) {
 }
 
 export function deposit(creep: Creep, target: Structure) {
-  if (goToStructuresRoom(creep, target.room)) {
+  if (goToRoom(creep, target.room)) {
     if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
       creep.moveTo(target);
     }
@@ -32,7 +32,7 @@ export function deposit(creep: Creep, target: Structure) {
 }
 
 export function mine(creep: Creep, source: Source) {
-  if (goToStructuresRoom(creep, source.room)) {
+  if (goToRoom(creep, source.room)) {
     if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
       creep.moveTo(source);
     }
@@ -40,7 +40,7 @@ export function mine(creep: Creep, source: Source) {
 }
 
 export function repair(creep: Creep, structure: Structure) {
-  if (goToStructuresRoom(creep, structure.room)) {
+  if (goToRoom(creep, structure.room)) {
     if (creep.repair(structure) === ERR_NOT_IN_RANGE) {
       creep.moveTo(structure);
     }
@@ -48,7 +48,7 @@ export function repair(creep: Creep, structure: Structure) {
 }
 
 export function upgradeController(creep: Creep, controller: StructureController) {
-  if (goToStructuresRoom(creep, controller.room)) {
+  if (goToRoom(creep, controller.room)) {
     if (creep.upgradeController(controller) === ERR_NOT_IN_RANGE) {
       creep.moveTo(controller);
     }
@@ -56,7 +56,7 @@ export function upgradeController(creep: Creep, controller: StructureController)
 }
 
 export function withdraw(creep: Creep, source: Structure) {
-  if (goToStructuresRoom(creep, source.room)) {
+  if (goToRoom(creep, source.room)) {
     if (creep.withdraw(source, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
       creep.moveTo(source);
     }
@@ -76,7 +76,9 @@ export function widthdrawTombStone(creep: Creep, tombStone: Tombstone) {
 }
 
 export function attack(creep: Creep, target: Creep) {
-  if (creep.attack(target) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(target);
+  if (goToRoom(creep, target.room)) {
+    if (creep.attack(target) === ERR_NOT_IN_RANGE) {
+      creep.moveTo(target);
+    }
   }
 }

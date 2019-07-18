@@ -14,11 +14,11 @@ function hasAutoDefender(room: Room) {
 
 function makeDefenderBody(parts: number): BodyPart[] {
   const body = [];
-  for (let i = 0; i < parts - 1; i += 1) {
-    body.push(BodyPart.MOVE);
-  }
   for (let i = 0; i < parts; i += 1) {
     body.push(BodyPart.TOUGH);
+  }
+  for (let i = 0; i < parts - 1; i += 1) {
+    body.push(BodyPart.MOVE);
   }
   for (let i = 0; i < parts; i += 1) {
     body.push(BodyPart.ATTACK);
