@@ -63,7 +63,7 @@ export function linkRunner() {
         throw Error(`Link ${linkJob.id} has no targets`);
       }
 
-      const maxEnergy = link.energy;
+      const maxEnergy = link.energy - Math.floor(1 + link.energy * 0.04);
       const targetAmount = target.info.amount - target.link.energy;
       const amount = Math.min(maxEnergy, targetAmount);
 

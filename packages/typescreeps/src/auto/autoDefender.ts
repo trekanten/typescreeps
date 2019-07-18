@@ -86,7 +86,7 @@ function runAutoDefender(room: Room, hostileCreeps: Creep[]) {
   }
 
   if (hostileCreeps.length === 0) {
-    creep.say('VICORY!');
+    creep.say('VICTORY!');
     return;
   }
 
