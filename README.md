@@ -2,21 +2,21 @@
 
 # TypeScreeps
 
-This project is a [Screeps](https://screeps.com/) starter in [Typescript](https://www.typescriptlang.org/). Clone this project, and start writing Screeps AI right away. To get started, see the [Screeps docs](https://docs.screeps.com/)
+This project is a different way to play [Screeps](https://screeps.com/). Clone the project, and start playing, or start expanding on the project. To get started, see the [Screeps docs](https://docs.screeps.com/)
 
 ## Gettings Started
 
 ### Prerequisites
 
-In order to use this starter you will need to:
+In order to set up this priject you will need to:
 
-* Install [Node](https://nodejs.org/en/download/) to get the node package manager (NPM)
+1. Install [Node](https://nodejs.org/en/download/) to get the node package manager (NPM)
 
-* Install [lerna](https://lerna.js.org/)
+2. Install [lerna](https://lerna.js.org/), with the following command:
 
-```console
-npm install --global lerna
-```
+  ```console
+  npm install --global lerna
+  ```
 
 ### Install dependencies
 
@@ -33,18 +33,10 @@ In order to deploy code to the correct account, you need to add a `.env` file in
 ```
 EMAIL=<screeps email address>
 PASSWORD=<screeps password>
-BRANCH=<the screeps branch you would like to deploy to>
+BRANCH=<the screeps branch you are deploy to>
+SHARD=<the shard you are deploying to>
+API_TOKEN=<screeps api token>
 ```
-
-## Build
-
-In order to compile the project, run the following command:
-
-```console
-  npm run build
-```
-
-This will compile your typescript project into the `dist` folder
 
 ## Deploy
 
@@ -54,8 +46,15 @@ In order to deploy your code to Screeps, run the following command:
   npm run deploy
 ```
 
-This command will first run the [build step](##build), and the push the code to your Screeps branch.
+## Serve / Play
 
-## Development
+To start the frontend application, run the following command:
 
-All you have to care about is what is happening in the `package/typescreeps/src/` folder. The files that are already in this folder, is just for demonstration purposes, and can be deleted. However, the file `main.ts` is the main module, and is neccessary for screeps to excecute your code, see [the docs](https://docs.screeps.com/game-loop.html) for mor details.
+```console
+  npm run serve
+```
+
+This will start:
+
+* The backend server at http://localhost:3000
+* The frontend server at http://localhost:8008
