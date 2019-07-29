@@ -21,10 +21,16 @@ export enum BodyPart {
   CLAIM = 'claim',
 }
 
+export interface TaskOptions {
+  spawnRoom?: string;
+  spawnPriority?: number;
+}
+
 export interface Task {
   name: string;
   type: string;
   bodyParts: BodyPart[];
+  options?: TaskOptions;
 }
 
 export interface BuildTask extends Task {
