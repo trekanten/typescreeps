@@ -1,6 +1,7 @@
 import { TaskBase } from './taskBase';
 import { RoomDefendTask } from '@typescreeps/common/dist';
-import { goToRoom } from '@/helpers/creepActions';
+import { goToRoom, attack } from '@/helpers/creepActions';
+import { getHealingPower } from '@/helpers/creepInfo';
 
 export class RoomDefend extends TaskBase<RoomDefendTask> {
 
@@ -13,8 +14,21 @@ export class RoomDefend extends TaskBase<RoomDefendTask> {
     }
 
     if (this.creep.memory.defend) {
-      // TODO DEFEND SCRIPT
-      this.creep.say('Defend not implemented');
+      const hostileCreeps = this.getSpawnRoom().find(FIND_HOSTILE_CREEPS);
+
+      if (hostileCreeps.length === 0) {
+        return;
+      }
+
+      let mainTarget = hostileCreeps[0];
+      for (const hostile of hostileCreeps) {
+        if (getHealingPower(hostile) > getHealingPower(mainTarget)) {
+          mainTarget = hostile;
+        }
+      }
+
+      attack(this.creep, mainTarget);
+
     } else {
       goToRoom(this.creep, this.getSpawnRoom());
     }
