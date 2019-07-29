@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 
-import { TaskType, Task, BuildTask, CarryTask, ClaimTask, MineTask, MineBuildTask, RepairTask, SpawnDistributorTask, UpgradeTask, ReserveTask } from '@typescreeps/common';
+import { TaskType, Task, BuildTask, CarryTask, ClaimTask, MineTask, MineBuildTask, RepairTask, SpawnDistributorTask, UpgradeTask, ReserveTask, RoomDefendTask } from '@typescreeps/common';
 
 interface TaskTypeInfo<T extends Task> {
   icon: string;
@@ -88,6 +88,17 @@ const reserveBuildTaskInfo: TaskTypeInfo<ReserveTask> = {
   },
 };
 
+const roomDefendTaskInfo: TaskTypeInfo<RoomDefendTask> = {
+  icon: 'https://static.thenounproject.com/png/1162-200.png',
+  formName: 'RoomDefendTaskForm',
+  emptyTask: {
+    name: '',
+    type: TaskType.ROOM_DEFEND,
+    bodyParts: [],
+    room: '',
+  },
+};
+
 const spawnDistributorBuildTaskInfo: TaskTypeInfo<SpawnDistributorTask> = {
   icon: 'http://cdn.onlinewebfonts.com/svg/img_267113.png',
   formName: 'SpawnDistributorTaskForm',
@@ -133,6 +144,9 @@ export function getTaskInfo(taskType: TaskType | string): TaskTypeInfo<Task> {
 
     case TaskType.RESERVE:
       return reserveBuildTaskInfo;
+
+    case TaskType.ROOM_DEFEND:
+      return roomDefendTaskInfo;
 
     case TaskType.SPAWN_DISTRIBUTOR:
       return spawnDistributorBuildTaskInfo;

@@ -25,11 +25,12 @@ import MineTaskForm from './MineTaskForm.vue'
 import MineBuildTaskForm from './MineBuildTaskForm.vue'
 import RepairTaskForm from './RepairTaskForm.vue'
 import ReserveTaskForm from './ReserveTaskForm.vue'
+import RoomDefendTaskForm from './RoomDefendTaskForm.vue'
 import SpawnDistributorTaskForm from './/SpawnDistributorTaskForm.vue'
 import UpgradeTaskForm from './UpgradeTaskForm.vue'
 import { ITaskForm } from './ITaskForm';
 
-@Component({ components: { BuildTaskForm, CarryTaskForm, ClaimTaskForm, MineTaskForm, MineBuildTaskForm, RepairTaskForm, ReserveTaskForm, SpawnDistributorTaskForm, UpgradeTaskForm } })
+@Component({ components: { BuildTaskForm, CarryTaskForm, ClaimTaskForm, MineTaskForm, MineBuildTaskForm, RepairTaskForm, ReserveTaskForm, RoomDefendTaskForm, SpawnDistributorTaskForm, UpgradeTaskForm } })
 export default class TaskForm extends Vue {
 
   @Prop({ required: true })
