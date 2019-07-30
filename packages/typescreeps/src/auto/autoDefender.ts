@@ -1,6 +1,7 @@
 import { BodyPart, getTotalBodyPartCost } from '@typescreeps/common/dist';
 import { spawnCreep } from '@/helpers/spawnMethods';
 import { attack } from '@/helpers/creepActions';
+import { getHealingPower } from '@/helpers/creepInfo';
 
 // tslint:disable:max-line-length
 
@@ -45,10 +46,6 @@ function getMaxedDefendBody(room: Room): BodyPart[] {
     }
   }
   return maxedBody;
-}
-
-function getHealingPower(creep: Creep) {
-  return creep.body.filter(bp => bp.type === HEAL).length;
 }
 
 export function autoDefenderRunner() {

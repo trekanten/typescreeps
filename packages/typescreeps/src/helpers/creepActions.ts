@@ -1,4 +1,4 @@
-function goToRoom(creep: Creep, targetRoom: Room) {
+export function goToRoom(creep: Creep, targetRoom: Room) {
   if (targetRoom.name === creep.room.name) {
     return true;
   }

@@ -6,6 +6,7 @@ interface Memory {
 
 interface CreepMemory {
     build: boolean;
+    defend: boolean;
     deposit: boolean;
     repair: boolean;
     upgrade: boolean;
