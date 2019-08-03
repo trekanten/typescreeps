@@ -1,6 +1,6 @@
 import { getTotalBodyPartCost, BodyPart } from '@typescreeps/common/dist';
 import { spawnCreep } from '@/helpers/spawnMethods';
-import { getClosestContainer } from '@/helpers/structureGetters';
+import { getClosestContainer, getContainerById } from '@/helpers/structureGetters';
 import { deposit, widthdrawTombStone, pickup } from '@/helpers/creepActions';
 
 const MINIMUM_GAIN = 100;
@@ -95,7 +95,10 @@ function runAutoRobber(room: Room) {
       }
       creep.memory.containerId = container.id;
     }
-    const container = Game.getObjectById(creep.memory.containerId) as Structure;
+    const container = getContainerById(creep.memory.containerId);
+    if (!container) {
+      throw Error(`${creep.name} not able to find container ${creep.memory.containerId}`);
+    }
     deposit(creep, container);
   } else {
     if (!creep.memory.targetId || !creep.memory.targetType) {

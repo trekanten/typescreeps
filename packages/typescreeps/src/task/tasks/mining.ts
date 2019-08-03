@@ -1,6 +1,7 @@
 import { MineTask } from '@typescreeps/common/dist';
 import { mine, deposit } from '@/helpers/creepActions';
 import { TaskBase } from './taskBase';
+import { getContainerById } from '@/helpers/structureGetters';
 
 export class Mining extends TaskBase<MineTask> {
 
@@ -13,7 +14,7 @@ export class Mining extends TaskBase<MineTask> {
   }
 
   getSource() {
-    const source = Game.getObjectById(this.task.sourceId) as Source;
+    const source = Game.getObjectById(this.task.sourceId) as Source | null;
     if (!source) {
       throw Error(`Task ${this.task.name}: Invalid sourceId ${this.task.sourceId}`);
     }
@@ -22,7 +23,7 @@ export class Mining extends TaskBase<MineTask> {
 
   getTarget(): Structure {
     if (this.task.depositId) {
-      const target = Game.getObjectById(this.task.depositId) as Structure;
+      const target =  getContainerById(this.task.depositId);
       if (!target) {
         throw Error(`Task ${this.task.name}: Invalid depositId ${this.task.depositId}`);
       }

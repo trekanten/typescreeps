@@ -1,7 +1,7 @@
 import { TaskBase } from './taskBase';
 import { UpgradeTask } from '@typescreeps/common/dist';
 import { withdraw, upgradeController } from '@/helpers/creepActions';
-import { getClosestContainer } from '@/helpers/structureGetters';
+import { getClosestContainer, getContainerById } from '@/helpers/structureGetters';
 
 export class Upgrade extends TaskBase<UpgradeTask> {
 
@@ -23,7 +23,10 @@ export class Upgrade extends TaskBase<UpgradeTask> {
         }
         this.creep.memory.containerId = container.id;
       }
-      const container = Game.getObjectById(this.creep.memory.containerId) as Structure;
+      const container = getContainerById(this.creep.memory.containerId);
+      if (!container) {
+        throw Error(`${this.creep.name} not able to find container ${this.creep.memory.containerId}`);
+      }
       withdraw(this.creep, container);
     }
   }

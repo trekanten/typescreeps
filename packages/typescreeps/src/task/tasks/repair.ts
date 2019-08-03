@@ -1,7 +1,7 @@
 import { TaskBase } from './taskBase';
 import { RepairTask } from '@typescreeps/common/dist';
 import { withdraw, repair } from '@/helpers/creepActions';
-import { getClosestContainer, getLowestRepairTarget } from '@/helpers/structureGetters';
+import { getClosestContainer, getLowestRepairTarget, getContainerById } from '@/helpers/structureGetters';
 
 export class Repair extends TaskBase<RepairTask> {
 
@@ -14,7 +14,7 @@ export class Repair extends TaskBase<RepairTask> {
       this.creep.memory.targetId = null;
     }
 
-    if (this.creep.memory.repair === true) {
+    if (this.creep.memory.repair) {
       if (!this.creep.memory.targetId) {
         const target = getLowestRepairTarget(this.getSpawnRoom());
         if (!target) {
@@ -22,7 +22,7 @@ export class Repair extends TaskBase<RepairTask> {
         }
         this.creep.memory.targetId = target.id;
       }
-      const target = Game.getObjectById(this.creep.memory.targetId) as Structure;
+      const target = Game.getObjectById(this.creep.memory.targetId) as Structure | null;
       if (!target || target.hits === target.hitsMax) {
         this.creep.memory.targetId = null;
       } else {
@@ -36,7 +36,10 @@ export class Repair extends TaskBase<RepairTask> {
         }
         this.creep.memory.containerId = container.id;
       }
-      const container = Game.getObjectById(this.creep.memory.containerId) as Structure;
+      const container = getContainerById(this.creep.memory.containerId);
+      if (!container) {
+        throw Error(`${this.creep.name} not able to find container ${this.creep.memory.containerId}`);
+      }
       withdraw(this.creep, container);
     }
   }

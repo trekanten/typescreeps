@@ -2,7 +2,7 @@ import { getLinkSegment } from '@/utils/segmentGetter';
 import { LinkTarget } from '@typescreeps/common/dist';
 
 function getLinkById(linkId: string): StructureLink {
-  const link: StructureLink = Game.getObjectById(linkId) as StructureLink;
+  const link = Game.getObjectById(linkId) as StructureLink | null;
   if (!link) {
     throw Error(`Invalid link: ${linkId}`);
   }
