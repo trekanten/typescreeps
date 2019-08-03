@@ -1,6 +1,7 @@
 import { CarryTask } from '@typescreeps/common/dist';
 import { deposit, withdraw } from '@/helpers/creepActions';
 import { TaskBase } from './taskBase';
+import { getContainerById } from '@/helpers/structureGetters';
 
 export class Carry extends TaskBase<CarryTask> {
 
@@ -13,7 +14,7 @@ export class Carry extends TaskBase<CarryTask> {
   }
 
   getFrom() {
-    const from = Game.getObjectById(this.task.from) as Structure;
+    const from = getContainerById(this.task.from);
     if (!from) {
       throw Error(`Task ${this.task.name}: Invalid 'from' ${this.task.from}`);
     }
@@ -21,7 +22,7 @@ export class Carry extends TaskBase<CarryTask> {
   }
 
   getTo() {
-    const to = Game.getObjectById(this.task.to) as Structure;
+    const to = getContainerById(this.task.to);
     if (!to) {
       throw Error(`Task ${this.task.name}: Invalid 'to' ${this.task.to}`);
     }

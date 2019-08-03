@@ -27,7 +27,7 @@ export class MineBuild extends TaskBase<MineBuildTask> {
   }
 
   getSource() {
-    const source = Game.getObjectById(this.task.sourceId) as Source;
+    const source = Game.getObjectById(this.task.sourceId) as Source | null;
     if (!source) {
       throw Error(`Task ${this.task.name}: Invalid sourceId ${this.task.sourceId}`);
     }

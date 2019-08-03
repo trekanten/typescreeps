@@ -1,7 +1,7 @@
 import { TaskBase } from './taskBase';
 import { BuildTask } from '@typescreeps/common/dist';
 import { withdraw, build } from '@/helpers/creepActions';
-import { getClosestContainer } from '@/helpers/structureGetters';
+import { getClosestContainer, getContainerById } from '@/helpers/structureGetters';
 
 export class Build extends TaskBase<BuildTask>{
 
@@ -18,7 +18,7 @@ export class Build extends TaskBase<BuildTask>{
       if (!this.creep.memory.targetId) {
         this.creep.memory.targetId = this.getTarget().id;
       }
-      const target = Game.getObjectById(this.creep.memory.targetId) as ConstructionSite;
+      const target = Game.getObjectById(this.creep.memory.targetId) as ConstructionSite | null;
       if (!target) {
         this.creep.memory.targetId = null;
       } else {
@@ -32,7 +32,10 @@ export class Build extends TaskBase<BuildTask>{
         }
         this.creep.memory.containerId = container.id;
       }
-      const container = Game.getObjectById(this.creep.memory.containerId) as Structure;
+      const container = getContainerById(this.creep.memory.containerId);
+      if (!container) {
+        throw Error(`${this.creep.name} not able to find container ${this.creep.memory.containerId}`);
+      }
       withdraw(this.creep, container);
     }
   }

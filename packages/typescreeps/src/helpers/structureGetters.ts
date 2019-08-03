@@ -62,7 +62,7 @@ function getClosestNotEmptyStructure<T extends EnergyStructure>(creep: Creep, co
   return notEmptyStructures[0];
 }
 
-function getContainerById(containerId: string) {
+export function getContainerById(containerId: string) {
   const container = Game.getObjectById(containerId) as Structure;
   if (!container) {
     return null;

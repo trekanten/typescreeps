@@ -9,6 +9,7 @@ import { Claim } from './tasks/claim';
 import { Reserve } from './tasks/reserve';
 import { Carry } from './tasks/carry';
 import { Mining } from './tasks/mining';
+import { RoomDefend } from './tasks/roomDefend';
 
 const TASK_SEGMENT = 5;
 
@@ -49,6 +50,10 @@ export function taskRunner() {
         }
         case TaskType.RESERVE: {
           new Reserve(task).runTask();
+          break;
+        }
+        case TaskType.ROOM_DEFEND: {
+          new RoomDefend(task).runTask();
           break;
         }
         case TaskType.SPAWN_DISTRIBUTOR: {
