@@ -1,4 +1,4 @@
-import { Task, getTotalBodyPartCost, BodyPart } from '@typescreeps/common/dist';
+import { getTotalBodyPartCost, BodyPart } from '@typescreeps/common/dist';
 
 export function spawnCreep(bodyParts: BodyPart[], name: string, room: Room) {
 
@@ -48,7 +48,7 @@ export function spawnCreep(bodyParts: BodyPart[], name: string, room: Room) {
   throw Error(`${name}: No suitable spawn found!`);
 }
 
-export function getSpawnFromRoom(room: Room): StructureSpawn {
+function getSpawnFromRoom(room: Room): StructureSpawn {
   for (const key in Game.spawns) {
     const spawn = Game.spawns[key];
     if (spawn.room.name === room.name) {
@@ -56,13 +56,4 @@ export function getSpawnFromRoom(room: Room): StructureSpawn {
     }
   }
   throw Error(`No spawn in room with name ${room.name}`);
-}
-
-export function getSpawnFromRoomObject(targetObject: RoomObject): StructureSpawn {
-  const targetRoom = targetObject.room;
-  if (!targetRoom) {
-    throw Error(`Room not found for object ${JSON.stringify(targetObject)}`);
-  }
-
-  return getSpawnFromRoom(targetRoom);
 }

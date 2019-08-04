@@ -1,22 +1,40 @@
-import { Task } from '@typescreeps/common/dist';
+import { Task, TaskType } from '@typescreeps/common/dist';
+
+const DEFAULT_PRIORITY = 10;
 
 interface SpawnCreep {
   task: Task;
   room: Room;
-  priority?: number;
 }
 
-const DEFAULT_PRIORITY = 10;
-
-function getSpawnPriority(task: Task): number {
-  if (!task.options || !task.options.spawnPriority) {
-    return DEFAULT_PRIORITY;
+function getTaskTypeSpawnPriority(taskType: TaskType | string) {
+  switch (taskType) {
+    case TaskType.SPAWN_DISTRIBUTOR: return 1;
+    default: return DEFAULT_PRIORITY;
   }
-  return task.options.spawnPriority;
+}
+
+function getSpawnPriority(spawnCreep: SpawnCreep): number {
+  if (spawnCreep.task.options && spawnCreep.task.options.spawnPriority) {
+    return spawnCreep.task.options.spawnPriority;
+  }
+
+  return getTaskTypeSpawnPriority(spawnCreep.task.type);
 }
 
 function sortOnSpawnPriority(spawnCreeps: SpawnCreep[]) {
-  return spawnCreeps.sort((a, b) => getSpawnPriority(b.task) - getSpawnPriority(a.task));
+  return spawnCreeps.sort((a, b) => getSpawnPriority(b) - getSpawnPriority(a));
+}
+
+function getMySpawns(): StructureSpawn[] {
+  const spawns: StructureSpawn[] = [];
+  for (const key in Game.spawns) {
+    const spawn = Game.spawns[key];
+    if (spawn.my) {
+      spawns.push(spawn);
+    }
+  }
+  return spawns;
 }
 
 class Spawner {
@@ -29,14 +47,20 @@ class Spawner {
 
   public addCreep(spawnCreep: SpawnCreep) {
     this.spawnList.push(spawnCreep);
+    this.spawnList = sortOnSpawnPriority(this.spawnList);
+  }
+
+  public spawnCreeps() {
+    // TODO
+    // const spawns = getMySpawns();
+    // const spawn = spawns[0];
   }
 
   public printList() {
     console.log();
     console.log('__Creeps Waiting to spawn__');
-    const sortedSpawnList = sortOnSpawnPriority(this.spawnList);
-    for (const spawnCreep of sortedSpawnList) {
-      console.log(`${getSpawnPriority(spawnCreep.task)}, ${spawnCreep.task.name}, in spawn list`);
+    for (const spawnCreep of this.spawnList) {
+      console.log(`${getSpawnPriority(spawnCreep)}, ${spawnCreep.task.name}, in spawn list`);
     }
     console.log('___________________________');
     console.log();
