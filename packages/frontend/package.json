@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@typescreeps/common": "^1.0.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "core-js": "^2.6.5",
     "vee-validate": "^2.2.12",
     "vue": "^2.6.10",
